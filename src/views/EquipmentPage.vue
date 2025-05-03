@@ -1,44 +1,38 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 // カテゴリーのリスト
 const categories = ['頭', '胴', '腕', '腰', '脚'];
+const categoryToEnglish = {
+  '頭': 'head',
+  '胴': 'chest',
+  '腕': 'arms',
+  '腰': 'waist',
+  '脚': 'legs'
+};
 const activeCategory = ref('頭');
 
-// 所持装備のモックデータ
-const ownedEquipment = ref({
-  '頭': [
-    { id: 1, name: '雪風ヘルム', rarity: 8, obtained: true },
-    { id: 2, name: '炎神の兜', rarity: 9, obtained: true },
-    { id: 3, name: '雷獣の冠', rarity: 7, obtained: false },
-    { id: 4, name: 'ドラゴンヘッド', rarity: 10, obtained: false },
-    { id: 5, name: '古龍のマスク', rarity: 8, obtained: true }
-  ],
-  '胴': [
-    { id: 6, name: '氷結マント', rarity: 9, obtained: true },
-    { id: 7, name: '炎の鎧', rarity: 8, obtained: true },
-    { id: 8, name: '雷神の胴', rarity: 9, obtained: false },
-    { id: 9, name: 'ドラゴンメイル', rarity: 10, obtained: false }
-  ],
-  '腕': [
-    { id: 10, name: '霧氷の篭手', rarity: 8, obtained: true },
-    { id: 11, name: '炎の腕甲', rarity: 7, obtained: true },
-    { id: 12, name: '雷光のグローブ', rarity: 8, obtained: false },
-    { id: 13, name: 'ドラゴンクロー', rarity: 9, obtained: false }
-  ],
-  '腰': [
-    { id: 14, name: '雪山のベルト', rarity: 7, obtained: true },
-    { id: 15, name: '炎の腰帯', rarity: 8, obtained: false },
-    { id: 16, name: '雷の帯', rarity: 9, obtained: false },
-    { id: 17, name: 'ドラゴンコイル', rarity: 10, obtained: false }
-  ],
-  '脚': [
-    { id: 18, name: 'フロストグリーヴ', rarity: 9, obtained: true },
-    { id: 19, name: '炎の脚', rarity: 8, obtained: true },
-    { id: 20, name: '雷獣の足', rarity: 7, obtained: false },
-    { id: 21, name: 'ドラゴンフィート', rarity: 10, obtained: false }
-  ]
+// 装備データ
+const equipment = ref<Record<string, Array<any>>>({
+  '頭': [],
+  '胴': [],
+  '腕': [],
+  '腰': [],
+  '脚': []
 });
+
+// ユーザーの所持装備IDを保存するSet
+const ownedEquipmentIds = ref<Record<string, Set<number>>>({
+  '頭': new Set(),
+  '胴': new Set(),
+  '腕': new Set(),
+  '腰': new Set(),
+  '脚': new Set()
+});
+
+// ローディング状態
+const isLoading = ref(true);
+const loadError = ref<string | null>(null);
 
 // 検索キーワード
 const searchQuery = ref('');
@@ -46,18 +40,90 @@ const searchQuery = ref('');
 // 表示のフィルター（全て、所持、未所持）
 const equipmentFilter = ref('全て'); // '全て', '所持', '未所持'
 
+// APIから装備データを取得する関数
+const fetchEquipment = async () => {
+  isLoading.value = true;
+  loadError.value = null;
+  
+  try {
+    // 各カテゴリ(パーツ)に対してAPIリクエストを行う
+    for (const [category, englishCategory] of Object.entries(categoryToEnglish)) {
+      const response = await fetch(`https://wilds.mhdb.io/en/armor?type=${englishCategory}`);
+      
+      if (!response.ok) {
+        throw new Error(`装備データの取得に失敗しました: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      equipment.value[category] = data.map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        rarity: item.rarity || 1,
+        defense: item.defense?.base || 0,
+        slots: item.slots || []
+      }));
+    }
+    
+    // ローカルストレージから所持装備データを読み込む
+    loadOwnedEquipment();
+    
+  } catch (error) {
+    console.error('装備データの取得中にエラーが発生しました:', error);
+    loadError.value = error instanceof Error ? error.message : '不明なエラーが発生しました';
+    
+    // エラー時は空の配列を設定
+    for (const category of categories) {
+      equipment.value[category] = [];
+    }
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+// ローカルストレージから所持装備データを読み込む
+const loadOwnedEquipment = () => {
+  for (const category of categories) {
+    const storageKey = `huntStyle_owned_${category}`;
+    const storedIdsJson = localStorage.getItem(storageKey);
+    
+    if (storedIdsJson) {
+      try {
+        const storedIds = JSON.parse(storedIdsJson);
+        ownedEquipmentIds.value[category] = new Set(storedIds);
+      } catch (error) {
+        console.error(`所持装備データの読み込みに失敗しました (${category}):`, error);
+      }
+    }
+  }
+};
+
+// ローカルストレージに所持装備データを保存
+const saveOwnedEquipment = (category: string) => {
+  const storageKey = `huntStyle_owned_${category}`;
+  const idsArray = Array.from(ownedEquipmentIds.value[category]);
+  localStorage.setItem(storageKey, JSON.stringify(idsArray));
+};
+
+// コンポーネントマウント時にデータを取得
+onMounted(() => {
+  fetchEquipment();
+});
+
 // フィルター後の装備リスト
 const filteredEquipment = computed(() => {
-  return ownedEquipment.value[activeCategory.value].filter(item => {
+  return equipment.value[activeCategory.value].filter(item => {
     // 検索フィルター
-    const matchesQuery = searchQuery.value === '' || item.name.toLowerCase().includes(searchQuery.value.toLowerCase());
+    const matchesQuery = searchQuery.value === '' || 
+      item.name.toLowerCase().includes(searchQuery.value.toLowerCase());
     
     // 所持状態フィルター
     let matchesFilter = true;
+    const isOwned = ownedEquipmentIds.value[activeCategory.value].has(item.id);
+    
     if (equipmentFilter.value === '所持') {
-      matchesFilter = item.obtained;
+      matchesFilter = isOwned;
     } else if (equipmentFilter.value === '未所持') {
-      matchesFilter = !item.obtained;
+      matchesFilter = !isOwned;
     }
     
     return matchesQuery && matchesFilter;
@@ -66,28 +132,40 @@ const filteredEquipment = computed(() => {
 
 // 所持状態の切り替え
 const toggleObtained = (item: any) => {
-  item.obtained = !item.obtained;
-};
-
-// 新しい装備の追加（モック）
-const newEquipmentName = ref('');
-const newEquipmentRarity = ref<number>(7);
-
-const addNewEquipment = () => {
-  if (newEquipmentName.value.trim() !== '') {
-    const newId = Math.max(...ownedEquipment.value[activeCategory.value].map(item => item.id)) + 1;
-    
-    ownedEquipment.value[activeCategory.value].push({
-      id: newId,
-      name: newEquipmentName.value,
-      rarity: newEquipmentRarity.value,
-      obtained: true
-    });
-    
-    newEquipmentName.value = '';
-    newEquipmentRarity.value = 7;
+  const category = activeCategory.value;
+  const itemId = item.id;
+  
+  if (ownedEquipmentIds.value[category].has(itemId)) {
+    ownedEquipmentIds.value[category].delete(itemId);
+  } else {
+    ownedEquipmentIds.value[category].add(itemId);
   }
+  
+  // 変更をローカルストレージに保存
+  saveOwnedEquipment(category);
 };
+
+// 統計情報を計算
+const statsData = computed(() => {
+  const totalCount = Object.values(equipment.value)
+    .reduce((sum, items) => sum + items.length, 0);
+  
+  const ownedCount = Object.entries(ownedEquipmentIds.value)
+    .reduce((sum, [category, ids]) => sum + ids.size, 0);
+  
+  const notOwnedCount = totalCount - ownedCount;
+  
+  const completeRate = totalCount > 0 
+    ? Math.round((ownedCount / totalCount) * 100)
+    : 0;
+  
+  return {
+    total: totalCount,
+    owned: ownedCount,
+    notOwned: notOwnedCount,
+    completeRate
+  };
+});
 </script>
 
 <template>
@@ -100,21 +178,19 @@ const addNewEquipment = () => {
     <div class="equipment-stats">
       <div class="stat-card">
         <span class="stat-title">総装備数</span>
-        <span class="stat-value">{{ Object.values(ownedEquipment).flat().length }}</span>
+        <span class="stat-value">{{ statsData.total }}</span>
       </div>
       <div class="stat-card">
         <span class="stat-title">所持装備数</span>
-        <span class="stat-value">{{ Object.values(ownedEquipment).flat().filter(item => item.obtained).length }}</span>
+        <span class="stat-value">{{ statsData.owned }}</span>
       </div>
       <div class="stat-card">
         <span class="stat-title">未所持装備数</span>
-        <span class="stat-value">{{ Object.values(ownedEquipment).flat().filter(item => !item.obtained).length }}</span>
+        <span class="stat-value">{{ statsData.notOwned }}</span>
       </div>
       <div class="stat-card">
         <span class="stat-title">コンプリート率</span>
-        <span class="stat-value">
-          {{ Math.round((Object.values(ownedEquipment).flat().filter(item => item.obtained).length / Object.values(ownedEquipment).flat().length) * 100) }}%
-        </span>
+        <span class="stat-value">{{ statsData.completeRate }}%</span>
       </div>
     </div>
 
@@ -150,7 +226,16 @@ const addNewEquipment = () => {
       </button>
     </div>
 
-    <div class="equipment-list">
+    <div v-if="isLoading" class="loading-indicator">
+      <p>装備データを読み込み中...</p>
+    </div>
+
+    <div v-else-if="loadError" class="error-message">
+      <p>{{ loadError }}</p>
+      <p>APIからのデータ取得に失敗しました。後でもう一度お試しください。</p>
+    </div>
+
+    <div v-else class="equipment-list">
       <table>
         <thead>
           <tr>
@@ -167,31 +252,16 @@ const addNewEquipment = () => {
               <button 
                 @click="toggleObtained(item)" 
                 class="obtained-toggle" 
-                :class="{ 'obtained': item.obtained }">
-                {{ item.obtained ? '所持済み' : '未所持' }}
+                :class="{ 'obtained': ownedEquipmentIds[activeCategory].has(item.id) }">
+                {{ ownedEquipmentIds[activeCategory].has(item.id) ? '所持済み' : '未所持' }}
               </button>
             </td>
           </tr>
+          <tr v-if="filteredEquipment.length === 0">
+            <td colspan="3" class="no-results">条件に一致する装備がありません</td>
+          </tr>
         </tbody>
       </table>
-    </div>
-
-    <div class="add-equipment">
-      <h3>新しい装備を追加</h3>
-      <div class="add-form">
-        <input 
-          v-model="newEquipmentName" 
-          type="text" 
-          placeholder="装備名を入力..."
-          class="add-input">
-        <div class="rarity-select">
-          <label>レア度:</label>
-          <select v-model.number="newEquipmentRarity">
-            <option v-for="i in 10" :key="i" :value="i">{{ i }}</option>
-          </select>
-        </div>
-        <button @click="addNewEquipment" class="add-btn">追加</button>
-      </div>
     </div>
   </div>
 </template>
@@ -346,47 +416,22 @@ th {
   color: #d32f2f;
 }
 
-.add-equipment {
-  background-color: #f9f9f9;
+.loading-indicator,
+.error-message,
+.no-results {
   padding: 20px;
-  border-radius: 8px;
+  text-align: center;
 }
 
-.add-form {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.add-input {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #ddd;
+.error-message {
+  color: #d32f2f;
+  background-color: #ffeeee;
   border-radius: 4px;
+  margin-bottom: 20px;
 }
 
-.rarity-select {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.rarity-select select {
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.add-btn {
-  padding: 8px 15px;
-  background-color: #42b883;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.add-btn:hover {
-  background-color: #3ba676;
+.no-results {
+  color: #666;
+  font-style: italic;
 }
 </style>
