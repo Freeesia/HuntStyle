@@ -68,21 +68,21 @@ const equipmentFilter = ref('全て'); // '全て', '所持', '未所持'
 const fetchEquipment = async () => {
   isLoading.value = true;
   loadError.value = null;
-  
+
   try {
     const allArmorItems: ArmorItem[] = [];
-    
+
     // 各カテゴリ(パーツ)に対してAPIリクエストを行う
     for (const category of categories) {
       // 日本語のデータを取得するため、ロケールを'ja'に設定
       const response = await fetch(`https://wilds.mhdb.io/ja/armor?type=${category}`);
-      
+
       if (!response.ok) {
         throw new Error(`装備データの取得に失敗しました: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
-      
+
       // 装備データに種類（kind）を追加して保存
       const armorItems = data.map((item: any) => ({
         id: item.id,
@@ -93,23 +93,23 @@ const fetchEquipment = async () => {
         slots: item.slots || [],
         armorSet: item.armorSet || { id: 0, name: 'その他' }
       }));
-      
+
       allArmorItems.push(...armorItems);
     }
-    
+
     // 全装備データを保存
     allEquipment.value = allArmorItems;
-    
+
     // シリーズごとにグループ化
     groupEquipmentBySeries();
-    
+
     // ローカルストレージから所持装備データを読み込む
     loadOwnedEquipment();
-    
+
   } catch (error) {
     console.error('装備データの取得中にエラーが発生しました:', error);
     loadError.value = error instanceof Error ? error.message : '不明なエラーが発生しました';
-    
+
     // エラー時は空の配列を設定
     allEquipment.value = [];
     equipmentBySeries.value = {};
@@ -123,29 +123,29 @@ const fetchEquipment = async () => {
 const groupEquipmentBySeries = () => {
   const groupedEquipment: Record<string, ArmorItem[]> = {};
   const uniqueSeries = new Map<number, ArmorSet>();
-  
+
   // シリーズごとにグループ化
   for (const item of allEquipment.value) {
     const seriesId = item.armorSet?.id || 0;
     const seriesName = item.armorSet?.name || 'その他';
-    
+
     // シリーズIDをキーにして装備をグループ化
     const seriesKey = `${seriesId}`;
     if (!groupedEquipment[seriesKey]) {
       groupedEquipment[seriesKey] = [];
-      
+
       // ユニークなシリーズのリストも作成
       if (!uniqueSeries.has(seriesId)) {
         uniqueSeries.set(seriesId, { id: seriesId, name: seriesName });
       }
     }
-    
+
     groupedEquipment[seriesKey].push(item);
   }
-  
+
   // 結果を保存
   equipmentBySeries.value = groupedEquipment;
-  
+
   // シリーズのリストを作成（IDでソート）
   seriesList.value = Array.from(uniqueSeries.values())
     .sort((a, b) => a.id - b.id);
@@ -155,11 +155,11 @@ const groupEquipmentBySeries = () => {
 const loadOwnedEquipment = () => {
   // すべてのカテゴリの所持装備を一つのキーで保存
   const storedDataJson = localStorage.getItem(STORAGE_KEY_OWNED_EQUIPMENT);
-  
+
   if (storedDataJson) {
     try {
       const storedData = JSON.parse(storedDataJson);
-      
+
       // 各カテゴリのデータを取り出して設定
       for (const category of categories) {
         if (storedData[category] && Array.isArray(storedData[category])) {
@@ -183,11 +183,11 @@ const saveOwnedEquipment = () => {
   // オブジェクトに変換してJSON形式で保存
   const dataToSave = Object.fromEntries(
     categories.map(category => [
-      category, 
+      category,
       Array.from(ownedEquipmentIds.value[category])
     ])
   );
-  
+
   localStorage.setItem(STORAGE_KEY_OWNED_EQUIPMENT, JSON.stringify(dataToSave));
 };
 
@@ -200,22 +200,22 @@ onMounted(() => {
 const getFilteredSeriesEquipment = (seriesId: number) => {
   const seriesKey = `${seriesId}`;
   const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
-  
+
   return seriesEquipment.filter(item => {
     // 検索フィルター
-    const matchesQuery = searchQuery.value === '' || 
+    const matchesQuery = searchQuery.value === '' ||
       item.name.includes(searchQuery.value);
-    
+
     // 所持状態フィルター
     let matchesFilter = true;
     const isOwned = ownedEquipmentIds.value[item.kind].has(item.id);
-    
+
     if (equipmentFilter.value === '所持') {
       matchesFilter = isOwned;
     } else if (equipmentFilter.value === '未所持') {
       matchesFilter = !isOwned;
     }
-    
+
     return matchesQuery && matchesFilter;
   });
 };
@@ -233,13 +233,13 @@ const toggleSeries = (seriesId: number) => {
 const toggleObtained = (item: ArmorItem) => {
   const category = item.kind;
   const itemId = item.id;
-  
+
   if (ownedEquipmentIds.value[category].has(itemId)) {
     ownedEquipmentIds.value[category].delete(itemId);
   } else {
     ownedEquipmentIds.value[category].add(itemId);
   }
-  
+
   // 変更をローカルストレージに保存（全カテゴリをまとめて保存）
   saveOwnedEquipment();
 };
@@ -253,18 +253,18 @@ const getJapaneseCategoryName = (englishCategory: Category) => {
 const getSeriesOwnedCount = (seriesId: number): { owned: number, total: number } => {
   const seriesKey = `${seriesId}`;
   const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
-  
+
   if (seriesEquipment.length === 0) {
     return { owned: 0, total: 0 };
   }
-  
+
   let owned = 0;
   for (const item of seriesEquipment) {
     if (ownedEquipmentIds.value[item.kind].has(item.id)) {
       owned++;
     }
   }
-  
+
   return {
     owned,
     total: seriesEquipment.length
@@ -274,18 +274,18 @@ const getSeriesOwnedCount = (seriesId: number): { owned: number, total: number }
 // 統計情報を計算
 const statsData = computed(() => {
   const totalCount = allEquipment.value.length;
-  
+
   const ownedCount = categories.reduce(
     (sum, category) => sum + ownedEquipmentIds.value[category].size,
     0
   );
-  
+
   const notOwnedCount = totalCount - ownedCount;
-  
-  const completeRate = totalCount > 0 
+
+  const completeRate = totalCount > 0
     ? Math.round((ownedCount / totalCount) * 100)
     : 0;
-  
+
   return {
     total: totalCount,
     owned: ownedCount,
@@ -297,10 +297,7 @@ const statsData = computed(() => {
 
 <template>
   <div class="equipment-page">
-    <div class="page-header">
-      <h1>所持装備管理</h1>
-      <router-link to="/" class="back-btn">ホームに戻る</router-link>
-    </div>
+    <h1 class="page-header">所持装備管理</h1>
 
     <div class="equipment-stats">
       <div class="stat-card">
@@ -325,7 +322,7 @@ const statsData = computed(() => {
       <div class="search-bar">
         <input v-model="searchQuery" type="text" placeholder="装備名を検索...">
       </div>
-      
+
       <div class="filter-options">
         <label>
           <input type="radio" v-model="equipmentFilter" value="全て">
@@ -354,17 +351,10 @@ const statsData = computed(() => {
     <div v-else>
       <!-- シリーズ一覧 -->
       <div class="series-list">
-        <div
-          v-for="series in seriesList"
-          :key="series.id"
-          class="series-container"
-        >
+        <div v-for="series in seriesList" :key="series.id" class="series-container">
           <!-- シリーズヘッダー -->
-          <div 
-            class="series-header" 
-            :class="{ 'expanded': expandedSeriesIds.has(series.id) }"
-            @click="toggleSeries(series.id)"
-          >
+          <div class="series-header" :class="{ 'expanded': expandedSeriesIds.has(series.id) }"
+            @click="toggleSeries(series.id)">
             <div class="series-title">
               <span class="expand-icon">{{ expandedSeriesIds.has(series.id) ? '▼' : '▶' }}</span>
               <h3>{{ series.name }}</h3>
@@ -388,9 +378,7 @@ const statsData = computed(() => {
                   <td>{{ getJapaneseCategoryName(item.kind) }}</td>
                   <td class="rarity-cell">★{{ item.rarity }}</td>
                   <td>
-                    <button 
-                      @click.stop="toggleObtained(item)" 
-                      class="obtained-toggle" 
+                    <button @click.stop="toggleObtained(item)" class="obtained-toggle"
                       :class="{ 'obtained': ownedEquipmentIds[item.kind].has(item.id) }">
                       {{ ownedEquipmentIds[item.kind].has(item.id) ? '所持済み' : '未所持' }}
                     </button>
