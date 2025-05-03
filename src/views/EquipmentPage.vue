@@ -181,7 +181,6 @@ const statsData = computed(() => {
   <div class="equipment-page">
     <div class="page-header">
       <h1>所持装備管理</h1>
-      <router-link to="/" class="back-btn">ホームに戻る</router-link>
     </div>
 
     <div class="equipment-stats">
