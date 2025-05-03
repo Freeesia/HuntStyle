@@ -1,33 +1,33 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 
-// カテゴリーのリスト
-const categories = ['頭', '胴', '腕', '腰', '脚'];
-const categoryToEnglish = {
-  '頭': 'head',
-  '胴': 'chest',
-  '腕': 'arms',
-  '腰': 'waist',
-  '脚': 'legs'
+// カテゴリーのリスト（内部管理は英語で行う）
+const categories = ['head', 'chest', 'arms', 'waist', 'legs'];
+const englishToJapanese = {
+  'head': '頭',
+  'chest': '胴',
+  'arms': '腕',
+  'waist': '腰',
+  'legs': '脚'
 };
-const activeCategory = ref('頭');
+const activeCategory = ref('head');
 
 // 装備データ
 const equipment = ref<Record<string, Array<any>>>({
-  '頭': [],
-  '胴': [],
-  '腕': [],
-  '腰': [],
-  '脚': []
+  'head': [],
+  'chest': [],
+  'arms': [],
+  'waist': [],
+  'legs': []
 });
 
 // ユーザーの所持装備IDを保存するSet
 const ownedEquipmentIds = ref<Record<string, Set<number>>>({
-  '頭': new Set(),
-  '胴': new Set(),
-  '腕': new Set(),
-  '腰': new Set(),
-  '脚': new Set()
+  'head': new Set(),
+  'chest': new Set(),
+  'arms': new Set(),
+  'waist': new Set(),
+  'legs': new Set()
 });
 
 // ローディング状態
@@ -47,8 +47,9 @@ const fetchEquipment = async () => {
   
   try {
     // 各カテゴリ(パーツ)に対してAPIリクエストを行う
-    for (const [category, englishCategory] of Object.entries(categoryToEnglish)) {
-      const response = await fetch(`https://wilds.mhdb.io/en/armor?type=${englishCategory}`);
+    for (const category of categories) {
+      // 日本語のデータを取得するため、ロケールを'ja'に設定
+      const response = await fetch(`https://wilds.mhdb.io/ja/armor?type=${category}`);
       
       if (!response.ok) {
         throw new Error(`装備データの取得に失敗しました: ${response.statusText}`);
@@ -57,7 +58,7 @@ const fetchEquipment = async () => {
       const data = await response.json();
       equipment.value[category] = data.map((item: any) => ({
         id: item.id,
-        name: item.name,
+        name: item.name, // APIから取得した日本語名
         rarity: item.rarity || 1,
         defense: item.defense?.base || 0,
         slots: item.slots || []
@@ -114,7 +115,7 @@ const filteredEquipment = computed(() => {
   return equipment.value[activeCategory.value].filter(item => {
     // 検索フィルター
     const matchesQuery = searchQuery.value === '' || 
-      item.name.toLowerCase().includes(searchQuery.value.toLowerCase());
+      item.name.includes(searchQuery.value);
     
     // 所持状態フィルター
     let matchesFilter = true;
@@ -143,6 +144,11 @@ const toggleObtained = (item: any) => {
   
   // 変更をローカルストレージに保存
   saveOwnedEquipment(category);
+};
+
+// 表示用のカテゴリー名（日本語）を取得する
+const getJapaneseCategoryName = (englishCategory: string) => {
+  return englishToJapanese[englishCategory] || englishCategory;
 };
 
 // 統計情報を計算
@@ -222,7 +228,7 @@ const statsData = computed(() => {
         @click="activeCategory = category"
         class="category-tab"
         :class="{ 'active': activeCategory === category }">
-        {{ category }}
+        {{ getJapaneseCategoryName(category) }}
       </button>
     </div>
 
