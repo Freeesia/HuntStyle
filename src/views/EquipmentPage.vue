@@ -42,9 +42,6 @@ const equipmentBySeries = ref<Record<string, ArmorItem[]>>({});
 // シリーズのリスト
 const seriesList = ref<ArmorSet[]>([]);
 
-// 展開されているシリーズのIDのセット
-const expandedSeriesIds = ref<Set<number>>(new Set());
-
 // ユーザーの所持装備IDを保存するSet
 const ownedEquipmentIds = ref<Record<Category, Set<number>>>({
   'head': new Set(),
@@ -220,15 +217,6 @@ const getFilteredSeriesEquipment = (seriesId: number) => {
   });
 };
 
-// シリーズを展開/折りたたむ関数
-const toggleSeries = (seriesId: number) => {
-  if (expandedSeriesIds.value.has(seriesId)) {
-    expandedSeriesIds.value.delete(seriesId);
-  } else {
-    expandedSeriesIds.value.add(seriesId);
-  }
-};
-
 // 所持状態の切り替え
 const toggleObtained = (item: ArmorItem) => {
   const category = item.kind;
@@ -247,28 +235,6 @@ const toggleObtained = (item: ArmorItem) => {
 // 装備カテゴリの日本語名を取得する
 const getJapaneseCategoryName = (englishCategory: Category) => {
   return englishToJapanese[englishCategory];
-};
-
-// シリーズの所持率を計算
-const getSeriesOwnedCount = (seriesId: number): { owned: number, total: number } => {
-  const seriesKey = `${seriesId}`;
-  const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
-
-  if (seriesEquipment.length === 0) {
-    return { owned: 0, total: 0 };
-  }
-
-  let owned = 0;
-  for (const item of seriesEquipment) {
-    if (ownedEquipmentIds.value[item.kind].has(item.id)) {
-      owned++;
-    }
-  }
-
-  return {
-    owned,
-    total: seriesEquipment.length
-  };
 };
 
 // 統計情報を計算
@@ -293,6 +259,11 @@ const statsData = computed(() => {
     completeRate
   };
 });
+
+// アイテムが所持されているかどうかを確認する関数
+const isItemOwned = (item: ArmorItem) => {
+  return ownedEquipmentIds.value[item.kind]?.has(item.id) || false;
+};
 </script>
 
 <template>
@@ -353,42 +324,27 @@ const statsData = computed(() => {
       <div class="series-list">
         <div v-for="series in seriesList" :key="series.id" class="series-container">
           <!-- シリーズヘッダー -->
-          <div class="series-header" :class="{ 'expanded': expandedSeriesIds.has(series.id) }"
-            @click="toggleSeries(series.id)">
+          <div class="series-header">
             <div class="series-title">
-              <span class="expand-icon">{{ expandedSeriesIds.has(series.id) ? '▼' : '▶' }}</span>
               <h3>{{ series.name }}</h3>
             </div>
           </div>
 
-          <!-- シリーズの装備一覧（展開時のみ表示） -->
-          <div v-if="expandedSeriesIds.has(series.id)" class="series-equipment">
-            <table>
-              <thead>
-                <tr>
-                  <th>名前</th>
-                  <th>部位</th>
-                  <th>レア度</th>
-                  <th>所持</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in getFilteredSeriesEquipment(series.id)" :key="item.id">
-                  <td>{{ item.name }}</td>
-                  <td>{{ getJapaneseCategoryName(item.kind) }}</td>
-                  <td class="rarity-cell">★{{ item.rarity }}</td>
-                  <td>
-                    <button @click.stop="toggleObtained(item)" class="obtained-toggle"
-                      :class="{ 'obtained': ownedEquipmentIds[item.kind].has(item.id) }">
-                      {{ ownedEquipmentIds[item.kind].has(item.id) ? '所持済み' : '未所持' }}
-                    </button>
-                  </td>
-                </tr>
-                <tr v-if="getFilteredSeriesEquipment(series.id).length === 0">
-                  <td colspan="4" class="no-results">条件に一致する装備がありません</td>
-                </tr>
-              </tbody>
-            </table>
+          <!-- シリーズの装備一覧（常に表示） -->
+          <div class="series-equipment">
+            <div class="equipment-grid">
+              <div v-for="item in getFilteredSeriesEquipment(series.id)" :key="item.id" 
+                   class="equipment-item"
+                   :class="[`rarity-${item.rarity}`, { 'owned': isItemOwned(item) }]"
+                   @click="toggleObtained(item)"
+                   :title="item.name">
+                <div class="equipment-part">{{ getJapaneseCategoryName(item.kind) }}</div>
+                <div v-if="isItemOwned(item)" class="owned-icon">🎁</div>
+              </div>
+              <div v-if="getFilteredSeriesEquipment(series.id).length === 0" class="no-results">
+                条件に一致する装備がありません
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -534,6 +490,81 @@ const statsData = computed(() => {
 
 .series-equipment {
   border-top: 1px solid #eee;
+}
+
+.equipment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.equipment-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  min-height: 60px;
+}
+
+.equipment-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.equipment-part {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.owned-icon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 1rem;
+}
+
+/* レア度別の背景色 */
+.rarity-5 {
+  background-color: #e3f2fd; /* 水色 */
+  border-color: #90caf9;
+}
+
+.rarity-6 {
+  background-color: #1565c0; /* 青 */
+  border-color: #0d47a1;
+  color: white;
+}
+
+.rarity-6 .equipment-part {
+  color: white;
+}
+
+.rarity-7 {
+  background-color: #7b1fa2; /* 紫 */
+  border-color: #4a148c;
+  color: white;
+}
+
+.rarity-7 .equipment-part {
+  color: white;
+}
+
+.rarity-8 {
+  background-color: #ef6c00; /* オレンジ */
+  border-color: #e65100;
+  color: white;
+}
+
+.rarity-8 .equipment-part {
+  color: white;
 }
 
 table {
