@@ -407,17 +407,6 @@ const getSeriesItemCount = (seriesId: number) => {
                               { 'owned': isItemOwned(getCategoryEquipment(series.id, 'head')) }]"
                        @click="toggleObtained(getCategoryEquipment(series.id, 'head'))">
                     <div class="equipment-name">{{ getCategoryEquipment(series.id, 'head')?.name }}</div>
-                    <div class="equipment-detail">
-                      <div class="defense-value" v-if="getCategoryEquipment(series.id, 'head')?.defense">
-                        防御:{{ getCategoryEquipment(series.id, 'head')?.defense?.base }}
-                      </div>
-                      <div class="slots-info" v-if="getCategoryEquipment(series.id, 'head')?.slots?.length">
-                        スロット: 
-                        <span v-for="(slot, index) in getCategoryEquipment(series.id, 'head')?.slots" :key="index" class="slot-indicator">
-                          {{ slot }}
-                        </span>
-                      </div>
-                    </div>
                     <button 
                       class="obtained-toggle"
                       :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'head')) }"
@@ -436,17 +425,6 @@ const getSeriesItemCount = (seriesId: number) => {
                               { 'owned': isItemOwned(getCategoryEquipment(series.id, 'chest')) }]"
                        @click="toggleObtained(getCategoryEquipment(series.id, 'chest'))">
                     <div class="equipment-name">{{ getCategoryEquipment(series.id, 'chest')?.name }}</div>
-                    <div class="equipment-detail">
-                      <div class="defense-value" v-if="getCategoryEquipment(series.id, 'chest')?.defense">
-                        防御:{{ getCategoryEquipment(series.id, 'chest')?.defense?.base }}
-                      </div>
-                      <div class="slots-info" v-if="getCategoryEquipment(series.id, 'chest')?.slots?.length">
-                        スロット: 
-                        <span v-for="(slot, index) in getCategoryEquipment(series.id, 'chest')?.slots" :key="index" class="slot-indicator">
-                          {{ slot }}
-                        </span>
-                      </div>
-                    </div>
                     <button 
                       class="obtained-toggle"
                       :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'chest')) }"
@@ -465,17 +443,6 @@ const getSeriesItemCount = (seriesId: number) => {
                               { 'owned': isItemOwned(getCategoryEquipment(series.id, 'arms')) }]"
                        @click="toggleObtained(getCategoryEquipment(series.id, 'arms'))">
                     <div class="equipment-name">{{ getCategoryEquipment(series.id, 'arms')?.name }}</div>
-                    <div class="equipment-detail">
-                      <div class="defense-value" v-if="getCategoryEquipment(series.id, 'arms')?.defense">
-                        防御:{{ getCategoryEquipment(series.id, 'arms')?.defense?.base }}
-                      </div>
-                      <div class="slots-info" v-if="getCategoryEquipment(series.id, 'arms')?.slots?.length">
-                        スロット: 
-                        <span v-for="(slot, index) in getCategoryEquipment(series.id, 'arms')?.slots" :key="index" class="slot-indicator">
-                          {{ slot }}
-                        </span>
-                      </div>
-                    </div>
                     <button 
                       class="obtained-toggle"
                       :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'arms')) }"
@@ -494,17 +461,6 @@ const getSeriesItemCount = (seriesId: number) => {
                               { 'owned': isItemOwned(getCategoryEquipment(series.id, 'waist')) }]"
                        @click="toggleObtained(getCategoryEquipment(series.id, 'waist'))">
                     <div class="equipment-name">{{ getCategoryEquipment(series.id, 'waist')?.name }}</div>
-                    <div class="equipment-detail">
-                      <div class="defense-value" v-if="getCategoryEquipment(series.id, 'waist')?.defense">
-                        防御:{{ getCategoryEquipment(series.id, 'waist')?.defense?.base }}
-                      </div>
-                      <div class="slots-info" v-if="getCategoryEquipment(series.id, 'waist')?.slots?.length">
-                        スロット: 
-                        <span v-for="(slot, index) in getCategoryEquipment(series.id, 'waist')?.slots" :key="index" class="slot-indicator">
-                          {{ slot }}
-                        </span>
-                      </div>
-                    </div>
                     <button 
                       class="obtained-toggle"
                       :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'waist')) }"
@@ -523,17 +479,6 @@ const getSeriesItemCount = (seriesId: number) => {
                               { 'owned': isItemOwned(getCategoryEquipment(series.id, 'legs')) }]"
                        @click="toggleObtained(getCategoryEquipment(series.id, 'legs'))">
                     <div class="equipment-name">{{ getCategoryEquipment(series.id, 'legs')?.name }}</div>
-                    <div class="equipment-detail">
-                      <div class="defense-value" v-if="getCategoryEquipment(series.id, 'legs')?.defense">
-                        防御:{{ getCategoryEquipment(series.id, 'legs')?.defense?.base }}
-                      </div>
-                      <div class="slots-info" v-if="getCategoryEquipment(series.id, 'legs')?.slots?.length">
-                        スロット: 
-                        <span v-for="(slot, index) in getCategoryEquipment(series.id, 'legs')?.slots" :key="index" class="slot-indicator">
-                          {{ slot }}
-                        </span>
-                      </div>
-                    </div>
                     <button 
                       class="obtained-toggle"
                       :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'legs')) }"
@@ -832,6 +777,7 @@ const getSeriesItemCount = (seriesId: number) => {
   display: table;
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed; /* 固定幅テーブルレイアウト */
 }
 
 .equipment-table-header {
@@ -849,6 +795,18 @@ const getSeriesItemCount = (seriesId: number) => {
   border: 1px solid #ddd;
   text-align: center;
   vertical-align: middle;
+  width: 20%; /* 5列なので各列20%の幅に設定 */
+}
+
+.equipment-cell-content {
+  padding: 10px 5px;
+  border-radius: 6px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.equipment-cell-content:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .header-cell {
