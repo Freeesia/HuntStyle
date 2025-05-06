@@ -206,6 +206,29 @@ onMounted(() => {
   fetchEquipment();
 });
 
+// シリーズ装備をカテゴリ別に取得する関数
+const getCategoryEquipment = (seriesId: number, category: Category) => {
+  const seriesKey = `${seriesId}`;
+  const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
+  
+  // 指定したカテゴリの装備のみをフィルタリング
+  return seriesEquipment.find(item => {
+    // 検索フィルターとカテゴリフィルターの両方を適用
+    const matchesQuery = searchQuery.value === '' || item.name.includes(searchQuery.value);
+    const matchesCategory = item.kind === category;
+    
+    // 所持状態フィルター
+    let matchesFilter = true;
+    if (equipmentFilter.value === '所持') {
+      matchesFilter = isItemOwned(item);
+    } else if (equipmentFilter.value === '未所持') {
+      matchesFilter = !isItemOwned(item);
+    }
+    
+    return matchesQuery && matchesCategory && matchesFilter;
+  });
+};
+
 // シリーズの装備リスト（フィルタリング後）
 const getFilteredSeriesEquipment = (seriesId: number) => {
   const seriesKey = `${seriesId}`;
@@ -234,7 +257,10 @@ const getFilteredSeriesEquipment = (seriesId: number) => {
 };
 
 // 所持状態の切り替え
-const toggleObtained = (item: ArmorItem) => {
+const toggleObtained = (item: ArmorItem | undefined) => {
+  // アイテムがundefinedの場合は処理しない
+  if (!item) return;
+  
   const category = item.kind;
   const itemId = item.id;
 
@@ -277,9 +303,9 @@ const statsData = computed(() => {
 });
 
 // アイテムが所持されているかどうかを確認する関数
-const isItemOwned = (item: ArmorItem) => {
-  // kindが有効なカテゴリーか確認し、ownedEquipmentIdsにそのカテゴリーが存在するか確認
-  if (!item?.kind || !categories.includes(item.kind as Category) || !ownedEquipmentIds.value[item.kind]) {
+const isItemOwned = (item: ArmorItem | undefined) => {
+  // アイテムがundefinedまたは必要なプロパティがない場合は所持していないとみなす
+  if (!item || !item.kind || !categories.includes(item.kind as Category) || !ownedEquipmentIds.value[item.kind]) {
     return false;
   }
   return ownedEquipmentIds.value[item.kind].has(item.id);
@@ -371,34 +397,170 @@ const getSeriesItemCount = (seriesId: number) => {
             </div>
           </div>
 
-          <!-- シリーズの装備一覧（常に表示） -->
+          <!-- シリーズの装備一覧（カテゴリ別に1行で表示） -->
           <div class="series-equipment">
-            <div class="equipment-grid">
-              <div v-for="item in getFilteredSeriesEquipment(series.id)" :key="item.id" 
-                   class="equipment-item"
-                   :class="[`rarity-${item.rarity}`, { 'owned': isItemOwned(item) }]"
-                   @click="toggleObtained(item)">
-                <div class="equipment-name">{{ item.name }}</div>
-                <div class="equipment-part">{{ getJapaneseCategoryName(item.kind) }}</div>
-                <div class="equipment-detail">
-                  <div class="defense-value" v-if="item.defense">防御:{{ item.defense.base }}</div>
-                  <div class="slots-info" v-if="item.slots && item.slots.length > 0">
-                    スロット: 
-                    <span v-for="(slot, index) in item.slots" :key="index" class="slot-indicator">
-                      {{ slot }}
-                    </span>
+            <!-- 装備がフィルタリング条件に一致する場合のみ表示 -->
+            <div v-if="getFilteredSeriesEquipment(series.id).length > 0" class="equipment-table">
+              <!-- テーブルヘッダー -->
+              <div class="equipment-table-header">
+                <div class="equipment-cell header-cell">頭</div>
+                <div class="equipment-cell header-cell">胴</div>
+                <div class="equipment-cell header-cell">腕</div>
+                <div class="equipment-cell header-cell">腰</div>
+                <div class="equipment-cell header-cell">脚</div>
+              </div>
+              
+              <!-- 装備行 -->
+              <div class="equipment-table-row">
+                <!-- 頭装備 -->
+                <div class="equipment-cell">
+                  <div v-if="getCategoryEquipment(series.id, 'head')" 
+                       class="equipment-cell-content"
+                       :class="[`rarity-${getCategoryEquipment(series.id, 'head')?.rarity}`, 
+                              { 'owned': isItemOwned(getCategoryEquipment(series.id, 'head')) }]"
+                       @click="toggleObtained(getCategoryEquipment(series.id, 'head'))">
+                    <div class="equipment-name">{{ getCategoryEquipment(series.id, 'head')?.name }}</div>
+                    <div class="equipment-detail">
+                      <div class="defense-value" v-if="getCategoryEquipment(series.id, 'head')?.defense">
+                        防御:{{ getCategoryEquipment(series.id, 'head')?.defense?.base }}
+                      </div>
+                      <div class="slots-info" v-if="getCategoryEquipment(series.id, 'head')?.slots?.length">
+                        スロット: 
+                        <span v-for="(slot, index) in getCategoryEquipment(series.id, 'head')?.slots" :key="index" class="slot-indicator">
+                          {{ slot }}
+                        </span>
+                      </div>
+                    </div>
+                    <button 
+                      class="obtained-toggle"
+                      :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'head')) }"
+                      @click.stop="toggleObtained(getCategoryEquipment(series.id, 'head'))">
+                      {{ isItemOwned(getCategoryEquipment(series.id, 'head')) ? '所持' : '未所持' }}
+                    </button>
                   </div>
+                  <div v-else class="empty-cell">-</div>
                 </div>
-                <button 
-                  class="obtained-toggle"
-                  :class="{ 'obtained': isItemOwned(item) }"
-                  @click.stop="toggleObtained(item)">
-                  {{ isItemOwned(item) ? '所持' : '未所持' }}
-                </button>
+                
+                <!-- 胴装備 -->
+                <div class="equipment-cell">
+                  <div v-if="getCategoryEquipment(series.id, 'chest')" 
+                       class="equipment-cell-content"
+                       :class="[`rarity-${getCategoryEquipment(series.id, 'chest')?.rarity}`, 
+                              { 'owned': isItemOwned(getCategoryEquipment(series.id, 'chest')) }]"
+                       @click="toggleObtained(getCategoryEquipment(series.id, 'chest'))">
+                    <div class="equipment-name">{{ getCategoryEquipment(series.id, 'chest')?.name }}</div>
+                    <div class="equipment-detail">
+                      <div class="defense-value" v-if="getCategoryEquipment(series.id, 'chest')?.defense">
+                        防御:{{ getCategoryEquipment(series.id, 'chest')?.defense?.base }}
+                      </div>
+                      <div class="slots-info" v-if="getCategoryEquipment(series.id, 'chest')?.slots?.length">
+                        スロット: 
+                        <span v-for="(slot, index) in getCategoryEquipment(series.id, 'chest')?.slots" :key="index" class="slot-indicator">
+                          {{ slot }}
+                        </span>
+                      </div>
+                    </div>
+                    <button 
+                      class="obtained-toggle"
+                      :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'chest')) }"
+                      @click.stop="toggleObtained(getCategoryEquipment(series.id, 'chest'))">
+                      {{ isItemOwned(getCategoryEquipment(series.id, 'chest')) ? '所持' : '未所持' }}
+                    </button>
+                  </div>
+                  <div v-else class="empty-cell">-</div>
+                </div>
+                
+                <!-- 腕装備 -->
+                <div class="equipment-cell">
+                  <div v-if="getCategoryEquipment(series.id, 'arms')" 
+                       class="equipment-cell-content"
+                       :class="[`rarity-${getCategoryEquipment(series.id, 'arms')?.rarity}`, 
+                              { 'owned': isItemOwned(getCategoryEquipment(series.id, 'arms')) }]"
+                       @click="toggleObtained(getCategoryEquipment(series.id, 'arms'))">
+                    <div class="equipment-name">{{ getCategoryEquipment(series.id, 'arms')?.name }}</div>
+                    <div class="equipment-detail">
+                      <div class="defense-value" v-if="getCategoryEquipment(series.id, 'arms')?.defense">
+                        防御:{{ getCategoryEquipment(series.id, 'arms')?.defense?.base }}
+                      </div>
+                      <div class="slots-info" v-if="getCategoryEquipment(series.id, 'arms')?.slots?.length">
+                        スロット: 
+                        <span v-for="(slot, index) in getCategoryEquipment(series.id, 'arms')?.slots" :key="index" class="slot-indicator">
+                          {{ slot }}
+                        </span>
+                      </div>
+                    </div>
+                    <button 
+                      class="obtained-toggle"
+                      :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'arms')) }"
+                      @click.stop="toggleObtained(getCategoryEquipment(series.id, 'arms'))">
+                      {{ isItemOwned(getCategoryEquipment(series.id, 'arms')) ? '所持' : '未所持' }}
+                    </button>
+                  </div>
+                  <div v-else class="empty-cell">-</div>
+                </div>
+                
+                <!-- 腰装備 -->
+                <div class="equipment-cell">
+                  <div v-if="getCategoryEquipment(series.id, 'waist')" 
+                       class="equipment-cell-content"
+                       :class="[`rarity-${getCategoryEquipment(series.id, 'waist')?.rarity}`, 
+                              { 'owned': isItemOwned(getCategoryEquipment(series.id, 'waist')) }]"
+                       @click="toggleObtained(getCategoryEquipment(series.id, 'waist'))">
+                    <div class="equipment-name">{{ getCategoryEquipment(series.id, 'waist')?.name }}</div>
+                    <div class="equipment-detail">
+                      <div class="defense-value" v-if="getCategoryEquipment(series.id, 'waist')?.defense">
+                        防御:{{ getCategoryEquipment(series.id, 'waist')?.defense?.base }}
+                      </div>
+                      <div class="slots-info" v-if="getCategoryEquipment(series.id, 'waist')?.slots?.length">
+                        スロット: 
+                        <span v-for="(slot, index) in getCategoryEquipment(series.id, 'waist')?.slots" :key="index" class="slot-indicator">
+                          {{ slot }}
+                        </span>
+                      </div>
+                    </div>
+                    <button 
+                      class="obtained-toggle"
+                      :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'waist')) }"
+                      @click.stop="toggleObtained(getCategoryEquipment(series.id, 'waist'))">
+                      {{ isItemOwned(getCategoryEquipment(series.id, 'waist')) ? '所持' : '未所持' }}
+                    </button>
+                  </div>
+                  <div v-else class="empty-cell">-</div>
+                </div>
+                
+                <!-- 脚装備 -->
+                <div class="equipment-cell">
+                  <div v-if="getCategoryEquipment(series.id, 'legs')" 
+                       class="equipment-cell-content"
+                       :class="[`rarity-${getCategoryEquipment(series.id, 'legs')?.rarity}`, 
+                              { 'owned': isItemOwned(getCategoryEquipment(series.id, 'legs')) }]"
+                       @click="toggleObtained(getCategoryEquipment(series.id, 'legs'))">
+                    <div class="equipment-name">{{ getCategoryEquipment(series.id, 'legs')?.name }}</div>
+                    <div class="equipment-detail">
+                      <div class="defense-value" v-if="getCategoryEquipment(series.id, 'legs')?.defense">
+                        防御:{{ getCategoryEquipment(series.id, 'legs')?.defense?.base }}
+                      </div>
+                      <div class="slots-info" v-if="getCategoryEquipment(series.id, 'legs')?.slots?.length">
+                        スロット: 
+                        <span v-for="(slot, index) in getCategoryEquipment(series.id, 'legs')?.slots" :key="index" class="slot-indicator">
+                          {{ slot }}
+                        </span>
+                      </div>
+                    </div>
+                    <button 
+                      class="obtained-toggle"
+                      :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'legs')) }"
+                      @click.stop="toggleObtained(getCategoryEquipment(series.id, 'legs'))">
+                      {{ isItemOwned(getCategoryEquipment(series.id, 'legs')) ? '所持' : '未所持' }}
+                    </button>
+                  </div>
+                  <div v-else class="empty-cell">-</div>
+                </div>
               </div>
-              <div v-if="getFilteredSeriesEquipment(series.id).length === 0" class="no-results">
-                条件に一致する装備がありません
-              </div>
+            </div>
+            
+            <div v-else class="no-results">
+              条件に一致する装備がありません
             </div>
           </div>
         </div>
@@ -676,5 +838,38 @@ const getSeriesItemCount = (seriesId: number) => {
 /* 所持装備のスタイル強調 */
 .equipment-item.owned {
   box-shadow: 0 0 0 2px #42b883;
+}
+
+/* テーブルスタイル */
+.equipment-table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.equipment-table-header {
+  display: table-header-group;
+  background-color: #f9f9f9;
+}
+
+.equipment-table-row {
+  display: table-row;
+}
+
+.equipment-cell {
+  display: table-cell;
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.header-cell {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+.empty-cell {
+  color: #ccc;
 }
 </style>
