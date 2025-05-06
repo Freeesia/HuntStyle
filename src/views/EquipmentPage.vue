@@ -406,13 +406,15 @@ const getSeriesItemCount = (seriesId: number) => {
                        :class="[`rarity-${getCategoryEquipment(series.id, 'head')?.rarity}`, 
                               { 'owned': isItemOwned(getCategoryEquipment(series.id, 'head')) }]"
                        @click="toggleObtained(getCategoryEquipment(series.id, 'head'))">
-                    <div class="equipment-name">{{ getCategoryEquipment(series.id, 'head')?.name }}</div>
-                    <button 
-                      class="obtained-toggle"
-                      :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'head')) }"
-                      @click.stop="toggleObtained(getCategoryEquipment(series.id, 'head'))">
-                      {{ isItemOwned(getCategoryEquipment(series.id, 'head')) ? '所持' : '未所持' }}
-                    </button>
+                    <div class="tooltip-container">
+                      <button 
+                        class="obtained-toggle"
+                        :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'head')) }"
+                        @click.stop="toggleObtained(getCategoryEquipment(series.id, 'head'))">
+                        {{ isItemOwned(getCategoryEquipment(series.id, 'head')) ? '所持' : '未所持' }}
+                      </button>
+                      <span class="tooltip">{{ getCategoryEquipment(series.id, 'head')?.name }}</span>
+                    </div>
                   </div>
                   <div v-else class="empty-cell">-</div>
                 </div>
@@ -424,13 +426,15 @@ const getSeriesItemCount = (seriesId: number) => {
                        :class="[`rarity-${getCategoryEquipment(series.id, 'chest')?.rarity}`, 
                               { 'owned': isItemOwned(getCategoryEquipment(series.id, 'chest')) }]"
                        @click="toggleObtained(getCategoryEquipment(series.id, 'chest'))">
-                    <div class="equipment-name">{{ getCategoryEquipment(series.id, 'chest')?.name }}</div>
-                    <button 
-                      class="obtained-toggle"
-                      :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'chest')) }"
-                      @click.stop="toggleObtained(getCategoryEquipment(series.id, 'chest'))">
-                      {{ isItemOwned(getCategoryEquipment(series.id, 'chest')) ? '所持' : '未所持' }}
-                    </button>
+                    <div class="tooltip-container">
+                      <button 
+                        class="obtained-toggle"
+                        :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'chest')) }"
+                        @click.stop="toggleObtained(getCategoryEquipment(series.id, 'chest'))">
+                        {{ isItemOwned(getCategoryEquipment(series.id, 'chest')) ? '所持' : '未所持' }}
+                      </button>
+                      <span class="tooltip">{{ getCategoryEquipment(series.id, 'chest')?.name }}</span>
+                    </div>
                   </div>
                   <div v-else class="empty-cell">-</div>
                 </div>
@@ -442,13 +446,15 @@ const getSeriesItemCount = (seriesId: number) => {
                        :class="[`rarity-${getCategoryEquipment(series.id, 'arms')?.rarity}`, 
                               { 'owned': isItemOwned(getCategoryEquipment(series.id, 'arms')) }]"
                        @click="toggleObtained(getCategoryEquipment(series.id, 'arms'))">
-                    <div class="equipment-name">{{ getCategoryEquipment(series.id, 'arms')?.name }}</div>
-                    <button 
-                      class="obtained-toggle"
-                      :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'arms')) }"
-                      @click.stop="toggleObtained(getCategoryEquipment(series.id, 'arms'))">
-                      {{ isItemOwned(getCategoryEquipment(series.id, 'arms')) ? '所持' : '未所持' }}
-                    </button>
+                    <div class="tooltip-container">
+                      <button 
+                        class="obtained-toggle"
+                        :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'arms')) }"
+                        @click.stop="toggleObtained(getCategoryEquipment(series.id, 'arms'))">
+                        {{ isItemOwned(getCategoryEquipment(series.id, 'arms')) ? '所持' : '未所持' }}
+                      </button>
+                      <span class="tooltip">{{ getCategoryEquipment(series.id, 'arms')?.name }}</span>
+                    </div>
                   </div>
                   <div v-else class="empty-cell">-</div>
                 </div>
@@ -460,13 +466,15 @@ const getSeriesItemCount = (seriesId: number) => {
                        :class="[`rarity-${getCategoryEquipment(series.id, 'waist')?.rarity}`, 
                               { 'owned': isItemOwned(getCategoryEquipment(series.id, 'waist')) }]"
                        @click="toggleObtained(getCategoryEquipment(series.id, 'waist'))">
-                    <div class="equipment-name">{{ getCategoryEquipment(series.id, 'waist')?.name }}</div>
-                    <button 
-                      class="obtained-toggle"
-                      :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'waist')) }"
-                      @click.stop="toggleObtained(getCategoryEquipment(series.id, 'waist'))">
-                      {{ isItemOwned(getCategoryEquipment(series.id, 'waist')) ? '所持' : '未所持' }}
-                    </button>
+                    <div class="tooltip-container">
+                      <button 
+                        class="obtained-toggle"
+                        :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'waist')) }"
+                        @click.stop="toggleObtained(getCategoryEquipment(series.id, 'waist'))">
+                        {{ isItemOwned(getCategoryEquipment(series.id, 'waist')) ? '所持' : '未所持' }}
+                      </button>
+                      <span class="tooltip">{{ getCategoryEquipment(series.id, 'waist')?.name }}</span>
+                    </div>
                   </div>
                   <div v-else class="empty-cell">-</div>
                 </div>
@@ -478,13 +486,15 @@ const getSeriesItemCount = (seriesId: number) => {
                        :class="[`rarity-${getCategoryEquipment(series.id, 'legs')?.rarity}`, 
                               { 'owned': isItemOwned(getCategoryEquipment(series.id, 'legs')) }]"
                        @click="toggleObtained(getCategoryEquipment(series.id, 'legs'))">
-                    <div class="equipment-name">{{ getCategoryEquipment(series.id, 'legs')?.name }}</div>
-                    <button 
-                      class="obtained-toggle"
-                      :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'legs')) }"
-                      @click.stop="toggleObtained(getCategoryEquipment(series.id, 'legs'))">
-                      {{ isItemOwned(getCategoryEquipment(series.id, 'legs')) ? '所持' : '未所持' }}
-                    </button>
+                    <div class="tooltip-container">
+                      <button 
+                        class="obtained-toggle"
+                        :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'legs')) }"
+                        @click.stop="toggleObtained(getCategoryEquipment(series.id, 'legs'))">
+                        {{ isItemOwned(getCategoryEquipment(series.id, 'legs')) ? '所持' : '未所持' }}
+                      </button>
+                      <span class="tooltip">{{ getCategoryEquipment(series.id, 'legs')?.name }}</span>
+                    </div>
                   </div>
                   <div v-else class="empty-cell">-</div>
                 </div>
@@ -816,5 +826,44 @@ const getSeriesItemCount = (seriesId: number) => {
 
 .empty-cell {
   color: #ccc;
+}
+
+/* カスタムツールチップ */
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* ツールチップを上に表示 */
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%; /* ツールチップの下に矢印を表示 */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
 }
 </style>
