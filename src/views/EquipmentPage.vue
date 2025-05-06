@@ -5,14 +5,6 @@ import { ref, computed, onMounted } from 'vue';
 const categories = ['head', 'chest', 'arms', 'waist', 'legs'] as const;
 type Category = typeof categories[number];
 
-const englishToJapanese: Record<Category, string> = {
-  'head': '頭',
-  'chest': '胴',
-  'arms': '腕',
-  'waist': '腰',
-  'legs': '脚'
-};
-
 // 装備シリーズの型定義
 interface ArmorSet {
   id: number;
@@ -272,11 +264,6 @@ const toggleObtained = (item: ArmorItem | undefined) => {
 
   // 変更をローカルストレージに保存（全カテゴリをまとめて保存）
   saveOwnedEquipment();
-};
-
-// 装備カテゴリの日本語名を取得する
-const getJapaneseCategoryName = (englishCategory: Category) => {
-  return englishToJapanese[englishCategory];
 };
 
 // 統計情報を計算
