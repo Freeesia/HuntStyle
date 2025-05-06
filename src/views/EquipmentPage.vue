@@ -17,17 +17,39 @@ const englishToJapanese: Record<Category, string> = {
 interface ArmorSet {
   id: number;
   name: string;
+  pieces: ArmorItem[];  // セットに含まれる装備一覧
+  bonus?: {
+    id: number;
+    skill: {
+      id: number;
+      name: string;
+    };
+    ranks: {
+      pieces: number;
+      skill: {
+        level: number;
+        description: string;
+      };
+    }[];
+  };
+  gameId?: number;
 }
 
 // 装備アイテムの型定義
 interface ArmorItem {
   id: number;
   name: string;
-  kind: Category;
+  kind: Category; // APIから返されるフィールド名
   rarity: number;
-  defense?: number;
+  defense?: {
+    base: number;
+    max: number;
+  };
   slots?: number[];
-  armorSet?: ArmorSet;
+  armorSet?: {
+    id: number;
+    name: string;
+  };
 }
 
 // ローカルストレージのキー
@@ -67,38 +89,61 @@ const fetchEquipment = async () => {
   loadError.value = null;
 
   try {
+    // 装備セット一覧を取得
+    const response = await fetch(`https://wilds.mhdb.io/ja/armor/sets`);
+
+    if (!response.ok) {
+      throw new Error(`装備セットデータの取得に失敗しました: ${response.statusText}`);
+    }
+
+    const armorSets: ArmorSet[] = await response.json();
+    
+    // シリーズのリストを保存
+    seriesList.value = armorSets
+      .filter(set => set.pieces && set.pieces.length > 0) // 装備が存在するセットのみを保持
+      .sort((a, b) => a.id - b.id);
+    
     const allArmorItems: ArmorItem[] = [];
+    const groupedEquipment: Record<string, ArmorItem[]> = {};
 
-    // 各カテゴリ(パーツ)に対してAPIリクエストを行う
-    for (const category of categories) {
-      // 日本語のデータを取得するため、ロケールを'ja'に設定
-      const response = await fetch(`https://wilds.mhdb.io/ja/armor?type=${category}`);
-
-      if (!response.ok) {
-        throw new Error(`装備データの取得に失敗しました: ${response.statusText}`);
+    // セットごとの装備を処理
+    for (const set of seriesList.value) {
+      // セット内のすべての装備を取り出す
+      const setItems: ArmorItem[] = [];
+      
+      for (const piece of set.pieces) {
+        // 装備タイプを小文字に変換して処理
+        const normalizedKind = String(piece.kind).toLowerCase();
+        
+        // 正規化したkindがcategoriesに含まれるかチェック
+        if (categories.includes(normalizedKind as Category)) {
+          // 正規化したカテゴリ値を使用
+          setItems.push({
+            ...piece,
+            kind: normalizedKind as Category,
+            armorSet: {
+              id: set.id,
+              name: set.name
+            }
+          });
+        } else {
+          console.warn(`不明な装備タイプがスキップされました: ${piece.id} ${piece.name} (kind: ${piece.kind})`);
+        }
       }
 
-      const data = await response.json();
+      // 全装備リストに追加
+      allArmorItems.push(...setItems);
 
-      // 装備データに種類（kind）を追加して保存
-      const armorItems = data.map((item: any) => ({
-        id: item.id,
-        name: item.name,
-        kind: category,
-        rarity: item.rarity || 1,
-        defense: item.defense?.base || 0,
-        slots: item.slots || [],
-        armorSet: item.armorSet || { id: 0, name: 'その他' }
-      }));
-
-      allArmorItems.push(...armorItems);
+      // セットごとにグループ化
+      const seriesKey = `${set.id}`;
+      groupedEquipment[seriesKey] = setItems;
     }
 
     // 全装備データを保存
     allEquipment.value = allArmorItems;
 
-    // シリーズごとにグループ化
-    groupEquipmentBySeries();
+    // グループ化した装備を保存
+    equipmentBySeries.value = groupedEquipment;
 
     // ローカルストレージから所持装備データを読み込む
     loadOwnedEquipment();
@@ -114,38 +159,6 @@ const fetchEquipment = async () => {
   } finally {
     isLoading.value = false;
   }
-};
-
-// 装備データをシリーズごとにグループ化する関数
-const groupEquipmentBySeries = () => {
-  const groupedEquipment: Record<string, ArmorItem[]> = {};
-  const uniqueSeries = new Map<number, ArmorSet>();
-
-  // シリーズごとにグループ化
-  for (const item of allEquipment.value) {
-    const seriesId = item.armorSet?.id || 0;
-    const seriesName = item.armorSet?.name || 'その他';
-
-    // シリーズIDをキーにして装備をグループ化
-    const seriesKey = `${seriesId}`;
-    if (!groupedEquipment[seriesKey]) {
-      groupedEquipment[seriesKey] = [];
-
-      // ユニークなシリーズのリストも作成
-      if (!uniqueSeries.has(seriesId)) {
-        uniqueSeries.set(seriesId, { id: seriesId, name: seriesName });
-      }
-    }
-
-    groupedEquipment[seriesKey].push(item);
-  }
-
-  // 結果を保存
-  equipmentBySeries.value = groupedEquipment;
-
-  // シリーズのリストを作成（IDでソート）
-  seriesList.value = Array.from(uniqueSeries.values())
-    .sort((a, b) => a.id - b.id);
 };
 
 // ローカルストレージから所持装備データを読み込む
@@ -205,12 +218,15 @@ const getFilteredSeriesEquipment = (seriesId: number) => {
 
     // 所持状態フィルター
     let matchesFilter = true;
-    const isOwned = ownedEquipmentIds.value[item.kind].has(item.id);
-
-    if (equipmentFilter.value === '所持') {
-      matchesFilter = isOwned;
-    } else if (equipmentFilter.value === '未所持') {
-      matchesFilter = !isOwned;
+    
+    if (item.kind && categories.includes(item.kind as Category)) {
+      const isOwned = ownedEquipmentIds.value[item.kind].has(item.id);
+      
+      if (equipmentFilter.value === '所持') {
+        matchesFilter = isOwned;
+      } else if (equipmentFilter.value === '未所持') {
+        matchesFilter = !isOwned;
+      }
     }
 
     return matchesQuery && matchesFilter;
@@ -262,7 +278,27 @@ const statsData = computed(() => {
 
 // アイテムが所持されているかどうかを確認する関数
 const isItemOwned = (item: ArmorItem) => {
-  return ownedEquipmentIds.value[item.kind]?.has(item.id) || false;
+  // kindが有効なカテゴリーか確認し、ownedEquipmentIdsにそのカテゴリーが存在するか確認
+  if (!item?.kind || !categories.includes(item.kind as Category) || !ownedEquipmentIds.value[item.kind]) {
+    return false;
+  }
+  return ownedEquipmentIds.value[item.kind].has(item.id);
+};
+
+// シリーズの所持装備数を取得する関数
+const getSeriesOwnedCount = (seriesId: number) => {
+  const seriesKey = `${seriesId}`;
+  const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
+
+  return seriesEquipment.reduce((count, item) => {
+    return count + (isItemOwned(item) ? 1 : 0);
+  }, 0);
+};
+
+// シリーズの装備数を取得する関数
+const getSeriesItemCount = (seriesId: number) => {
+  const seriesKey = `${seriesId}`;
+  return equipmentBySeries.value[seriesKey]?.length || 0;
 };
 </script>
 
@@ -328,6 +364,11 @@ const isItemOwned = (item: ArmorItem) => {
             <div class="series-title">
               <h3>{{ series.name }}</h3>
             </div>
+            <div class="series-info">
+              <span class="owned-count">
+                {{ getSeriesOwnedCount(series.id) }}/{{ getSeriesItemCount(series.id) }}
+              </span>
+            </div>
           </div>
 
           <!-- シリーズの装備一覧（常に表示） -->
@@ -336,10 +377,24 @@ const isItemOwned = (item: ArmorItem) => {
               <div v-for="item in getFilteredSeriesEquipment(series.id)" :key="item.id" 
                    class="equipment-item"
                    :class="[`rarity-${item.rarity}`, { 'owned': isItemOwned(item) }]"
-                   @click="toggleObtained(item)"
-                   :title="item.name">
+                   @click="toggleObtained(item)">
+                <div class="equipment-name">{{ item.name }}</div>
                 <div class="equipment-part">{{ getJapaneseCategoryName(item.kind) }}</div>
-                <div v-if="isItemOwned(item)" class="owned-icon">🎁</div>
+                <div class="equipment-detail">
+                  <div class="defense-value" v-if="item.defense">防御:{{ item.defense.base }}</div>
+                  <div class="slots-info" v-if="item.slots && item.slots.length > 0">
+                    スロット: 
+                    <span v-for="(slot, index) in item.slots" :key="index" class="slot-indicator">
+                      {{ slot }}
+                    </span>
+                  </div>
+                </div>
+                <button 
+                  class="obtained-toggle"
+                  :class="{ 'obtained': isItemOwned(item) }"
+                  @click.stop="toggleObtained(item)">
+                  {{ isItemOwned(item) ? '所持' : '未所持' }}
+                </button>
               </div>
               <div v-if="getFilteredSeriesEquipment(series.id).length === 0" class="no-results">
                 条件に一致する装備がありません
@@ -364,18 +419,6 @@ const isItemOwned = (item: ArmorItem) => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.back-btn {
-  padding: 8px 15px;
-  background-color: #f1f1f1;
-  color: #333;
-  text-decoration: none;
-  border-radius: 4px;
-}
-
-.back-btn:hover {
-  background-color: #e0e0e0;
 }
 
 .equipment-stats {
@@ -461,18 +504,9 @@ const isItemOwned = (item: ArmorItem) => {
   background-color: #f0f0f0;
 }
 
-.series-header.expanded {
-  background-color: #e8f5e9;
-}
-
 .series-title {
   display: flex;
   align-items: center;
-}
-
-.expand-icon {
-  margin-right: 10px;
-  font-size: 0.8em;
 }
 
 .series-info {
@@ -504,13 +538,12 @@ const isItemOwned = (item: ArmorItem) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   padding: 15px 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  min-height: 60px;
+  min-height: 120px;
+  background-color: #ffffff;
 }
 
 .equipment-item:hover {
@@ -518,17 +551,75 @@ const isItemOwned = (item: ArmorItem) => {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.equipment-part {
-  font-size: 1.1rem;
+.equipment-name {
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 8px;
+  height: 2.7em;
+  overflow: hidden;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
   font-weight: bold;
-  color: #333;
 }
 
-.owned-icon {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
+.equipment-part {
   font-size: 1rem;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.equipment-detail {
+  width: 100%;
+  font-size: 0.8rem;
+  color: #666;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.defense-value {
+  display: inline-block;
+  background-color: #e8f5e9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.slots-info {
+  margin-top: 4px;
+}
+
+.slot-indicator {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  margin-right: 3px;
+  font-size: 0.8rem;
+}
+
+.obtained-toggle {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  margin-top: auto;
+  width: 80%;
+}
+
+.obtained-toggle.obtained {
+  background-color: #42b883;
+  color: white;
+}
+
+.obtained-toggle:not(.obtained) {
+  background-color: #f5f5f5;
+  color: #666;
 }
 
 /* レア度別の背景色 */
@@ -563,50 +654,6 @@ const isItemOwned = (item: ArmorItem) => {
   color: white;
 }
 
-.rarity-8 .equipment-part {
-  color: white;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
-
-th {
-  font-weight: bold;
-  background-color: #f9f9f9;
-}
-
-.rarity-cell {
-  color: #ff9800;
-}
-
-.obtained-toggle {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s;
-}
-
-.obtained-toggle.obtained {
-  background-color: #ddffdd;
-  color: #388e3c;
-}
-
-.obtained-toggle:not(.obtained) {
-  background-color: #ffdddd;
-  color: #d32f2f;
-}
-
 .loading-indicator,
 .error-message,
 .no-results {
@@ -624,5 +671,10 @@ th {
 .no-results {
   color: #666;
   font-style: italic;
+}
+
+/* 所持装備のスタイル強調 */
+.equipment-item.owned {
+  box-shadow: 0 0 0 2px #42b883;
 }
 </style>
