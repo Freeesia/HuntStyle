@@ -313,6 +313,24 @@ const getSeriesItemCount = (seriesId: number) => {
   const seriesKey = `${seriesId}`;
   return equipmentBySeries.value[seriesKey]?.length || 0;
 };
+
+// カテゴリーの日本語表示名を取得する関数
+const getCategoryDisplayName = (category: Category): string => {
+  switch (category) {
+    case 'head':
+      return '頭';
+    case 'chest':
+      return '胴';
+    case 'arms':
+      return '腕';
+    case 'waist':
+      return '腰';
+    case 'legs':
+      return '脚';
+    default:
+      return '';
+  }
+};
 </script>
 
 <template>
@@ -387,116 +405,27 @@ const getSeriesItemCount = (seriesId: number) => {
           <!-- シリーズの装備一覧（カテゴリ別に1行で表示） -->
           <div class="series-equipment">
             <!-- 装備がフィルタリング条件に一致する場合のみ表示 -->
-            <div v-if="getFilteredSeriesEquipment(series.id).length > 0" class="equipment-table">
-              <!-- テーブルヘッダー -->
-              <div class="equipment-table-header">
-                <div class="equipment-cell header-cell">頭</div>
-                <div class="equipment-cell header-cell">胴</div>
-                <div class="equipment-cell header-cell">腕</div>
-                <div class="equipment-cell header-cell">腰</div>
-                <div class="equipment-cell header-cell">脚</div>
-              </div>
-              
+            <div v-if="getFilteredSeriesEquipment(series.id).length > 0" class="equipment-table">              
               <!-- 装備行 -->
               <div class="equipment-table-row">
-                <!-- 頭装備 -->
-                <div class="equipment-cell">
-                  <div v-if="getCategoryEquipment(series.id, 'head')" 
+                <!-- カテゴリ別の装備をv-forで生成 -->
+                <div v-for="category in categories" :key="category" class="equipment-cell">
+                  <div v-if="getCategoryEquipment(series.id, category)" 
                        class="equipment-cell-content"
-                       :class="[`rarity-${getCategoryEquipment(series.id, 'head')?.rarity}`, 
-                              { 'owned': isItemOwned(getCategoryEquipment(series.id, 'head')) }]"
-                       @click="toggleObtained(getCategoryEquipment(series.id, 'head'))">
+                       :class="[`rarity-${getCategoryEquipment(series.id, category)?.rarity}`, 
+                              { 'owned': isItemOwned(getCategoryEquipment(series.id, category)) }]"
+                       @click="toggleObtained(getCategoryEquipment(series.id, category))">
                     <div class="tooltip-container">
-                      <button 
-                        class="obtained-toggle"
-                        :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'head')) }"
-                        @click.stop="toggleObtained(getCategoryEquipment(series.id, 'head'))">
-                        {{ isItemOwned(getCategoryEquipment(series.id, 'head')) ? '所持' : '未所持' }}
-                      </button>
-                      <span class="tooltip">{{ getCategoryEquipment(series.id, 'head')?.name }}</span>
+                      <div class="equipment-name">
+                        <span class="part-label">{{ getCategoryDisplayName(category) }}</span>
+                      </div>
+                      <span class="tooltip">{{ getCategoryEquipment(series.id, category)?.name }}</span>
+                      <span v-if="isItemOwned(getCategoryEquipment(series.id, category))" class="owned-icon">🎁</span>
                     </div>
                   </div>
-                  <div v-else class="empty-cell">-</div>
-                </div>
-                
-                <!-- 胴装備 -->
-                <div class="equipment-cell">
-                  <div v-if="getCategoryEquipment(series.id, 'chest')" 
-                       class="equipment-cell-content"
-                       :class="[`rarity-${getCategoryEquipment(series.id, 'chest')?.rarity}`, 
-                              { 'owned': isItemOwned(getCategoryEquipment(series.id, 'chest')) }]"
-                       @click="toggleObtained(getCategoryEquipment(series.id, 'chest'))">
-                    <div class="tooltip-container">
-                      <button 
-                        class="obtained-toggle"
-                        :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'chest')) }"
-                        @click.stop="toggleObtained(getCategoryEquipment(series.id, 'chest'))">
-                        {{ isItemOwned(getCategoryEquipment(series.id, 'chest')) ? '所持' : '未所持' }}
-                      </button>
-                      <span class="tooltip">{{ getCategoryEquipment(series.id, 'chest')?.name }}</span>
-                    </div>
+                  <div v-else class="empty-cell">
+                    {{ getCategoryDisplayName(category) }}
                   </div>
-                  <div v-else class="empty-cell">-</div>
-                </div>
-                
-                <!-- 腕装備 -->
-                <div class="equipment-cell">
-                  <div v-if="getCategoryEquipment(series.id, 'arms')" 
-                       class="equipment-cell-content"
-                       :class="[`rarity-${getCategoryEquipment(series.id, 'arms')?.rarity}`, 
-                              { 'owned': isItemOwned(getCategoryEquipment(series.id, 'arms')) }]"
-                       @click="toggleObtained(getCategoryEquipment(series.id, 'arms'))">
-                    <div class="tooltip-container">
-                      <button 
-                        class="obtained-toggle"
-                        :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'arms')) }"
-                        @click.stop="toggleObtained(getCategoryEquipment(series.id, 'arms'))">
-                        {{ isItemOwned(getCategoryEquipment(series.id, 'arms')) ? '所持' : '未所持' }}
-                      </button>
-                      <span class="tooltip">{{ getCategoryEquipment(series.id, 'arms')?.name }}</span>
-                    </div>
-                  </div>
-                  <div v-else class="empty-cell">-</div>
-                </div>
-                
-                <!-- 腰装備 -->
-                <div class="equipment-cell">
-                  <div v-if="getCategoryEquipment(series.id, 'waist')" 
-                       class="equipment-cell-content"
-                       :class="[`rarity-${getCategoryEquipment(series.id, 'waist')?.rarity}`, 
-                              { 'owned': isItemOwned(getCategoryEquipment(series.id, 'waist')) }]"
-                       @click="toggleObtained(getCategoryEquipment(series.id, 'waist'))">
-                    <div class="tooltip-container">
-                      <button 
-                        class="obtained-toggle"
-                        :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'waist')) }"
-                        @click.stop="toggleObtained(getCategoryEquipment(series.id, 'waist'))">
-                        {{ isItemOwned(getCategoryEquipment(series.id, 'waist')) ? '所持' : '未所持' }}
-                      </button>
-                      <span class="tooltip">{{ getCategoryEquipment(series.id, 'waist')?.name }}</span>
-                    </div>
-                  </div>
-                  <div v-else class="empty-cell">-</div>
-                </div>
-                
-                <!-- 脚装備 -->
-                <div class="equipment-cell">
-                  <div v-if="getCategoryEquipment(series.id, 'legs')" 
-                       class="equipment-cell-content"
-                       :class="[`rarity-${getCategoryEquipment(series.id, 'legs')?.rarity}`, 
-                              { 'owned': isItemOwned(getCategoryEquipment(series.id, 'legs')) }]"
-                       @click="toggleObtained(getCategoryEquipment(series.id, 'legs'))">
-                    <div class="tooltip-container">
-                      <button 
-                        class="obtained-toggle"
-                        :class="{ 'obtained': isItemOwned(getCategoryEquipment(series.id, 'legs')) }"
-                        @click.stop="toggleObtained(getCategoryEquipment(series.id, 'legs'))">
-                        {{ isItemOwned(getCategoryEquipment(series.id, 'legs')) ? '所持' : '未所持' }}
-                      </button>
-                      <span class="tooltip">{{ getCategoryEquipment(series.id, 'legs')?.name }}</span>
-                    </div>
-                  </div>
-                  <div v-else class="empty-cell">-</div>
                 </div>
               </div>
             </div>
@@ -713,7 +642,10 @@ const getSeriesItemCount = (seriesId: number) => {
   font-weight: bold;
   transition: all 0.3s;
   margin-top: auto;
-  width: 80%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .obtained-toggle.obtained {
@@ -812,6 +744,7 @@ const getSeriesItemCount = (seriesId: number) => {
   padding: 10px 5px;
   border-radius: 6px;
   transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
 }
 
 .equipment-cell-content:hover {
@@ -865,5 +798,28 @@ const getSeriesItemCount = (seriesId: number) => {
 .tooltip-container:hover .tooltip {
   visibility: visible;
   opacity: 1;
+}
+
+/* 部位ラベルのスタイル */
+.part-label {
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+/* 所持/未所持ボタンの幅を広げる */
+.obtained-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 所持アイコンのスタイル */
+.owned-icon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 1.2rem;
+  color: #42b883;
 }
 </style>
