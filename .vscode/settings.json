@@ -2,6 +2,9 @@
   "github.copilot.chat.codeGeneration.instructions": [
     {
       "file": "仕様.md"
+    },
+    {
+      "file": "技術仕様.md"
     }
   ],
 }
