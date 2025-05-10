@@ -5,18 +5,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "browse-lite",
-      "request": "launch",
-      "name": "Browse Lite: Launch",
-      "url": "http://localhost:5173",
-      "webRoot": "${workspaceFolder}",
-      "sourceMapPathOverrides": {
-        "/@fs/*": "*",
-        "webpack:///src/*": "${webRoot}/src/*"
-      },
-      "preLaunchTask": "npm: dev"
-    },
-    {
       "type": "chrome",
       "request": "launch",
       "name": "Debug",
@@ -26,7 +14,7 @@
         "/@fs/*": "*",
         "webpack:///src/*": "${webRoot}/src/*"
       },
-      "preLaunchTask": "npm: dev"
+      "preLaunchTask": "dev"
     }
   ]
 }
