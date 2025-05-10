@@ -1,3 +1,6 @@
+@import "tailwindcss";
+
+
 /* リセットCSS & 基本スタイル */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
