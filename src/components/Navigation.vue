@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// 現在のページでアクティブなナビゲーションアイテムをハイライトするために使用します
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -10,7 +9,7 @@ const route = useRoute();
     <div class="nav-container">
       <div class="nav-logo">
         <router-link to="/">
-          <h1>HuntStyle</h1>
+          <img src="/icons/icon.svg" alt="HuntStyle" class="logo-icon" />
         </router-link>
       </div>
       
@@ -63,14 +62,16 @@ const route = useRoute();
   align-items: center;
 }
 
-.nav-logo h1 {
-  margin: 0;
-  color: #42b883;
-  font-size: 1.5rem;
-}
-
 .nav-logo a {
   text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.logo-icon {
+  height: 35px;
+  width: auto;
+  margin: 0;
 }
 
 .nav-links {
