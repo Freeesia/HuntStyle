@@ -714,7 +714,7 @@ td {
   transform: translateX(-50%);
   opacity: 0;
   transition: opacity 0.3s;
-  box-shadow: theme('boxShadow.floating');
+  box-shadow: theme('boxShadow.lg');
   border: 1px solid theme('colors.primary-gold');
   pointer-events: none;
 }
