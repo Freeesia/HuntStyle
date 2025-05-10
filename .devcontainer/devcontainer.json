@@ -10,7 +10,8 @@
       // Add the IDs of extensions you want installed when the container is created.
       "extensions": [
         "oven.bun-vscode",
-        "Vue.volar"
+        "Vue.volar",
+        "esbenp.prettier-vscode"
       ]
     }
   }
