@@ -1,18 +1,82 @@
 @import "tailwindcss";
 
-
 /* リセットCSS & 基本スタイル */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color-scheme: dark;
 }
 
-/* App.vueで上書きされているため、最低限のスタイルのみ定義 */
+/* ベーススタイル */
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  font-family: 'Roboto', 'Noto Sans JP', sans-serif;
+  background-color: theme('colors.dark');
+  color: theme('colors.light-gray');
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Rajdhani', 'Montserrat', sans-serif;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+h1 {
+  font-size: theme('fontSize.heading-lg');
+}
+
+h2 {
+  font-size: theme('fontSize.heading-md');
+}
+
+h3 {
+  font-size: theme('fontSize.heading-sm');
+}
+
+p, span, div, button, input, textarea {
+  font-size: theme('fontSize.body');
+}
+
+.caption, small {
+  font-size: theme('fontSize.caption');
+}
+
+/* リンクスタイル */
+a {
+  color: theme('colors.primary-gold');
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: theme('colors.bright-gold');
+}
+
+/* フォーカス要素のアクセシビリティ対応 */
+button:focus, a:focus, input:focus, select:focus, textarea:focus {
+  outline: 2px solid theme('colors.primary-gold');
+  outline-offset: 2px;
+}
+
+/* スクロールバーのカスタマイズ */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: theme('colors.charcoal');
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: theme('colors.primary-green');
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: theme('colors.primary-gold');
 }

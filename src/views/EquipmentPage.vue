@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, inject } from 'vue';
 
 // カテゴリーのリスト（内部管理は英語で行う）
 const categories = ['head', 'chest', 'arms', 'waist', 'legs'] as const;
@@ -44,6 +44,10 @@ interface ArmorItem {
   };
 }
 
+// グローバル状態
+const showToast = inject('showToast') as (message: string, type: 'success' | 'error' | 'info') => void;
+const isPageLoading = inject('isLoading') as { value: boolean };
+
 // ローカルストレージのキー
 const STORAGE_KEY_OWNED_EQUIPMENT = 'huntStyle_owned_equipment';
 
@@ -55,6 +59,9 @@ const equipmentBySeries = ref<Record<string, ArmorItem[]>>({});
 
 // シリーズのリスト
 const seriesList = ref<ArmorSet[]>([]);
+
+// 展開されているシリーズの管理
+const expandedSeries = ref<Set<number>>(new Set());
 
 // ユーザーの所持装備IDを保存するSet
 const ownedEquipmentIds = ref<Record<Category, Set<number>>>({
@@ -68,9 +75,11 @@ const ownedEquipmentIds = ref<Record<Category, Set<number>>>({
 // ローディング状態
 const isLoading = ref(true);
 const loadError = ref<string | null>(null);
+const isLoaded = ref(false);
 
 // 検索キーワード
 const searchQuery = ref('');
+const isSearchFocused = ref(false);
 
 // 表示のフィルター（全て、所持、未所持）
 const equipmentFilter = ref('全て'); // '全て', '所持', '未所持'
@@ -79,6 +88,7 @@ const equipmentFilter = ref('全て'); // '全て', '所持', '未所持'
 const fetchEquipment = async () => {
   isLoading.value = true;
   loadError.value = null;
+  if (isPageLoading) isPageLoading.value = true;
 
   try {
     // 装備セット一覧を取得
@@ -139,6 +149,9 @@ const fetchEquipment = async () => {
 
     // ローカルストレージから所持装備データを読み込む
     loadOwnedEquipment();
+    
+    // 正常に読み込まれたことを通知
+    if (showToast) showToast('装備データの読み込みが完了しました', 'success');
 
   } catch (error) {
     console.error('装備データの取得中にエラーが発生しました:', error);
@@ -148,8 +161,17 @@ const fetchEquipment = async () => {
     allEquipment.value = [];
     equipmentBySeries.value = {};
     seriesList.value = [];
+    
+    // エラー通知
+    if (showToast) showToast('装備データの取得に失敗しました', 'error');
   } finally {
     isLoading.value = false;
+    if (isPageLoading) isPageLoading.value = false;
+    
+    // アニメーション用のフラグを設定
+    setTimeout(() => {
+      isLoaded.value = true;
+    }, 300);
   }
 };
 
@@ -176,6 +198,8 @@ const loadOwnedEquipment = () => {
       for (const category of categories) {
         ownedEquipmentIds.value[category] = new Set();
       }
+      
+      if (showToast) showToast('所持装備データの読み込みに失敗しました', 'error');
     }
   }
 };
@@ -206,7 +230,7 @@ const getCategoryEquipment = (seriesId: number, category: Category) => {
   // 指定したカテゴリの装備のみをフィルタリング
   return seriesEquipment.find(item => {
     // 検索フィルターとカテゴリフィルターの両方を適用
-    const matchesQuery = searchQuery.value === '' || item.name.includes(searchQuery.value);
+    const matchesQuery = searchQuery.value === '' || item.name.toLowerCase().includes(searchQuery.value.toLowerCase());
     const matchesCategory = item.kind === category;
     
     // 所持状態フィルター
@@ -229,7 +253,7 @@ const getFilteredSeriesEquipment = (seriesId: number) => {
   return seriesEquipment.filter(item => {
     // 検索フィルター
     const matchesQuery = searchQuery.value === '' ||
-      item.name.includes(searchQuery.value);
+      item.name.toLowerCase().includes(searchQuery.value.toLowerCase());
 
     // 所持状態フィルター
     let matchesFilter = true;
@@ -258,8 +282,10 @@ const toggleObtained = (item: ArmorItem | undefined) => {
 
   if (ownedEquipmentIds.value[category].has(itemId)) {
     ownedEquipmentIds.value[category].delete(itemId);
+    if (showToast) showToast(`「${item.name}」を所持装備から削除しました`, 'info');
   } else {
     ownedEquipmentIds.value[category].add(itemId);
+    if (showToast) showToast(`「${item.name}」を所持装備に追加しました`, 'success');
   }
 
   // 変更をローカルストレージに保存（全カテゴリをまとめて保存）
@@ -331,107 +357,315 @@ const getCategoryDisplayName = (category: Category): string => {
       return '';
   }
 };
+
+// レア度に基づく装備のスタイルクラスを取得
+const getEquipmentRarityClass = (rarity: number | undefined) => {
+  if (!rarity) return '';
+  
+  const baseClass = 'border border-primary-gold/30';
+  
+  switch (rarity) {
+    case 9:
+      return `${baseClass} bg-primary-gold/20`;
+    case 8:
+      return `${baseClass} bg-sage-green/20`;
+    case 7:
+      return `${baseClass} bg-gradient-to-br from-charcoal to-primary-green/30`;
+    default:
+      return `${baseClass} bg-charcoal/50`;
+  }
+};
+
+// シリーズの展開/折りたたみ切り替え
+const toggleSeriesExpansion = (seriesId: number) => {
+  if (expandedSeries.value.has(seriesId)) {
+    expandedSeries.value.delete(seriesId);
+  } else {
+    expandedSeries.value.add(seriesId);
+  }
+};
+
+// 全装備セットを展開/折りたたむ
+const toggleAllSeries = (expand: boolean) => {
+  if (expand) {
+    // すべてのシリーズを展開
+    seriesList.value.forEach(series => {
+      expandedSeries.value.add(series.id);
+    });
+  } else {
+    // すべてのシリーズを折りたたむ
+    expandedSeries.value.clear();
+  }
+};
+
+// フィルタリング済みのシリーズリスト
+const filteredSeriesList = computed(() => {
+  return seriesList.value.filter(series => {
+    // 検索クエリがある場合、シリーズ名に一致するか、装備品が検索条件に一致するかをチェック
+    if (searchQuery.value) {
+      // シリーズ名が検索クエリを含む場合
+      const seriesNameMatches = series.name.toLowerCase().includes(searchQuery.value.toLowerCase());
+      
+      // 装備が検索クエリを含むかチェック
+      const seriesKey = `${series.id}`;
+      const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
+      const anyEquipmentMatches = seriesEquipment.some(item => {
+        return item.name.toLowerCase().includes(searchQuery.value.toLowerCase());
+      });
+      
+      if (!seriesNameMatches && !anyEquipmentMatches) {
+        return false;
+      }
+    }
+    
+    // 所持フィルターの条件に一致するかチェック
+    if (equipmentFilter.value !== '全て') {
+      const seriesKey = `${series.id}`;
+      const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
+      
+      // 所持している装備をカウント
+      let ownedCount = 0;
+      seriesEquipment.forEach(item => {
+        if (isItemOwned(item)) {
+          ownedCount++;
+        }
+      });
+      
+      // フィルター条件に基づいて結果を返す
+      if (equipmentFilter.value === '所持' && ownedCount === 0) {
+        return false;
+      }
+      
+      if (equipmentFilter.value === '未所持' && ownedCount === seriesEquipment.length) {
+        return false;
+      }
+    }
+    
+    return true;
+  });
+});
 </script>
 
 <template>
-  <div class="equipment-page">
-    <h1 class="page-header">所持装備管理</h1>
-
-    <div class="equipment-stats">
-      <div class="stat-card">
-        <span class="stat-title">総装備数</span>
-        <span class="stat-value">{{ statsData.total }}</span>
+  <div class="max-w-[1100px] mx-auto pt-[70px] lg:pt-0 px-16">
+    <!-- ページヘッダー -->
+    <div class="mb-32 transition-all duration-500"
+         :class="{'opacity-100 translate-y-0': isLoaded, 'opacity-0 translate-y-16': !isLoaded}">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-16 mb-32">
+        <h1 class="text-heading-lg font-display text-light-gray">所持装備管理</h1>
+        
+        <router-link to="/" class="inline-flex items-center gap-8 text-light-gray hover:text-primary-gold transition-colors duration-300">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>ホームに戻る</span>
+        </router-link>
       </div>
-      <div class="stat-card">
-        <span class="stat-title">所持装備数</span>
-        <span class="stat-value">{{ statsData.owned }}</span>
+      
+      <!-- 統計カード -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-32">
+        <div class="p-24 rounded-card bg-charcoal border border-primary-green/20 flex flex-col items-center shadow-card relative overflow-hidden group">
+          <div class="absolute inset-x-0 bottom-0 h-1 bg-sage-green transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <span class="text-caption text-light-gray/70 mb-8">総装備数</span>
+          <span class="text-heading-lg font-display text-primary-gold mb-8">{{ statsData.total }}</span>
+        </div>
+        
+        <div class="p-24 rounded-card bg-charcoal border border-primary-green/20 flex flex-col items-center shadow-card relative overflow-hidden group">
+          <div class="absolute inset-x-0 bottom-0 h-1 bg-sage-green transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <span class="text-caption text-light-gray/70 mb-8">所持装備数</span>
+          <span class="text-heading-lg font-display text-bright-gold mb-8">{{ statsData.owned }}</span>
+        </div>
+        
+        <div class="p-24 rounded-card bg-charcoal border border-primary-green/20 flex flex-col items-center shadow-card relative overflow-hidden group">
+          <div class="absolute inset-x-0 bottom-0 h-1 bg-sage-green transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <span class="text-caption text-light-gray/70 mb-8">未所持装備数</span>
+          <span class="text-heading-lg font-display text-primary-green mb-8">{{ statsData.notOwned }}</span>
+        </div>
+        
+        <div class="p-24 rounded-card bg-charcoal border border-primary-green/20 flex flex-col items-center shadow-card relative overflow-hidden group">
+          <div class="absolute inset-x-0 bottom-0 h-1 bg-sage-green transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          <span class="text-caption text-light-gray/70 mb-8">コンプリート率</span>
+          <span class="text-heading-lg font-display text-primary-gold mb-8">{{ statsData.completeRate }}%</span>
+        </div>
       </div>
-      <div class="stat-card">
-        <span class="stat-title">未所持装備数</span>
-        <span class="stat-value">{{ statsData.notOwned }}</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-title">コンプリート率</span>
-        <span class="stat-value">{{ statsData.completeRate }}%</span>
+      
+      <!-- 検索とフィルターセクション -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-16 mb-32">
+        <div class="relative w-full md:w-auto md:flex-1">
+          <input 
+            v-model="searchQuery" 
+            type="text" 
+            placeholder="装備やシリーズ名を検索..."
+            @focus="isSearchFocused = true"
+            @blur="isSearchFocused = false"
+            class="w-full pl-40 pr-16 py-12 bg-charcoal rounded-full border transition-all duration-300 text-body focus:outline-none"
+            :class="isSearchFocused || searchQuery ? 'border-primary-gold shadow-floating' : 'border-light-gray/20'"
+          >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+               class="absolute left-16 top-1/2 transform -translate-y-1/2 w-16 h-16 transition-colors duration-300"
+               :class="isSearchFocused || searchQuery ? 'text-primary-gold' : 'text-light-gray/50'">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <button 
+            v-if="searchQuery" 
+            @click="searchQuery = ''" 
+            class="absolute right-16 top-1/2 transform -translate-y-1/2 text-light-gray/50 hover:text-primary-gold transition-colors duration-300"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="flex gap-8 flex-wrap w-full md:w-auto">
+          <button 
+            @click="equipmentFilter = '全て'" 
+            class="px-16 py-8 rounded-full border transition-all duration-300"
+            :class="equipmentFilter === '全て' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'"
+          >全て</button>
+          <button 
+            @click="equipmentFilter = '所持'" 
+            class="px-16 py-8 rounded-full border transition-all duration-300"
+            :class="equipmentFilter === '所持' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'"
+          >所持</button>
+          <button 
+            @click="equipmentFilter = '未所持'" 
+            class="px-16 py-8 rounded-full border transition-all duration-300"
+            :class="equipmentFilter === '未所持' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'"
+          >未所持</button>
+        </div>
       </div>
     </div>
-
-    <div class="equipment-controls">
-      <div class="search-bar">
-        <input v-model="searchQuery" type="text" placeholder="装備名を検索...">
+    
+    <!-- 装備リスト -->
+    <div>
+      <!-- ローディング表示 -->
+      <div v-if="isLoading" class="flex flex-col items-center justify-center py-64">
+        <div class="w-16 h-16 border-4 border-primary-gold border-t-transparent rounded-full animate-spin mb-16"></div>
+        <p class="text-light-gray">装備データを読み込み中...</p>
       </div>
-
-      <div class="filter-options">
-        <label>
-          <input type="radio" v-model="equipmentFilter" value="全て">
-          全て
-        </label>
-        <label>
-          <input type="radio" v-model="equipmentFilter" value="所持">
-          所持
-        </label>
-        <label>
-          <input type="radio" v-model="equipmentFilter" value="未所持">
-          未所持
-        </label>
+      
+      <!-- エラー表示 -->
+      <div v-else-if="loadError" class="p-32 rounded-card bg-error/10 border border-error text-center mb-32">
+        <p class="text-error font-medium mb-8">{{ loadError }}</p>
+        <p class="text-light-gray">APIからのデータ取得に失敗しました。後でもう一度お試しください。</p>
+        <button 
+          @click="fetchEquipment" 
+          class="mt-16 px-16 py-8 bg-error/20 text-error rounded-full hover:bg-error hover:text-white transition-colors duration-300">
+          再読み込み
+        </button>
       </div>
-    </div>
-
-    <div v-if="isLoading" class="loading-indicator">
-      <p>装備データを読み込み中...</p>
-    </div>
-
-    <div v-else-if="loadError" class="error-message">
-      <p>{{ loadError }}</p>
-      <p>APIからのデータ取得に失敗しました。後でもう一度お試しください。</p>
-    </div>
-
-    <div v-else>
-      <!-- シリーズ一覧 -->
-      <div class="series-list">
-        <div v-for="series in seriesList" :key="series.id" class="series-container">
-          <!-- シリーズヘッダー -->
-          <div class="series-header">
-            <div class="series-title">
-              <h3>{{ series.name }}</h3>
-            </div>
-            <div class="series-info">
-              <span class="owned-count">
-                {{ getSeriesOwnedCount(series.id) }}/{{ getSeriesItemCount(series.id) }}
-              </span>
-            </div>
+      
+      <!-- 装備データ表示 -->
+      <div v-else>
+        <!-- 展開/折りたたみコントロール -->
+        <div class="flex justify-end mb-16 transition-all duration-500 delay-100"
+            :class="{'opacity-100 translate-y-0': isLoaded, 'opacity-0 translate-y-16': !isLoaded}">
+          <div class="flex gap-8">
+            <button 
+              @click="toggleAllSeries(true)" 
+              class="px-16 py-8 rounded-full text-caption bg-charcoal border border-light-gray/20 text-light-gray hover:text-primary-gold hover:border-primary-gold/50 transition-all duration-300">
+              すべて展開
+            </button>
+            <button 
+              @click="toggleAllSeries(false)" 
+              class="px-16 py-8 rounded-full text-caption bg-charcoal border border-light-gray/20 text-light-gray hover:text-primary-gold hover:border-primary-gold/50 transition-all duration-300">
+              すべて折りたたむ
+            </button>
           </div>
-
-          <!-- シリーズの装備一覧（カテゴリ別に1行で表示） -->
-          <div class="series-equipment">
-            <!-- 装備がフィルタリング条件に一致する場合のみ表示 -->
-            <div v-if="getFilteredSeriesEquipment(series.id).length > 0" class="equipment-table">              
-              <!-- 装備行 -->
-              <div class="equipment-table-row">
-                <!-- カテゴリ別の装備をv-forで生成 -->
-                <div v-for="category in categories" :key="category" class="equipment-cell">
-                  <div v-if="getCategoryEquipment(series.id, category)" 
-                       class="equipment-cell-content"
-                       :class="[`rarity-${getCategoryEquipment(series.id, category)?.rarity}`, 
-                              { 'owned': isItemOwned(getCategoryEquipment(series.id, category)) }]"
-                       @click="toggleObtained(getCategoryEquipment(series.id, category))">
-                    <div class="tooltip-container">
-                      <div class="equipment-name">
-                        <span class="part-label">{{ getCategoryDisplayName(category) }}</span>
-                      </div>
-                      <span class="tooltip">{{ getCategoryEquipment(series.id, category)?.name }}</span>
-                      <span v-if="isItemOwned(getCategoryEquipment(series.id, category))" class="owned-icon">🎁</span>
-                    </div>
-                  </div>
-                  <div v-else class="empty-cell">
-                    {{ getCategoryDisplayName(category) }}
-                  </div>
-                </div>
+        </div>
+        
+        <!-- シリーズがない場合 -->
+        <div v-if="filteredSeriesList.length === 0" class="p-32 rounded-card bg-charcoal border border-primary-green/20 text-center">
+          <p class="text-light-gray">条件に一致する装備シリーズが見つかりません。</p>
+        </div>
+        
+        <!-- シリーズ一覧 -->
+        <div 
+          v-else
+          class="flex flex-col gap-16 mb-32 transition-all duration-500 delay-200"
+          :class="{'opacity-100 translate-y-0': isLoaded, 'opacity-0 translate-y-16': !isLoaded}">
+          <div 
+            v-for="series in filteredSeriesList" 
+            :key="series.id" 
+            class="rounded-card overflow-hidden transition-all duration-300 hover:shadow-floating bg-charcoal border border-primary-green/20">
+            
+            <!-- シリーズヘッダー -->
+            <div 
+              @click="toggleSeriesExpansion(series.id)" 
+              class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 p-16 cursor-pointer hover:bg-dark/30 transition-colors duration-300">
+              <div class="flex items-center gap-16">
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  stroke-width="2" 
+                  class="w-16 h-16 text-primary-gold transition-transform duration-300"
+                  :class="expandedSeries.has(series.id) ? 'rotate-90' : ''">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+                
+                <h3 class="text-body md:text-heading-sm font-display text-light-gray hover:text-primary-gold/90 transition-colors duration-300">{{ series.name }}</h3>
+              </div>
+              
+              <div class="flex items-center gap-8 text-caption">
+                <span class="py-4 px-8 rounded-full bg-primary-gold/10 text-primary-gold">
+                  {{ getSeriesOwnedCount(series.id) }}/{{ getSeriesItemCount(series.id) }}
+                </span>
               </div>
             </div>
             
-            <div v-else class="no-results">
-              条件に一致する装備がありません
+            <!-- シリーズの装備一覧 -->
+            <div 
+              v-if="expandedSeries.has(series.id)" 
+              class="p-8 border-t border-primary-green/10 transition-all duration-300 bg-dark/20"
+            >
+              <!-- 装備がフィルタリング条件に一致する場合のみ表示 -->
+              <div v-if="getFilteredSeriesEquipment(series.id).length > 0" class="overflow-x-auto">              
+                <!-- 装備テーブル -->
+                <table class="min-w-full">
+                  <tr>
+                    <td v-for="category in categories" :key="category" class="p-8 w-1/5">
+                      <div
+                        v-if="getCategoryEquipment(series.id, category)" 
+                        class="p-16 rounded-md text-center cursor-pointer transition-all duration-300 relative"
+                        :class="[
+                          getEquipmentRarityClass(getCategoryEquipment(series.id, category)?.rarity), 
+                          isItemOwned(getCategoryEquipment(series.id, category)) ? 'shadow-[0_0_0_2px] shadow-primary-gold' : 'hover:shadow-card'
+                        ]"
+                        @click="toggleObtained(getCategoryEquipment(series.id, category))">
+                        <div class="mb-8 font-bold text-caption text-primary-gold">{{ getCategoryDisplayName(category) }}</div>
+                        <div class="tooltip-container">
+                          <div class="text-light-gray line-clamp-1 text-caption">{{ getCategoryEquipment(series.id, category)?.name }}</div>
+                        </div>
+                        
+                        <!-- 所持アイコン -->
+                        <div
+                          v-if="isItemOwned(getCategoryEquipment(series.id, category))" 
+                          class="absolute -top-8 -right-8 w-24 h-24 flex items-center justify-center bg-primary-gold rounded-full">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-14 h-14 text-dark">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+                      <div 
+                        v-else 
+                        class="p-16 rounded-md bg-charcoal/30 border border-light-gray/5 text-center text-light-gray/30 text-caption">
+                        {{ getCategoryDisplayName(category) }}
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              
+              <!-- 装備がフィルター条件に一致しない場合 -->
+              <div v-else class="p-16 text-center text-light-gray/50 text-caption">
+                条件に一致する装備がありません
+              </div>
             </div>
           </div>
         </div>
@@ -441,358 +675,23 @@ const getCategoryDisplayName = (category: Category): string => {
 </template>
 
 <style scoped>
-.equipment-page {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
+/* スクロールバー用のスタイル */
+table {
+  border-collapse: separate;
+  border-spacing: 8px;
 }
 
-.page-header {
+tr {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
 }
 
-.equipment-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  margin-bottom: 30px;
-}
-
-.stat-card {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.stat-title {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 5px;
-}
-
-.stat-value {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #42b883;
-}
-
-.equipment-controls {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.search-bar {
+td {
   flex: 1;
-  margin-right: 20px;
 }
 
-.search-bar input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.filter-options {
-  display: flex;
-  gap: 15px;
-}
-
-.filter-options label {
-  cursor: pointer;
-}
-
-/* シリーズ一覧 */
-.series-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.series-container {
-  border: 1px solid #eee;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.series-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  background-color: #f9f9f9;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.series-header:hover {
-  background-color: #f0f0f0;
-}
-
-.series-title {
-  display: flex;
-  align-items: center;
-}
-
-.series-info {
-  display: flex;
-  align-items: center;
-}
-
-.owned-count {
-  font-size: 0.9rem;
-  color: #555;
-  background-color: #f5f5f5;
-  padding: 3px 8px;
-  border-radius: 12px;
-}
-
-.series-equipment {
-  border-top: 1px solid #eee;
-}
-
-.equipment-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 10px;
-  padding: 10px;
-}
-
-.equipment-item {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 15px 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  transition: transform 0.2s, box-shadow 0.2s;
-  min-height: 120px;
-  background-color: #ffffff;
-}
-
-.equipment-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.equipment-name {
-  font-size: 0.9rem;
-  text-align: center;
-  margin-bottom: 8px;
-  height: 2.7em;
-  overflow: hidden;
-  display: -webkit-box;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  font-weight: bold;
-}
-
-.equipment-part {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 8px;
-}
-
-.equipment-detail {
-  width: 100%;
-  font-size: 0.8rem;
-  color: #666;
-  text-align: center;
-  margin-bottom: 8px;
-}
-
-.defense-value {
-  display: inline-block;
-  background-color: #e8f5e9;
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-bottom: 4px;
-}
-
-.slots-info {
-  margin-top: 4px;
-}
-
-.slot-indicator {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  text-align: center;
-  border-radius: 50%;
-  background-color: #f0f0f0;
-  margin-right: 3px;
-  font-size: 0.8rem;
-}
-
-.obtained-toggle {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s;
-  margin-top: auto;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.obtained-toggle.obtained {
-  background-color: #42b883;
-  color: white;
-}
-
-.obtained-toggle:not(.obtained) {
-  background-color: #f5f5f5;
-  color: #666;
-}
-
-/* レア度別の背景色 */
-.rarity-5 {
-  background-color: #e3f2fd; /* 水色 */
-  border-color: #90caf9;
-}
-
-.rarity-6 {
-  background-color: #1565c0; /* 青 */
-  border-color: #0d47a1;
-  color: white;
-}
-
-.rarity-6 .equipment-part {
-  color: white;
-}
-
-.rarity-7 {
-  background-color: #7b1fa2; /* 紫 */
-  border-color: #4a148c;
-  color: white;
-}
-
-.rarity-7 .equipment-part {
-  color: white;
-}
-
-.rarity-8 {
-  background-color: #ef6c00; /* オレンジ */
-  border-color: #e65100;
-  color: white;
-}
-
-.loading-indicator,
-.error-message,
-.no-results {
-  padding: 20px;
-  text-align: center;
-}
-
-.error-message {
-  color: #d32f2f;
-  background-color: #ffeeee;
-  border-radius: 4px;
-  margin-bottom: 20px;
-}
-
-.no-results {
-  color: #666;
-  font-style: italic;
-}
-
-/* 所持装備のスタイル強調 */
-.equipment-item.owned {
-  box-shadow: 0 0 0 2px #42b883;
-}
-
-/* テーブルスタイル */
-.equipment-table {
-  display: table;
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed; /* 固定幅テーブルレイアウト */
-}
-
-.equipment-table-header {
-  display: table-header-group;
-  background-color: #f9f9f9;
-}
-
-.equipment-table-row {
-  display: table-row;
-}
-
-.equipment-cell {
-  display: table-cell;
-  padding: 10px;
-  border: 1px solid #ddd;
-  text-align: center;
-  vertical-align: middle;
-  width: 20%; /* 5列なので各列20%の幅に設定 */
-}
-
-.equipment-cell-content {
-  padding: 10px 5px;
-  border-radius: 6px;
-  transition: transform 0.2s, box-shadow 0.2s;
-  position: relative;
-}
-
-.equipment-cell-content:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.header-cell {
-  font-weight: bold;
-  background-color: #f0f0f0;
-}
-
-.empty-cell {
-  color: #ccc;
-}
-
-/* カスタムツールチップ */
+/* ツールチップ */
 .tooltip-container {
   position: relative;
-  display: inline-block;
-}
-
-.tooltip {
-  visibility: hidden;
-  width: 120px;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%; /* ツールチップを上に表示 */
-  left: 50%;
-  margin-left: -60px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.tooltip::after {
-  content: '';
-  position: absolute;
-  top: 100%; /* ツールチップの下に矢印を表示 */
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
 }
 
 .tooltip-container:hover .tooltip {
@@ -800,26 +699,41 @@ const getCategoryDisplayName = (category: Category): string => {
   opacity: 1;
 }
 
-/* 部位ラベルのスタイル */
-.part-label {
-  font-weight: bold;
-  margin-right: 4px;
-}
-
-/* 所持/未所持ボタンの幅を広げる */
-.obtained-toggle {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* 所持アイコンのスタイル */
-.owned-icon {
+.tooltip {
+  visibility: hidden;
+  width: 200px;
+  background-color: theme('colors.charcoal');
+  color: theme('colors.light-gray');
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
   position: absolute;
-  bottom: 5px;
-  right: 5px;
-  font-size: 1.2rem;
-  color: #42b883;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  box-shadow: theme('boxShadow.floating');
+  border: 1px solid theme('colors.primary-gold');
+  pointer-events: none;
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: theme('colors.primary-gold') transparent transparent transparent;
+}
+
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 1;
 }
 </style>
