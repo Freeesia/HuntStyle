@@ -646,10 +646,8 @@ const filteredSeriesList = computed(() => {
                         <!-- 所持アイコン -->
                         <div
                           v-if="isItemOwned(getCategoryEquipment(series.id, category))" 
-                          class="absolute -top-8 -right-8 w-24 h-24 flex items-center justify-center bg-primary-gold rounded-full">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-14 h-14 text-dark">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
+                          class="absolute !text-xl -top-0 -right-0 flex items-center justify-center">
+                          🎁
                         </div>
                       </div>
                       <div 
@@ -702,8 +700,8 @@ td {
 .tooltip {
   visibility: hidden;
   width: 200px;
-  background-color: theme('colors.charcoal');
-  color: theme('colors.light-gray');
+  background-color: var(--color-charcoal);
+  color: var(--color-light-gray);
   text-align: center;
   border-radius: 6px;
   padding: 8px;
@@ -714,8 +712,8 @@ td {
   transform: translateX(-50%);
   opacity: 0;
   transition: opacity 0.3s;
-  box-shadow: theme('boxShadow.lg');
-  border: 1px solid theme('colors.primary-gold');
+  box-shadow: var(--box-shadow-floating);
+  border: 1px solid var(--color-primary-gold);
   pointer-events: none;
 }
 
@@ -727,7 +725,7 @@ td {
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: theme('colors.primary-gold') transparent transparent transparent;
+  border-color: var(--color-primary-gold) transparent transparent transparent;
 }
 
 .line-clamp-1 {

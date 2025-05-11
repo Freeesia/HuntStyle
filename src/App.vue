@@ -119,7 +119,7 @@ button {
 
 /* アクセシビリティのためのユーティリティ */
 .focus-visible:focus-visible {
-  outline: 2px solid theme('colors.primary-gold');
+  outline: 2px solid var(--color-primary-gold);
   outline-offset: 2px;
 }
 
@@ -145,7 +145,7 @@ button {
 
 /* アクセシビリティのためのユーティリティ */
 .focus-visible:focus-visible {
-  outline: 2px solid theme('colors.primary-gold');
+  outline: 2px solid var(--color-primary-gold);
   outline-offset: 2px;
 }
 </style>
