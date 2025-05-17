@@ -13,6 +13,24 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
+      workbox: {
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/wilds\.mhdb\.io\/.*$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'mhdb-api-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24, // 1日間キャッシュ
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+        ],
+      },
     }),
   ],
 });
