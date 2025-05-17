@@ -15,5 +15,6 @@
         "bradlc.vscode-tailwindcss"
       ]
     }
-  }
+  },
+  "updateContentCommand": "bun install"
 }
