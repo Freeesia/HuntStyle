@@ -60,9 +60,6 @@ const equipmentBySeries = ref<Record<string, ArmorItem[]>>({});
 // シリーズのリスト
 const seriesList = ref<ArmorSet[]>([]);
 
-// 展開されているシリーズの管理
-const expandedSeries = ref<Set<number>>(new Set());
-
 // ユーザーの所持装備IDを保存するSet
 const ownedEquipmentIds = ref<Record<Category, Set<number>>>({
   'head': new Set(),
@@ -376,28 +373,6 @@ const getEquipmentRarityClass = (rarity: number | undefined) => {
   }
 };
 
-// シリーズの展開/折りたたみ切り替え
-const toggleSeriesExpansion = (seriesId: number) => {
-  if (expandedSeries.value.has(seriesId)) {
-    expandedSeries.value.delete(seriesId);
-  } else {
-    expandedSeries.value.add(seriesId);
-  }
-};
-
-// 全装備セットを展開/折りたたむ
-const toggleAllSeries = (expand: boolean) => {
-  if (expand) {
-    // すべてのシリーズを展開
-    seriesList.value.forEach(series => {
-      expandedSeries.value.add(series.id);
-    });
-  } else {
-    // すべてのシリーズを折りたたむ
-    expandedSeries.value.clear();
-  }
-};
-
 // フィルタリング済みのシリーズリスト
 const filteredSeriesList = computed(() => {
   return seriesList.value.filter(series => {
@@ -561,23 +536,6 @@ const filteredSeriesList = computed(() => {
       
       <!-- 装備データ表示 -->
       <div v-else>
-        <!-- 展開/折りたたみコントロール -->
-        <div class="flex justify-end mb-16 transition-all duration-500 delay-100"
-            :class="{'opacity-100 translate-y-0': isLoaded, 'opacity-0 translate-y-16': !isLoaded}">
-          <div class="flex gap-8">
-            <button 
-              @click="toggleAllSeries(true)" 
-              class="px-16 py-8 rounded-full text-caption bg-charcoal border border-light-gray/20 text-light-gray hover:text-primary-gold hover:border-primary-gold/50 transition-all duration-300">
-              すべて展開
-            </button>
-            <button 
-              @click="toggleAllSeries(false)" 
-              class="px-16 py-8 rounded-full text-caption bg-charcoal border border-light-gray/20 text-light-gray hover:text-primary-gold hover:border-primary-gold/50 transition-all duration-300">
-              すべて折りたたむ
-            </button>
-          </div>
-        </div>
-        
         <!-- シリーズがない場合 -->
         <div v-if="filteredSeriesList.length === 0" class="p-32 rounded-card bg-charcoal border border-primary-green/20 text-center">
           <p class="text-light-gray">条件に一致する装備シリーズが見つかりません。</p>
@@ -595,21 +553,9 @@ const filteredSeriesList = computed(() => {
             
             <!-- シリーズヘッダー -->
             <div 
-              @click="toggleSeriesExpansion(series.id)" 
-              class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 p-16 cursor-pointer hover:bg-dark/30 transition-colors duration-300">
-              <div class="flex items-center gap-16">
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  stroke-width="2" 
-                  class="w-16 h-16 text-primary-gold transition-transform duration-300"
-                  :class="expandedSeries.has(series.id) ? 'rotate-90' : ''">
-                  <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-                
-                <h3 class="text-body md:text-heading-sm font-display text-light-gray hover:text-primary-gold/90 transition-colors duration-300">{{ series.name }}</h3>
+              class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 p-16 hover:bg-dark/30 transition-colors duration-300">
+              <div class="flex items-center">
+                <h3 class="text-body md:text-heading-sm font-display text-light-gray transition-colors duration-300">{{ series.name }}</h3>
               </div>
               
               <div class="flex items-center gap-8 text-caption">
@@ -621,7 +567,6 @@ const filteredSeriesList = computed(() => {
             
             <!-- シリーズの装備一覧 -->
             <div 
-              v-if="expandedSeries.has(series.id)" 
               class="p-8 border-t border-primary-green/10 transition-all duration-300 bg-dark/20"
             >
               <!-- 装備がフィルタリング条件に一致する場合のみ表示 -->
