@@ -578,16 +578,14 @@ const filteredSeriesList = computed(() => {
                       <td v-for="category in categories" :key="category" class="p-8 w-1/5">
                         <div
                           v-if="getCategoryEquipment(series.id, category)" 
-                          class="p-16 rounded-md text-center cursor-pointer transition-all duration-300 relative"
+                          class="p-16 rounded-md text-center cursor-pointer transition-all duration-300 relative tooltip-container"
                           :class="[
                             getEquipmentRarityClass(getCategoryEquipment(series.id, category)?.rarity), 
                             isItemOwned(getCategoryEquipment(series.id, category)) ? 'shadow-[0_0_0_2px] shadow-primary-gold' : 'hover:shadow-card'
                           ]"
                           @click="toggleObtained(getCategoryEquipment(series.id, category))">
-                          <div class="mb-8 font-bold text-caption text-primary-gold">{{ getCategoryDisplayName(category) }}</div>
-                          <div class="tooltip-container">
-                            <div class="text-light-gray line-clamp-1 text-caption">{{ getCategoryEquipment(series.id, category)?.name }}</div>
-                          </div>
+                          <div class="mb-8 font-bold text-body text-primary-gold">{{ getCategoryDisplayName(category) }}</div>
+                          <div class="tooltip">{{ getCategoryEquipment(series.id, category)?.name }}</div>
                           
                           <!-- 所持アイコン -->
                           <div
@@ -646,22 +644,29 @@ const filteredSeriesList = computed(() => {
 
 .tooltip {
   visibility: hidden;
-  width: 200px;
-  background-color: var(--color-charcoal);
+  min-width: 120px;
+  max-width: 220px;
+  background-color: rgba(24, 26, 27, 0.95);
   color: var(--color-light-gray);
   text-align: center;
   border-radius: 6px;
-  padding: 8px;
+  padding: 8px 12px;
   position: absolute;
-  z-index: 1;
+  z-index: 50;
   bottom: 125%;
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
-  transition: opacity 0.3s;
-  box-shadow: var(--box-shadow-floating);
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   border: 1px solid var(--color-primary-gold);
   pointer-events: none;
+  font-size: 0.85rem;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 5px;
 }
 
 .tooltip::after {
@@ -669,10 +674,11 @@ const filteredSeriesList = computed(() => {
   position: absolute;
   top: 100%;
   left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
+  margin-left: -6px;
+  border-width: 6px;
   border-style: solid;
   border-color: var(--color-primary-gold) transparent transparent transparent;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
 }
 
 .line-clamp-1 {
