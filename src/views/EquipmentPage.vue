@@ -81,6 +81,19 @@ const isSearchFocused = ref(false);
 // 表示のフィルター（全て、所持、未所持）
 const equipmentFilter = ref('全て'); // '全て', '所持', '未所持'
 
+// 所持装備の編集モード
+const isEditMode = ref(false);
+
+// 編集モードを切り替える関数
+const toggleEditMode = () => {
+  isEditMode.value = !isEditMode.value;
+  if (isEditMode.value) {
+    if (showToast) showToast('所持装備の切り替えモードをオンにしました', 'info');
+  } else {
+    if (showToast) showToast('所持装備の切り替えモードをオフにしました', 'info');
+  }
+};
+
 // APIから装備データを取得する関数
 const fetchEquipment = async () => {
   isLoading.value = true;
@@ -274,6 +287,12 @@ const toggleObtained = (item: ArmorItem | undefined) => {
   // アイテムがundefinedの場合は処理しない
   if (!item) return;
   
+  // 編集モードでない場合は装備情報の表示のみを行う
+  if (!isEditMode.value) {
+    if (showToast) showToast(`「${item.name}」- 編集モードをオンにすると所持状態を変更できます`, 'info');
+    return;
+  }
+  
   const category = item.kind;
   const itemId = item.id;
 
@@ -422,7 +441,7 @@ const filteredSeriesList = computed(() => {
 </script>
 
 <template>
-  <div class="max-w-[1100px] mx-auto pt-[70px] lg:pt-0 px-16">
+  <div class="max-w-[1100px] mx-auto pt-[70px] lg:pt-0 px-16" :class="{ 'edit-mode': isEditMode }">
     <!-- ページヘッダー -->
     <div class="mb-32 transition-all duration-500"
          :class="{'opacity-100 translate-y-0': isLoaded, 'opacity-0 translate-y-16': !isLoaded}">
@@ -496,6 +515,20 @@ const filteredSeriesList = computed(() => {
         </div>
         
         <div class="flex gap-8 flex-wrap w-full md:w-auto">
+          <!-- 所持装備切り替えモードボタン -->
+          <button 
+            @click="toggleEditMode" 
+            class="px-16 py-8 rounded-full border transition-all duration-300 flex items-center gap-4"
+            :class="isEditMode ? 'bg-sage-green/20 border-sage-green text-sage-green shadow-floating' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
+                 class="w-16 h-16" :class="isEditMode ? 'text-sage-green' : 'text-light-gray'">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            <span>{{ isEditMode ? '編集中' : '所持を切り替える' }}</span>
+          </button>
+          
           <button 
             @click="equipmentFilter = '全て'" 
             class="px-16 py-8 rounded-full border transition-all duration-300"
@@ -578,10 +611,12 @@ const filteredSeriesList = computed(() => {
                       <td v-for="category in categories" :key="category" class="p-8 w-1/5">
                         <div
                           v-if="getCategoryEquipment(series.id, category)" 
-                          class="p-16 rounded-md text-center cursor-pointer transition-all duration-300 relative tooltip-container"
+                          class="p-16 rounded-md text-center transition-all duration-300 relative tooltip-container"
                           :class="[
                             getEquipmentRarityClass(getCategoryEquipment(series.id, category)?.rarity), 
-                            isItemOwned(getCategoryEquipment(series.id, category)) ? 'shadow-[0_0_0_2px] shadow-primary-gold' : 'hover:shadow-card'
+                            isItemOwned(getCategoryEquipment(series.id, category)) ? 'shadow-[0_0_0_2px] shadow-primary-gold' : 'hover:shadow-card',
+                            isEditMode ? 'cursor-pointer scale-[1.02]' : 'cursor-default',
+                            isEditMode && !isItemOwned(getCategoryEquipment(series.id, category)) ? 'outline-2 outline-sage-green/50' : ''
                           ]"
                           @click="toggleObtained(getCategoryEquipment(series.id, category))">
                           <div class="mb-8 font-bold text-body text-primary-gold">{{ getCategoryDisplayName(category) }}</div>
@@ -592,6 +627,13 @@ const filteredSeriesList = computed(() => {
                             v-if="isItemOwned(getCategoryEquipment(series.id, category))" 
                             class="absolute !text-xl -top-0 -right-0 flex items-center justify-center">
                             🎁
+                          </div>
+                          
+                          <!-- 編集モードインジケーター -->
+                          <div
+                            v-if="isEditMode" 
+                            class="absolute bottom-4 right-4 w-8 h-8 rounded-full"
+                            :class="isItemOwned(getCategoryEquipment(series.id, category)) ? 'bg-primary-gold' : 'bg-sage-green'">
                           </div>
                         </div>
                         <div 
@@ -686,5 +728,34 @@ const filteredSeriesList = computed(() => {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   line-clamp: 1;
+}
+
+/* 編集モード関連のスタイル */
+.edit-mode {
+  position: relative;
+}
+
+.edit-mode::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right, var(--color-sage-green), var(--color-primary-gold));
+  z-index: 100;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
 }
 </style>
