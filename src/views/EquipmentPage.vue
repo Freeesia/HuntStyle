@@ -45,7 +45,6 @@ interface ArmorItem {
 }
 
 // グローバル状態
-const showToast = inject('showToast') as (message: string, type: 'success' | 'error' | 'info') => void;
 const isPageLoading = inject('isLoading') as { value: boolean };
 
 // ローカルストレージのキー
@@ -87,11 +86,6 @@ const isEditMode = ref(false);
 // 編集モードを切り替える関数
 const toggleEditMode = () => {
   isEditMode.value = !isEditMode.value;
-  if (isEditMode.value) {
-    if (showToast) showToast('所持装備の切り替えモードをオンにしました', 'info');
-  } else {
-    if (showToast) showToast('所持装備の切り替えモードをオフにしました', 'info');
-  }
 };
 
 // APIから装備データを取得する関数
@@ -159,9 +153,6 @@ const fetchEquipment = async () => {
 
     // ローカルストレージから所持装備データを読み込む
     loadOwnedEquipment();
-    
-    // 正常に読み込まれたことを通知
-    if (showToast) showToast('装備データの読み込みが完了しました', 'success');
 
   } catch (error) {
     console.error('装備データの取得中にエラーが発生しました:', error);
@@ -171,9 +162,6 @@ const fetchEquipment = async () => {
     allEquipment.value = [];
     equipmentBySeries.value = {};
     seriesList.value = [];
-    
-    // エラー通知
-    if (showToast) showToast('装備データの取得に失敗しました', 'error');
   } finally {
     isLoading.value = false;
     if (isPageLoading) isPageLoading.value = false;
@@ -208,8 +196,6 @@ const loadOwnedEquipment = () => {
       for (const category of categories) {
         ownedEquipmentIds.value[category] = new Set();
       }
-      
-      if (showToast) showToast('所持装備データの読み込みに失敗しました', 'error');
     }
   }
 };
@@ -287,9 +273,8 @@ const toggleObtained = (item: ArmorItem | undefined) => {
   // アイテムがundefinedの場合は処理しない
   if (!item) return;
   
-  // 編集モードでない場合は装備情報の表示のみを行う
+  // 編集モードでない場合は何もしない
   if (!isEditMode.value) {
-    if (showToast) showToast(`「${item.name}」- 編集モードをオンにすると所持状態を変更できます`, 'info');
     return;
   }
   
@@ -298,10 +283,8 @@ const toggleObtained = (item: ArmorItem | undefined) => {
 
   if (ownedEquipmentIds.value[category].has(itemId)) {
     ownedEquipmentIds.value[category].delete(itemId);
-    if (showToast) showToast(`「${item.name}」を所持装備から削除しました`, 'info');
   } else {
     ownedEquipmentIds.value[category].add(itemId);
-    if (showToast) showToast(`「${item.name}」を所持装備に追加しました`, 'success');
   }
 
   // 変更をローカルストレージに保存（全カテゴリをまとめて保存）
