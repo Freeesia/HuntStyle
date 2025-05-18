@@ -361,24 +361,37 @@ const getCategoryDisplayName = (category: Category): string => {
 const getEquipmentRarityClass = (rarity: number | undefined, isOwned: boolean = false) => {
   if (!rarity) return '';
   
-  const baseClass = 'border border-primary-gold/30';
+  // レアリティに応じた境界線と背景色を設定
+  let rarityBorder = 'border-primary-gold/30';
+  let rarityBg = 'bg-charcoal/50';
   
-  // 所持している場合は特別な背景色を返す
-  if (isOwned) {
-    return `${baseClass} bg-primary-gold/30`;
-  }
-  
-  // 所持していない場合はレア度に基づく背景色
+  // レアリティに応じた色を決定
   switch (rarity) {
     case 9:
-      return `${baseClass} bg-primary-gold/20`;
+      rarityBorder = 'border-primary-gold';
+      rarityBg = 'bg-primary-gold/20';
+      break;
     case 8:
-      return `${baseClass} bg-sage-green/20`;
+      rarityBorder = 'border-sage-green';
+      rarityBg = 'bg-sage-green/20';
+      break;
     case 7:
-      return `${baseClass} bg-gradient-to-br from-charcoal to-primary-green/30`;
+      rarityBorder = 'border-primary-green';
+      rarityBg = 'bg-gradient-to-br from-charcoal to-primary-green/30';
+      break;
     default:
-      return `${baseClass} bg-charcoal/50`;
+      rarityBorder = 'border-primary-gold/30';
+      rarityBg = 'bg-charcoal/50';
+      break;
   }
+  
+  // 所持している場合：外枠がレアリティカラー、背景がプライマリカラー
+  if (isOwned) {
+    return `border ${rarityBorder} bg-primary-gold/30`;
+  }
+  
+  // 所持していない場合：外枠がプライマリカラー、背景がレアリティカラー
+  return `border border-primary-gold/30 ${rarityBg}`;
 };
 
 // フィルタリング済みのシリーズリスト
