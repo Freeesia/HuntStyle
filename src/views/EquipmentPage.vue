@@ -358,11 +358,17 @@ const getCategoryDisplayName = (category: Category): string => {
 };
 
 // レア度に基づく装備のスタイルクラスを取得
-const getEquipmentRarityClass = (rarity: number | undefined) => {
+const getEquipmentRarityClass = (rarity: number | undefined, isOwned: boolean = false) => {
   if (!rarity) return '';
   
   const baseClass = 'border border-primary-gold/30';
   
+  // 所持している場合は特別な背景色を返す
+  if (isOwned) {
+    return `${baseClass} bg-primary-gold/30`;
+  }
+  
+  // 所持していない場合はレア度に基づく背景色
   switch (rarity) {
     case 9:
       return `${baseClass} bg-primary-gold/20`;
@@ -596,8 +602,11 @@ const filteredSeriesList = computed(() => {
                           v-if="getCategoryEquipment(series.id, category)" 
                           class="p-16 rounded-md text-center transition-all duration-300 relative tooltip-container"
                           :class="[
-                            getEquipmentRarityClass(getCategoryEquipment(series.id, category)?.rarity), 
-                            isItemOwned(getCategoryEquipment(series.id, category)) ? 'shadow-[0_0_0_2px] shadow-primary-gold' : 'hover:shadow-card',
+                            getEquipmentRarityClass(
+                              getCategoryEquipment(series.id, category)?.rarity, 
+                              isItemOwned(getCategoryEquipment(series.id, category))
+                            ), 
+                            !isItemOwned(getCategoryEquipment(series.id, category)) ? 'hover:shadow-card' : '',
                             isEditMode ? 'cursor-pointer scale-[1.02]' : 'cursor-default',
                             isEditMode && !isItemOwned(getCategoryEquipment(series.id, category)) ? 'outline-2 outline-sage-green/50' : ''
                           ]"
