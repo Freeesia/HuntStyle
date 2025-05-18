@@ -628,35 +628,37 @@ const filteredSeriesList = computed(() => {
               <div v-if="getFilteredSeriesEquipment(series.id).length > 0" class="overflow-x-auto">              
                 <!-- 装備テーブル -->
                 <table class="min-w-full">
-                  <tr>
-                    <td v-for="category in categories" :key="category" class="p-8 w-1/5">
-                      <div
-                        v-if="getCategoryEquipment(series.id, category)" 
-                        class="p-16 rounded-md text-center cursor-pointer transition-all duration-300 relative"
-                        :class="[
-                          getEquipmentRarityClass(getCategoryEquipment(series.id, category)?.rarity), 
-                          isItemOwned(getCategoryEquipment(series.id, category)) ? 'shadow-[0_0_0_2px] shadow-primary-gold' : 'hover:shadow-card'
-                        ]"
-                        @click="toggleObtained(getCategoryEquipment(series.id, category))">
-                        <div class="mb-8 font-bold text-caption text-primary-gold">{{ getCategoryDisplayName(category) }}</div>
-                        <div class="tooltip-container">
-                          <div class="text-light-gray line-clamp-1 text-caption">{{ getCategoryEquipment(series.id, category)?.name }}</div>
-                        </div>
-                        
-                        <!-- 所持アイコン -->
+                  <tbody>
+                    <tr>
+                      <td v-for="category in categories" :key="category" class="p-8 w-1/5">
                         <div
-                          v-if="isItemOwned(getCategoryEquipment(series.id, category))" 
-                          class="absolute !text-xl -top-0 -right-0 flex items-center justify-center">
-                          🎁
+                          v-if="getCategoryEquipment(series.id, category)" 
+                          class="p-16 rounded-md text-center cursor-pointer transition-all duration-300 relative"
+                          :class="[
+                            getEquipmentRarityClass(getCategoryEquipment(series.id, category)?.rarity), 
+                            isItemOwned(getCategoryEquipment(series.id, category)) ? 'shadow-[0_0_0_2px] shadow-primary-gold' : 'hover:shadow-card'
+                          ]"
+                          @click="toggleObtained(getCategoryEquipment(series.id, category))">
+                          <div class="mb-8 font-bold text-caption text-primary-gold">{{ getCategoryDisplayName(category) }}</div>
+                          <div class="tooltip-container">
+                            <div class="text-light-gray line-clamp-1 text-caption">{{ getCategoryEquipment(series.id, category)?.name }}</div>
+                          </div>
+                          
+                          <!-- 所持アイコン -->
+                          <div
+                            v-if="isItemOwned(getCategoryEquipment(series.id, category))" 
+                            class="absolute !text-xl -top-0 -right-0 flex items-center justify-center">
+                            🎁
+                          </div>
                         </div>
-                      </div>
-                      <div 
-                        v-else 
-                        class="p-16 rounded-md bg-charcoal/30 border border-light-gray/5 text-center text-light-gray/30 text-caption">
-                        {{ getCategoryDisplayName(category) }}
-                      </div>
-                    </td>
-                  </tr>
+                        <div 
+                          v-else 
+                          class="p-16 rounded-md bg-charcoal/30 border border-light-gray/5 text-center text-light-gray/30 text-caption">
+                          {{ getCategoryDisplayName(category) }}
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
               
@@ -674,16 +676,16 @@ const filteredSeriesList = computed(() => {
 
 <style scoped>
 /* スクロールバー用のスタイル */
-table {
+.equipment-table {
   border-collapse: separate;
   border-spacing: 8px;
 }
 
-tr {
+.equipment-row {
   display: flex;
 }
 
-td {
+.equipment-cell {
   flex: 1;
 }
 
