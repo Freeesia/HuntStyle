@@ -5,6 +5,26 @@ import { ref, computed, onMounted, inject } from 'vue';
 const categories = ['head', 'chest', 'arms', 'waist', 'legs'] as const;
 type Category = typeof categories[number];
 
+// ソートのオプション
+type SortOption = 'rarity' | 'name';
+type SortDirection = 'asc' | 'desc';
+
+// ソートの状態
+const sortOption = ref<SortOption>('rarity');
+const sortDirection = ref<SortDirection>('desc');
+
+// ソートオプションの表示名マッピング
+const sortOptionDisplayNames: Record<SortOption, string> = {
+  'rarity': 'レアリティ',
+  'name': 'シリーズ名'
+};
+
+// ソート方向の表示名/アイコン
+const sortDirectionIcons: Record<SortDirection, string> = {
+  'asc': '↑',
+  'desc': '↓'
+};
+
 // 装備シリーズの型定義
 interface ArmorSet {
   id: number;
@@ -357,6 +377,22 @@ const getCategoryDisplayName = (category: Category): string => {
   }
 };
 
+// シリーズの平均レアリティを取得する関数
+const getSeriesAverageRarity = (seriesId: number): number => {
+  const seriesKey = `${seriesId}`;
+  const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
+  
+  if (seriesEquipment.length === 0) {
+    return 0;
+  }
+  
+  const totalRarity = seriesEquipment.reduce((sum, item) => {
+    return sum + (item.rarity || 0);
+  }, 0);
+  
+  return totalRarity / seriesEquipment.length;
+};
+
 // レア度に基づく装備のスタイルクラスを取得
 const getEquipmentRarityClass = (rarity: number | undefined, isOwned: boolean = false) => {
   if (!rarity) return '';
@@ -396,7 +432,8 @@ const getEquipmentRarityClass = (rarity: number | undefined, isOwned: boolean = 
 
 // フィルタリング済みのシリーズリスト
 const filteredSeriesList = computed(() => {
-  return seriesList.value.filter(series => {
+  // フィルタリング処理
+  const filteredSeries = seriesList.value.filter(series => {
     // 検索クエリがある場合、シリーズ名に一致するか、装備品が検索条件に一致するかをチェック
     if (searchQuery.value) {
       // シリーズ名が検索クエリを含む場合
@@ -439,7 +476,33 @@ const filteredSeriesList = computed(() => {
     
     return true;
   });
+
+  // ソート処理
+  return [...filteredSeries].sort((a, b) => {
+    if (sortOption.value === 'rarity') {
+      const rarityA = getSeriesAverageRarity(a.id);
+      const rarityB = getSeriesAverageRarity(b.id);
+      return sortDirection.value === 'asc' ? rarityA - rarityB : rarityB - rarityA;
+    } else if (sortOption.value === 'name') {
+      return sortDirection.value === 'asc'
+        ? a.name.localeCompare(b.name, 'ja')
+        : b.name.localeCompare(a.name, 'ja');
+    }
+    return 0;
+  });
 });
+
+// ソートを変更する関数
+const changeSort = (option: SortOption) => {
+  if (sortOption.value === option) {
+    // 同じオプションの場合は昇順/降順を切り替え
+    sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc';
+  } else {
+    // 異なるオプションの場合はそのオプションを降順で設定
+    sortOption.value = option;
+    sortDirection.value = 'desc';
+  }
+};
 </script>
 
 <template>
@@ -531,6 +594,24 @@ const filteredSeriesList = computed(() => {
             <span>{{ isEditMode ? '編集中' : '所持を切り替える' }}</span>
           </button>
           
+          <!-- ソートオプション -->
+          <div class="flex items-center gap-4 mr-8">
+            <span class="text-light-gray text-caption">並び順:</span>
+            <div class="flex gap-4">
+              <button 
+                v-for="(displayName, option) in sortOptionDisplayNames" 
+                :key="option"
+                @click="changeSort(option as SortOption)" 
+                class="px-16 py-8 rounded-full border transition-all duration-300 flex items-center gap-4"
+                :class="sortOption === option ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'"
+              >
+                {{ displayName }}
+                <span v-if="sortOption === option" class="text-xs">{{ sortDirectionIcons[sortDirection] }}</span>
+              </button>
+            </div>
+          </div>
+          
+          <!-- フィルターオプション -->
           <button 
             @click="equipmentFilter = '全て'" 
             class="px-16 py-8 rounded-full border transition-all duration-300"
