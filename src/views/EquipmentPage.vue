@@ -9,6 +9,15 @@ type Category = typeof categories[number];
 type SortOption = 'rarity' | 'name';
 type SortDirection = 'asc' | 'desc';
 
+// 性別の型定義
+type Gender = 'm' | 'w';
+
+// 所持装備の型定義（装備ID毎にmとwの所持状態を保存）
+type OwnedEquipmentItem = {
+  m: boolean;
+  w: boolean;
+};
+
 // ソートの状態
 const sortOption = ref<SortOption>('rarity');
 const sortDirection = ref<SortDirection>('desc');
@@ -79,14 +88,8 @@ const equipmentBySeries = ref<Record<string, ArmorItem[]>>({});
 // シリーズのリスト
 const seriesList = ref<ArmorSet[]>([]);
 
-// ユーザーの所持装備IDを保存するSet
-const ownedEquipmentIds = ref<Record<Category, Set<number>>>({
-  'head': new Set(),
-  'chest': new Set(),
-  'arms': new Set(),
-  'waist': new Set(),
-  'legs': new Set()
-});
+// ユーザーの所持装備を保存するオブジェクト（装備ID毎にmとwの所持状態を保存）
+const ownedEquipmentIds = ref<Record<number, OwnedEquipmentItem>>({});
 
 // ローディング状態
 const isLoading = ref(true);
@@ -123,12 +126,12 @@ const fetchEquipment = async () => {
     }
 
     const armorSets: ArmorSet[] = await response.json();
-    
+
     // シリーズのリストを保存
     seriesList.value = armorSets
       .filter(set => set.pieces && set.pieces.length > 0) // 装備が存在するセットのみを保持
       .sort((a, b) => a.id - b.id);
-    
+
     const allArmorItems: ArmorItem[] = [];
     const groupedEquipment: Record<string, ArmorItem[]> = {};
 
@@ -136,11 +139,11 @@ const fetchEquipment = async () => {
     for (const set of seriesList.value) {
       // セット内のすべての装備を取り出す
       const setItems: ArmorItem[] = [];
-      
+
       for (const piece of set.pieces) {
         // 装備タイプを小文字に変換して処理
         const normalizedKind = String(piece.kind).toLowerCase();
-        
+
         // 正規化したkindがcategoriesに含まれるかチェック
         if (categories.includes(normalizedKind as Category)) {
           // 正規化したカテゴリ値を使用
@@ -185,7 +188,7 @@ const fetchEquipment = async () => {
   } finally {
     isLoading.value = false;
     if (isPageLoading) isPageLoading.value = false;
-    
+
     // アニメーション用のフラグを設定
     setTimeout(() => {
       isLoaded.value = true;
@@ -195,42 +198,34 @@ const fetchEquipment = async () => {
 
 // ローカルストレージから所持装備データを読み込む
 const loadOwnedEquipment = () => {
-  // すべてのカテゴリの所持装備を一つのキーで保存
   const storedDataJson = localStorage.getItem(STORAGE_KEY_OWNED_EQUIPMENT);
 
   if (storedDataJson) {
     try {
       const storedData = JSON.parse(storedDataJson);
 
-      // 各カテゴリのデータを取り出して設定
-      for (const category of categories) {
-        if (storedData[category] && Array.isArray(storedData[category])) {
-          ownedEquipmentIds.value[category] = new Set(storedData[category]);
-        } else {
-          ownedEquipmentIds.value[category] = new Set();
+      // 新しいデータ構造の場合はそのまま使用
+      if (storedData && typeof storedData === 'object' && !Array.isArray(storedData)) {
+        // 装備ID毎にmとwのオブジェクトが保存されている新形式かチェック
+        const firstKey = Object.keys(storedData)[0];
+        if (firstKey && storedData[firstKey] && typeof storedData[firstKey] === 'object' && 'm' in storedData[firstKey]) {
+          ownedEquipmentIds.value = storedData;
+          return;
         }
       }
+
+      // 古いデータ構造の場合は空で初期化（移行は複雑なので新規スタート）
+      ownedEquipmentIds.value = {};
     } catch (error) {
       console.error('所持装備データの読み込みに失敗しました:', error);
-      // エラー時は空のセットで初期化
-      for (const category of categories) {
-        ownedEquipmentIds.value[category] = new Set();
-      }
+      ownedEquipmentIds.value = {};
     }
   }
 };
 
 // ローカルストレージに所持装備データを保存
 const saveOwnedEquipment = () => {
-  // オブジェクトに変換してJSON形式で保存
-  const dataToSave = Object.fromEntries(
-    categories.map(category => [
-      category,
-      Array.from(ownedEquipmentIds.value[category])
-    ])
-  );
-
-  localStorage.setItem(STORAGE_KEY_OWNED_EQUIPMENT, JSON.stringify(dataToSave));
+  localStorage.setItem(STORAGE_KEY_OWNED_EQUIPMENT, JSON.stringify(ownedEquipmentIds.value));
 };
 
 // コンポーネントマウント時にデータを取得
@@ -239,24 +234,24 @@ onMounted(() => {
 });
 
 // シリーズ装備をカテゴリ別に取得する関数
-const getCategoryEquipment = (seriesId: number, category: Category) => {
+const getCategoryEquipment = (seriesId: number, category: Category, gender: Gender) => {
   const seriesKey = `${seriesId}`;
   const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
-  
+
   // 指定したカテゴリの装備のみをフィルタリング
   return seriesEquipment.find(item => {
     // 検索フィルターとカテゴリフィルターの両方を適用
     const matchesQuery = searchQuery.value === '' || item.name.toLowerCase().includes(searchQuery.value.toLowerCase());
     const matchesCategory = item.kind === category;
-    
+
     // 所持状態フィルター
     let matchesFilter = true;
     if (equipmentFilter.value === '所持') {
-      matchesFilter = isItemOwned(item);
+      matchesFilter = isItemOwned(item, gender);
     } else if (equipmentFilter.value === '未所持') {
-      matchesFilter = !isItemOwned(item);
+      matchesFilter = !isItemOwned(item, gender);
     }
-    
+
     return matchesQuery && matchesCategory && matchesFilter;
   });
 };
@@ -271,16 +266,17 @@ const getFilteredSeriesEquipment = (seriesId: number) => {
     const matchesQuery = searchQuery.value === '' ||
       item.name.toLowerCase().includes(searchQuery.value.toLowerCase());
 
-    // 所持状態フィルター
+    // 所持状態フィルター（両性別のうち少なくとも一方を所持している場合）
     let matchesFilter = true;
-    
+
     if (item.kind && categories.includes(item.kind as Category)) {
-      const isOwned = ownedEquipmentIds.value[item.kind].has(item.id);
-      
+      const isMaleOwned = isItemOwned(item, 'm');
+      const isFemaleOwned = isItemOwned(item, 'w');
+
       if (equipmentFilter.value === '所持') {
-        matchesFilter = isOwned;
+        matchesFilter = isMaleOwned || isFemaleOwned;
       } else if (equipmentFilter.value === '未所持') {
-        matchesFilter = !isOwned;
+        matchesFilter = !isMaleOwned && !isFemaleOwned;
       }
     }
 
@@ -289,36 +285,39 @@ const getFilteredSeriesEquipment = (seriesId: number) => {
 };
 
 // 所持状態の切り替え
-const toggleObtained = (item: ArmorItem | undefined) => {
+const toggleObtained = (item: ArmorItem | undefined, gender: Gender) => {
   // アイテムがundefinedの場合は処理しない
   if (!item) return;
-  
+
   // 編集モードでない場合は何もしない
   if (!isEditMode.value) {
     return;
   }
-  
-  const category = item.kind;
+
   const itemId = item.id;
 
-  if (ownedEquipmentIds.value[category].has(itemId)) {
-    ownedEquipmentIds.value[category].delete(itemId);
-  } else {
-    ownedEquipmentIds.value[category].add(itemId);
+  // 装備データが存在しない場合は初期化
+  if (!ownedEquipmentIds.value[itemId]) {
+    ownedEquipmentIds.value[itemId] = { m: false, w: false };
   }
 
-  // 変更をローカルストレージに保存（全カテゴリをまとめて保存）
+  // 所持状態を切り替え
+  ownedEquipmentIds.value[itemId][gender] = !ownedEquipmentIds.value[itemId][gender];
+
+  // 変更をローカルストレージに保存
   saveOwnedEquipment();
 };
 
 // 統計情報を計算
 const statsData = computed(() => {
-  const totalCount = allEquipment.value.length;
+  const totalCount = allEquipment.value.length * 2; // 男性用と女性用で2倍
 
-  const ownedCount = categories.reduce(
-    (sum, category) => sum + ownedEquipmentIds.value[category].size,
-    0
-  );
+  const ownedCount = Object.values(ownedEquipmentIds.value).reduce((sum, item) => {
+    let count = 0;
+    if (item.m) count++;
+    if (item.w) count++;
+    return sum + count;
+  }, 0);
 
   const notOwnedCount = totalCount - ownedCount;
 
@@ -335,12 +334,18 @@ const statsData = computed(() => {
 });
 
 // アイテムが所持されているかどうかを確認する関数
-const isItemOwned = (item: ArmorItem | undefined) => {
+const isItemOwned = (item: ArmorItem | undefined, gender: Gender) => {
   // アイテムがundefinedまたは必要なプロパティがない場合は所持していないとみなす
-  if (!item || !item.kind || !categories.includes(item.kind as Category) || !ownedEquipmentIds.value[item.kind]) {
+  if (!item || !item.id) {
     return false;
   }
-  return ownedEquipmentIds.value[item.kind].has(item.id);
+
+  const equipmentData = ownedEquipmentIds.value[item.id];
+  if (!equipmentData) {
+    return false;
+  }
+
+  return equipmentData[gender];
 };
 
 // シリーズの所持装備数を取得する関数
@@ -349,14 +354,19 @@ const getSeriesOwnedCount = (seriesId: number) => {
   const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
 
   return seriesEquipment.reduce((count, item) => {
-    return count + (isItemOwned(item) ? 1 : 0);
+    // 男性用と女性用の両方をチェック
+    const maleOwned = isItemOwned(item, 'm') ? 1 : 0;
+    const femaleOwned = isItemOwned(item, 'w') ? 1 : 0;
+    return count + maleOwned + femaleOwned;
   }, 0);
 };
 
 // シリーズの装備数を取得する関数
 const getSeriesItemCount = (seriesId: number) => {
   const seriesKey = `${seriesId}`;
-  return equipmentBySeries.value[seriesKey]?.length || 0;
+  const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
+  // 男性用と女性用の2倍の数になる
+  return seriesEquipment.length * 2;
 };
 
 // カテゴリーの日本語表示名を取得する関数
@@ -381,26 +391,26 @@ const getCategoryDisplayName = (category: Category): string => {
 const getSeriesAverageRarity = (seriesId: number): number => {
   const seriesKey = `${seriesId}`;
   const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
-  
+
   if (seriesEquipment.length === 0) {
     return 0;
   }
-  
+
   const totalRarity = seriesEquipment.reduce((sum, item) => {
     return sum + (item.rarity || 0);
   }, 0);
-  
+
   return totalRarity / seriesEquipment.length;
 };
 
 // レア度に基づく装備のスタイルクラスを取得
 const getEquipmentRarityClass = (rarity: number | undefined, isOwned: boolean = false) => {
   if (!rarity) return '';
-  
+
   // レアリティに応じた境界線と背景色を設定
   let rarityBorder = 'border-primary-gold/30';
   let rarityBg = 'bg-charcoal/50';
-  
+
   // レアリティに応じた色を決定
   switch (rarity) {
     case 9:
@@ -420,12 +430,12 @@ const getEquipmentRarityClass = (rarity: number | undefined, isOwned: boolean = 
       rarityBg = 'bg-charcoal/50';
       break;
   }
-  
+
   // 所持している場合：外枠がレアリティカラー、背景がプライマリカラー
   if (isOwned) {
     return `border ${rarityBorder} bg-primary-gold/30`;
   }
-  
+
   // 所持していない場合：外枠がプライマリカラー、背景がレアリティカラー
   return `border border-primary-gold/30 ${rarityBg}`;
 };
@@ -438,42 +448,45 @@ const filteredSeriesList = computed(() => {
     if (searchQuery.value) {
       // シリーズ名が検索クエリを含む場合
       const seriesNameMatches = series.name.toLowerCase().includes(searchQuery.value.toLowerCase());
-      
+
       // 装備が検索クエリを含むかチェック
       const seriesKey = `${series.id}`;
       const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
       const anyEquipmentMatches = seriesEquipment.some(item => {
         return item.name.toLowerCase().includes(searchQuery.value.toLowerCase());
       });
-      
+
       if (!seriesNameMatches && !anyEquipmentMatches) {
         return false;
       }
     }
-    
+
     // 所持フィルターの条件に一致するかチェック
     if (equipmentFilter.value !== '全て') {
       const seriesKey = `${series.id}`;
       const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
-      
+
       // 所持している装備をカウント
       let ownedCount = 0;
       seriesEquipment.forEach(item => {
-        if (isItemOwned(item)) {
+        if (isItemOwned(item, 'm')) {
+          ownedCount++;
+        }
+        if (isItemOwned(item, 'w')) {
           ownedCount++;
         }
       });
-      
+
       // フィルター条件に基づいて結果を返す
       if (equipmentFilter.value === '所持' && ownedCount === 0) {
         return false;
       }
-      
+
       if (equipmentFilter.value === '未所持' && ownedCount === seriesEquipment.length) {
         return false;
       }
     }
-    
+
     return true;
   });
 
@@ -509,128 +522,122 @@ const changeSort = (option: SortOption) => {
   <div class="max-w-[1100px] mx-auto pt-[70px] lg:pt-0 px-16" :class="{ 'edit-mode': isEditMode }">
     <!-- ページヘッダー -->
     <div class="mb-32 transition-all duration-500"
-         :class="{'opacity-100 translate-y-0': isLoaded, 'opacity-0 translate-y-16': !isLoaded}">
+      :class="{ 'opacity-100 translate-y-0': isLoaded, 'opacity-0 translate-y-16': !isLoaded }">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-16 mb-32">
         <h1 class="text-heading-lg font-display text-light-gray">所持装備管理</h1>
-        
-        <router-link to="/" class="inline-flex items-center gap-8 text-light-gray hover:text-primary-gold transition-colors duration-300">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16">
+
+        <router-link to="/"
+          class="inline-flex items-center gap-8 text-light-gray hover:text-primary-gold transition-colors duration-300">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16">
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
           <span>ホームに戻る</span>
         </router-link>
       </div>
-      
+
       <!-- 統計カード -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-32">
-        <div class="p-24 rounded-card bg-charcoal border border-primary-green/20 flex flex-col items-center shadow-card relative overflow-hidden group">
-          <div class="absolute inset-x-0 bottom-0 h-1 bg-sage-green transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+        <div
+          class="p-24 rounded-card bg-charcoal border border-primary-green/20 flex flex-col items-center shadow-card relative overflow-hidden group">
+          <div
+            class="absolute inset-x-0 bottom-0 h-1 bg-sage-green transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left">
+          </div>
           <span class="text-caption text-light-gray/70 mb-8">総装備数</span>
           <span class="text-heading-lg font-display text-primary-gold mb-8">{{ statsData.total }}</span>
         </div>
-        
-        <div class="p-24 rounded-card bg-charcoal border border-primary-green/20 flex flex-col items-center shadow-card relative overflow-hidden group">
-          <div class="absolute inset-x-0 bottom-0 h-1 bg-sage-green transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+
+        <div
+          class="p-24 rounded-card bg-charcoal border border-primary-green/20 flex flex-col items-center shadow-card relative overflow-hidden group">
+          <div
+            class="absolute inset-x-0 bottom-0 h-1 bg-sage-green transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left">
+          </div>
           <span class="text-caption text-light-gray/70 mb-8">所持装備数</span>
           <span class="text-heading-lg font-display text-bright-gold mb-8">{{ statsData.owned }}</span>
         </div>
-        
-        <div class="p-24 rounded-card bg-charcoal border border-primary-green/20 flex flex-col items-center shadow-card relative overflow-hidden group">
-          <div class="absolute inset-x-0 bottom-0 h-1 bg-sage-green transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+
+        <div
+          class="p-24 rounded-card bg-charcoal border border-primary-green/20 flex flex-col items-center shadow-card relative overflow-hidden group">
+          <div
+            class="absolute inset-x-0 bottom-0 h-1 bg-sage-green transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left">
+          </div>
           <span class="text-caption text-light-gray/70 mb-8">未所持装備数</span>
           <span class="text-heading-lg font-display text-primary-green mb-8">{{ statsData.notOwned }}</span>
         </div>
-        
-        <div class="p-24 rounded-card bg-charcoal border border-primary-green/20 flex flex-col items-center shadow-card relative overflow-hidden group">
-          <div class="absolute inset-x-0 bottom-0 h-1 bg-sage-green transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+
+        <div
+          class="p-24 rounded-card bg-charcoal border border-primary-green/20 flex flex-col items-center shadow-card relative overflow-hidden group">
+          <div
+            class="absolute inset-x-0 bottom-0 h-1 bg-sage-green transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left">
+          </div>
           <span class="text-caption text-light-gray/70 mb-8">コンプリート率</span>
           <span class="text-heading-lg font-display text-primary-gold mb-8">{{ statsData.completeRate }}%</span>
         </div>
       </div>
-      
+
       <!-- 検索とフィルターセクション -->
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-16 mb-32">
         <div class="relative w-full md:w-auto md:flex-1">
-          <input 
-            v-model="searchQuery" 
-            type="text" 
-            placeholder="装備やシリーズ名を検索..."
-            @focus="isSearchFocused = true"
+          <input v-model="searchQuery" type="text" placeholder="装備やシリーズ名を検索..." @focus="isSearchFocused = true"
             @blur="isSearchFocused = false"
             class="w-full pl-40 pr-16 py-12 bg-charcoal rounded-full border transition-all duration-300 text-body focus:outline-none"
-            :class="isSearchFocused || searchQuery ? 'border-primary-gold shadow-floating' : 'border-light-gray/20'"
-          >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-               class="absolute left-16 top-1/2 transform -translate-y-1/2 w-16 h-16 transition-colors duration-300"
-               :class="isSearchFocused || searchQuery ? 'text-primary-gold' : 'text-light-gray/50'">
+            :class="isSearchFocused || searchQuery ? 'border-primary-gold shadow-floating' : 'border-light-gray/20'">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"
+            class="absolute left-16 top-1/2 transform -translate-y-1/2 w-16 h-16 transition-colors duration-300"
+            :class="isSearchFocused || searchQuery ? 'text-primary-gold' : 'text-light-gray/50'">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <button 
-            v-if="searchQuery" 
-            @click="searchQuery = ''" 
-            class="absolute right-16 top-1/2 transform -translate-y-1/2 text-light-gray/50 hover:text-primary-gold transition-colors duration-300"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16">
+          <button v-if="searchQuery" @click="searchQuery = ''"
+            class="absolute right-16 top-1/2 transform -translate-y-1/2 text-light-gray/50 hover:text-primary-gold transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
         </div>
-        
+
         <div class="flex gap-8 flex-wrap w-full md:w-auto">
           <!-- 所持装備切り替えモードボタン -->
-          <button 
-            @click="toggleEditMode" 
+          <button @click="toggleEditMode"
             class="px-16 py-8 rounded-full border transition-all duration-300 flex items-center gap-4"
-            :class="isEditMode ? 'bg-sage-green/20 border-sage-green text-sage-green shadow-floating' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-                 class="w-16 h-16" :class="isEditMode ? 'text-sage-green' : 'text-light-gray'">
+            :class="isEditMode ? 'bg-sage-green/20 border-sage-green text-sage-green shadow-floating' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" class="w-16 h-16" :class="isEditMode ? 'text-sage-green' : 'text-light-gray'">
               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
               <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
             </svg>
             <span>{{ isEditMode ? '編集中' : '所持を切り替える' }}</span>
           </button>
-          
+
           <!-- ソートオプション -->
           <div class="flex items-center gap-4 mr-8">
             <span class="text-light-gray text-caption">並び順:</span>
             <div class="flex gap-4">
-              <button 
-                v-for="(displayName, option) in sortOptionDisplayNames" 
-                :key="option"
-                @click="changeSort(option as SortOption)" 
+              <button v-for="(displayName, option) in sortOptionDisplayNames" :key="option"
+                @click="changeSort(option as SortOption)"
                 class="px-16 py-8 rounded-full border transition-all duration-300 flex items-center gap-4"
-                :class="sortOption === option ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'"
-              >
+                :class="sortOption === option ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'">
                 {{ displayName }}
                 <span v-if="sortOption === option" class="text-xs">{{ sortDirectionIcons[sortDirection] }}</span>
               </button>
             </div>
           </div>
-          
+
           <!-- フィルターオプション -->
-          <button 
-            @click="equipmentFilter = '全て'" 
-            class="px-16 py-8 rounded-full border transition-all duration-300"
-            :class="equipmentFilter === '全て' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'"
-          >全て</button>
-          <button 
-            @click="equipmentFilter = '所持'" 
-            class="px-16 py-8 rounded-full border transition-all duration-300"
-            :class="equipmentFilter === '所持' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'"
-          >所持</button>
-          <button 
-            @click="equipmentFilter = '未所持'" 
-            class="px-16 py-8 rounded-full border transition-all duration-300"
-            :class="equipmentFilter === '未所持' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'"
-          >未所持</button>
+          <button @click="equipmentFilter = '全て'" class="px-16 py-8 rounded-full border transition-all duration-300"
+            :class="equipmentFilter === '全て' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'">全て</button>
+          <button @click="equipmentFilter = '所持'" class="px-16 py-8 rounded-full border transition-all duration-300"
+            :class="equipmentFilter === '所持' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'">所持</button>
+          <button @click="equipmentFilter = '未所持'" class="px-16 py-8 rounded-full border transition-all duration-300"
+            :class="equipmentFilter === '未所持' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'">未所持</button>
         </div>
       </div>
     </div>
-    
+
     <!-- 装備リスト -->
     <div>
       <!-- ローディング表示 -->
@@ -638,92 +645,124 @@ const changeSort = (option: SortOption) => {
         <div class="w-16 h-16 border-4 border-primary-gold border-t-transparent rounded-full animate-spin mb-16"></div>
         <p class="text-light-gray">装備データを読み込み中...</p>
       </div>
-      
+
       <!-- エラー表示 -->
       <div v-else-if="loadError" class="p-32 rounded-card bg-error/10 border border-error text-center mb-32">
         <p class="text-error font-medium mb-8">{{ loadError }}</p>
         <p class="text-light-gray">APIからのデータ取得に失敗しました。後でもう一度お試しください。</p>
-        <button 
-          @click="fetchEquipment" 
+        <button @click="fetchEquipment"
           class="mt-16 px-16 py-8 bg-error/20 text-error rounded-full hover:bg-error hover:text-white transition-colors duration-300">
           再読み込み
         </button>
       </div>
-      
+
       <!-- 装備データ表示 -->
       <div v-else>
         <!-- シリーズがない場合 -->
-        <div v-if="filteredSeriesList.length === 0" class="p-32 rounded-card bg-charcoal border border-primary-green/20 text-center">
+        <div v-if="filteredSeriesList.length === 0"
+          class="p-32 rounded-card bg-charcoal border border-primary-green/20 text-center">
           <p class="text-light-gray">条件に一致する装備シリーズが見つかりません。</p>
         </div>
-        
+
         <!-- シリーズ一覧 -->
-        <div 
-          v-else
-          class="flex flex-col gap-16 mb-32 transition-all duration-500 delay-200"
-          :class="{'opacity-100 translate-y-0': isLoaded, 'opacity-0 translate-y-16': !isLoaded}">
-          <div 
-            v-for="series in filteredSeriesList" 
-            :key="series.id" 
+        <div v-else class="flex flex-col gap-16 mb-32 transition-all duration-500 delay-200"
+          :class="{ 'opacity-100 translate-y-0': isLoaded, 'opacity-0 translate-y-16': !isLoaded }">
+          <div v-for="series in filteredSeriesList" :key="series.id"
             class="rounded-card overflow-hidden transition-all duration-300 hover:shadow-floating bg-charcoal border border-primary-green/20">
-            
+
             <!-- シリーズヘッダー -->
-            <div 
+            <div
               class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 p-16 hover:bg-dark/30 transition-colors duration-300">
               <div class="flex items-center">
-                <h3 class="text-body md:text-heading-sm font-display text-light-gray transition-colors duration-300">{{ series.name }}</h3>
+                <h3 class="text-body md:text-heading-sm font-display text-light-gray transition-colors duration-300">{{
+                  series.name }}</h3>
               </div>
-              
+
               <div class="flex items-center gap-8 text-caption">
                 <span class="py-4 px-8 rounded-full bg-primary-gold/10 text-primary-gold">
                   {{ getSeriesOwnedCount(series.id) }}/{{ getSeriesItemCount(series.id) }}
                 </span>
               </div>
             </div>
-            
+
             <!-- シリーズの装備一覧 -->
-            <div 
-              class="p-8 border-t border-primary-green/10 transition-all duration-300 bg-dark/20"
-            >
+            <div class="p-8 border-t border-primary-green/10 transition-all duration-300 bg-dark/20">
               <!-- 装備がフィルタリング条件に一致する場合のみ表示 -->
-              <div v-if="getFilteredSeriesEquipment(series.id).length > 0" class="overflow-x-auto">              
+              <div v-if="getFilteredSeriesEquipment(series.id).length > 0" class="overflow-x-auto">
                 <!-- 装備テーブル -->
                 <table class="min-w-full">
                   <tbody>
+                    <!-- 男性用装備 (1行目) -->
                     <tr>
-                      <td v-for="category in categories" :key="category" class="p-8 w-1/5">
-                        <div
-                          v-if="getCategoryEquipment(series.id, category)" 
+                      <td>
+                        <div class="w-8 h-8 rounded-full bg-sage-green"></div>
+                      </td>
+                      <td v-for="category in categories" :key="`m-${category}`" class="p-8 w-1/5">
+                        <div v-if="getCategoryEquipment(series.id, category, 'm')"
                           class="p-16 rounded-md text-center transition-all duration-300 relative tooltip-container"
                           :class="[
                             getEquipmentRarityClass(
-                              getCategoryEquipment(series.id, category)?.rarity, 
-                              isItemOwned(getCategoryEquipment(series.id, category))
-                            ), 
-                            !isItemOwned(getCategoryEquipment(series.id, category)) ? 'hover:shadow-card' : '',
+                              getCategoryEquipment(series.id, category, 'm')?.rarity,
+                              isItemOwned(getCategoryEquipment(series.id, category, 'm'), 'm')
+                            ),
+                            !isItemOwned(getCategoryEquipment(series.id, category, 'm'), 'm') ? 'hover:shadow-card' : '',
                             isEditMode ? 'cursor-pointer scale-[1.02]' : 'cursor-default',
-                            isEditMode && !isItemOwned(getCategoryEquipment(series.id, category)) ? 'outline-2 outline-sage-green/50' : ''
-                          ]"
-                          @click="toggleObtained(getCategoryEquipment(series.id, category))">
-                          <div class="mb-8 font-bold text-body text-primary-gold">{{ getCategoryDisplayName(category) }}</div>
-                          <div class="tooltip">{{ getCategoryEquipment(series.id, category)?.name }}</div>
-                          
+                            isEditMode && !isItemOwned(getCategoryEquipment(series.id, category, 'm'), 'm') ? 'outline-2 outline-sage-green/50' : ''
+                          ]" @click="toggleObtained(getCategoryEquipment(series.id, category, 'm'), 'm')">
+                          <div class="mb-8 font-bold text-body text-primary-gold">{{ getCategoryDisplayName(category) }}
+                          </div>
+                          <div class="tooltip">{{ getCategoryEquipment(series.id, category, 'm')?.name }}</div>
+
                           <!-- 所持アイコン -->
-                          <div
-                            v-if="isItemOwned(getCategoryEquipment(series.id, category))" 
+                          <div v-if="isItemOwned(getCategoryEquipment(series.id, category, 'm'), 'm')"
                             class="absolute !text-xl -top-0 -right-0 flex items-center justify-center">
                             🎁
                           </div>
-                          
+
                           <!-- 編集モードインジケーター -->
-                          <div
-                            v-if="isEditMode" 
-                            class="absolute bottom-4 right-4 w-8 h-8 rounded-full"
-                            :class="isItemOwned(getCategoryEquipment(series.id, category)) ? 'bg-primary-gold' : 'bg-sage-green'">
+                          <div v-if="isEditMode" class="absolute bottom-4 right-4 w-8 h-8 rounded-full"
+                            :class="isItemOwned(getCategoryEquipment(series.id, category, 'm'), 'm') ? 'bg-primary-gold' : 'bg-sage-green'">
                           </div>
                         </div>
-                        <div 
-                          v-else 
+                        <div v-else
+                          class="p-16 rounded-md bg-charcoal/30 border border-light-gray/5 text-center text-light-gray/30 text-caption">
+                          {{ getCategoryDisplayName(category) }}
+                        </div>
+                      </td>
+                    </tr>
+                    <!-- 女性用装備 (2行目) -->
+                    <tr>
+                      <td>
+                        <div class="w-8 h-8 rounded-full bg-primary-gold"></div>
+                      </td>
+                      <td v-for="category in categories" :key="`w-${category}`" class="p-8 w-1/5">
+                        <div v-if="getCategoryEquipment(series.id, category, 'w')"
+                          class="p-16 rounded-md text-center transition-all duration-300 relative tooltip-container"
+                          :class="[
+                            getEquipmentRarityClass(
+                              getCategoryEquipment(series.id, category, 'w')?.rarity,
+                              isItemOwned(getCategoryEquipment(series.id, category, 'w'), 'w')
+                            ),
+                            !isItemOwned(getCategoryEquipment(series.id, category, 'w'), 'w') ? 'hover:shadow-card' : '',
+                            isEditMode ? 'cursor-pointer scale-[1.02]' : 'cursor-default',
+                            isEditMode && !isItemOwned(getCategoryEquipment(series.id, category, 'w'), 'w') ? 'outline-2 outline-sage-green/50' : ''
+                          ]" @click="toggleObtained(getCategoryEquipment(series.id, category, 'w'), 'w')">
+                          <div class="mb-8 font-bold text-body text-primary-gold">{{ getCategoryDisplayName(category) }}
+                          </div>
+                          <div class="tooltip">{{ getCategoryEquipment(series.id, category, 'w')?.name }}</div>
+
+                          <!-- 所持アイコン -->
+                          <div v-if="isItemOwned(getCategoryEquipment(series.id, category, 'w'), 'w')"
+                            class="absolute !text-xl -top-0 -right-0 flex items-center justify-center">
+                            🎁
+                          </div>
+
+                          <!-- 編集モードインジケーター -->
+                          <div v-if="isEditMode" class="absolute bottom-4 right-4 w-8 h-8 rounded-full"
+                            :class="isItemOwned(getCategoryEquipment(series.id, category, 'w'), 'w') ? 'bg-primary-gold' : 'bg-sage-green'">
+                          </div>
+                        </div>
+                        <div v-else
                           class="p-16 rounded-md bg-charcoal/30 border border-light-gray/5 text-center text-light-gray/30 text-caption">
                           {{ getCategoryDisplayName(category) }}
                         </div>
@@ -732,7 +771,7 @@ const changeSort = (option: SortOption) => {
                   </tbody>
                 </table>
               </div>
-              
+
               <!-- 装備がフィルター条件に一致しない場合 -->
               <div v-else class="p-16 text-center text-light-gray/50 text-caption">
                 条件に一致する装備がありません
@@ -837,9 +876,11 @@ const changeSort = (option: SortOption) => {
   0% {
     opacity: 0.5;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     opacity: 0.5;
   }
