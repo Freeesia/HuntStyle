@@ -186,7 +186,7 @@ onMounted(() => {
           <div>
             <label class="block text-caption text-light-gray/70 mb-8">タグ</label>
             <div class="flex flex-col gap-8">
-              <div v-for="(tag, index) in tags" :key="index" class="flex gap-8">
+              <div v-for="(_tag, index) in tags" :key="index" class="flex gap-8">
                 <input 
                   v-model="tags[index]" 
                   type="text" 

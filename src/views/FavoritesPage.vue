@@ -295,7 +295,7 @@ onMounted(() => {
                 <span class="text-caption text-light-gray/50">コレクション:</span>
                 <select 
                   v-model="favorite.collection"
-                  @change="changeCollection(favorite, $event.target.value)"
+                  @change="changeCollection(favorite, ($event.target as HTMLSelectElement).value)"
                   class="bg-dark border border-primary-gold/30 text-light-gray rounded-md py-2 px-8 text-caption focus:outline-none focus:border-primary-gold">
                   <option 
                     v-for="collection in collections.filter(c => c !== 'すべて')" 
