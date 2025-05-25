@@ -317,6 +317,56 @@ const toggleObtained = (item: ArmorItem | undefined, gender: Gender) => {
   saveOwnedEquipment();
 };
 
+// シリーズの特定性別装備を一括切り替え
+const toggleSeriesObtained = (seriesId: number, gender: Gender) => {
+  // 編集モードでない場合は何もしない
+  if (!isEditMode.value) {
+    return;
+  }
+
+  const seriesKey = `${seriesId}`;
+  const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
+  
+  // シリーズ内の指定性別での所持状況を確認
+  let ownedCount = 0;
+  seriesEquipment.forEach(item => {
+    if (isItemOwned(item, gender)) {
+      ownedCount++;
+    }
+  });
+
+  // 半分以上所持している場合は未所持に、そうでなければ所持に設定
+  const shouldOwn = ownedCount < seriesEquipment.length / 2;
+
+  // シリーズ内の全装備の所持状態を変更
+  seriesEquipment.forEach(item => {
+    const itemId = item.id;
+    
+    // 装備データが存在しない場合は初期化
+    if (!ownedEquipmentIds.value[itemId]) {
+      ownedEquipmentIds.value[itemId] = [];
+    }
+
+    const genderArray = ownedEquipmentIds.value[itemId];
+    const genderIndex = genderArray.indexOf(gender);
+
+    if (shouldOwn) {
+      // 所持状態にする
+      if (genderIndex === -1) {
+        genderArray.push(gender);
+      }
+    } else {
+      // 未所持状態にする
+      if (genderIndex !== -1) {
+        genderArray.splice(genderIndex, 1);
+      }
+    }
+  });
+
+  // 変更をローカルストレージに保存
+  saveOwnedEquipment();
+};
+
 // 統計情報を計算
 const statsData = computed(() => {
   const totalCount = allEquipment.value.length * 2; // 男性用と女性用で2倍
@@ -704,8 +754,10 @@ const changeSort = (option: SortOption) => {
                 <div id="equipment-grid" class="w-full">
                   <!-- 性別ごとの装備行 -->
                   <div v-for="gender in genders" :key="gender" :id="`${gender}-equipment-row`" class="grid grid-cols-6 gap-1 mb-1">
-                    <div :id="`${gender}-gender-indicator`" class="col-span-1 flex items-center justify-center p-2">
-                      <div class="w-8 h-8 min-w-8 min-h-8 flex-shrink-0 rounded-full" :class="gender === 'm' ? 'bg-sage-green' : 'bg-primary-gold'"></div>
+                    <div :id="`${gender}-gender-indicator`" class="col-span-1 flex items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:bg-light-gray/5 rounded-md" 
+                         @click="toggleSeriesObtained(series.id, gender)">
+                      <div class="w-8 h-8 min-w-8 min-h-8 flex-shrink-0 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-lg" 
+                           :class="gender === 'm' ? 'bg-sage-green hover:bg-sage-green/80' : 'bg-primary-gold hover:bg-primary-gold/80'"></div>
                     </div>
                     <div v-for="category in categories" :key="`${gender}-${category}`" :id="`${gender}-${category}-${series.id}`" class="col-span-1 p-2">
                         <div v-if="getCategoryEquipment(series.id, category, gender)"
