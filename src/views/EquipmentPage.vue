@@ -696,16 +696,15 @@ const changeSort = (option: SortOption) => {
             <!-- シリーズの装備一覧 -->
             <div :id="`series-equipment-${series.id}`" class="p-8 border-t border-primary-green/10 transition-all duration-300 bg-dark/20">
               <!-- 装備がフィルタリング条件に一致する場合のみ表示 -->
-              <div v-if="getFilteredSeriesEquipment(series.id).length > 0" class="overflow-x-auto">
-                <!-- 装備テーブル -->
-                <table id="equipment-table" class="min-w-full">
-                  <tbody>
-                    <!-- 性別ごとの装備行 -->
-                    <tr v-for="gender in genders" :key="gender" :id="`${gender}-equipment-row`" class="equipment-row">
-                      <td :id="`${gender}-gender-indicator`" class="w-1/11 flex items-center justify-center p-8">
-                        <div class="w-8 h-8 rounded-full" :class="gender === 'm' ? 'bg-sage-green' : 'bg-primary-gold'"></div>
-                      </td>
-                      <td v-for="category in categories" :key="`${gender}-${category}`" :id="`${gender}-${category}-${series.id}`" class="p-8 w-2/11">
+              <div v-if="getFilteredSeriesEquipment(series.id).length > 0">
+                <!-- 装備グリッド -->
+                <div id="equipment-grid" class="w-full">
+                  <!-- 性別ごとの装備行 -->
+                  <div v-for="gender in genders" :key="gender" :id="`${gender}-equipment-row`" class="grid grid-cols-6 gap-1 mb-1">
+                    <div :id="`${gender}-gender-indicator`" class="col-span-1 flex items-center justify-center p-2">
+                      <div class="w-8 h-8 min-w-8 min-h-8 flex-shrink-0 rounded-full" :class="gender === 'm' ? 'bg-sage-green' : 'bg-primary-gold'"></div>
+                    </div>
+                    <div v-for="category in categories" :key="`${gender}-${category}`" :id="`${gender}-${category}-${series.id}`" class="col-span-1 p-2">
                         <div v-if="getCategoryEquipment(series.id, category, gender)"
                           class="p-16 rounded-md text-center transition-all duration-300 relative tooltip-container"
                           :class="[
@@ -729,10 +728,9 @@ const changeSort = (option: SortOption) => {
                           class="p-16 rounded-md bg-charcoal/30 border border-light-gray/5 text-center text-light-gray/30 text-caption">
                           {{ getCategoryDisplayName(category) }}
                         </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <!-- 装備がフィルター条件に一致しない場合 -->
@@ -752,14 +750,6 @@ const changeSort = (option: SortOption) => {
 .equipment-table {
   border-collapse: separate;
   border-spacing: 8px;
-}
-
-.equipment-row {
-  display: flex;
-}
-
-.equipment-cell {
-  flex: 1;
 }
 
 /* ツールチップ */
