@@ -676,13 +676,16 @@ const changeSort = (option: SortOption) => {
         <div v-else id="series-list" class="flex flex-col gap-16 mb-32 transition-all duration-500 delay-200"
           :class="{ 'opacity-100 translate-y-0': isLoaded, 'opacity-0 translate-y-16': !isLoaded }">
           <div v-for="series in filteredSeriesList" :key="series.id" :id="`series-${series.id}`"
-            class="rounded-card overflow-hidden transition-all duration-300 hover:shadow-floating bg-charcoal border border-primary-green/20">
+            class="rounded-card overflow-hidden transition-all duration-300 hover:shadow-floating border border-primary-green/20"
+            :class="isEditMode ? 'bg-sage-green/20 border-sage-green/50' : 'bg-charcoal'">
 
             <!-- シリーズヘッダー -->
             <div :id="`series-header-${series.id}`"
-              class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 p-16 hover:bg-dark/30 transition-colors duration-300">
+              class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 p-16 transition-colors duration-300"
+              :class="isEditMode ? 'hover:bg-sage-green/10' : 'hover:bg-dark/30'">
               <div class="flex items-center">
-                <h3 class="text-body md:text-heading-sm font-display text-light-gray transition-colors duration-300">{{
+                <h3 class="text-body md:text-heading-sm font-display transition-colors duration-300"
+                    :class="isEditMode ? 'text-sage-green' : 'text-light-gray'">{{
                   series.name }}</h3>
               </div>
 
