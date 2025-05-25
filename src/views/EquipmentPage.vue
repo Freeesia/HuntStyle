@@ -301,7 +301,7 @@ const toggleObtained = (item: ArmorItem | undefined, gender: Gender) => {
   // 所持状態を切り替え
   const genderArray = ownedEquipmentIds.value[itemId];
   const genderIndex = genderArray.indexOf(gender);
-  
+
   if (genderIndex === -1) {
     // 性別が配列にない場合は追加
     genderArray.push(gender);
@@ -709,8 +709,6 @@ const changeSort = (option: SortOption) => {
                               isItemOwned(getCategoryEquipment(series.id, category, 'm'), 'm')
                             ),
                             !isItemOwned(getCategoryEquipment(series.id, category, 'm'), 'm') ? 'hover:shadow-card' : '',
-                            isEditMode ? 'cursor-pointer scale-[1.02]' : 'cursor-default',
-                            isEditMode && !isItemOwned(getCategoryEquipment(series.id, category, 'm'), 'm') ? 'outline-2 outline-sage-green/50' : ''
                           ]" @click="toggleObtained(getCategoryEquipment(series.id, category, 'm'), 'm')">
                           <div class="mb-8 font-bold text-body text-primary-gold">{{ getCategoryDisplayName(category) }}
                           </div>
@@ -720,11 +718,6 @@ const changeSort = (option: SortOption) => {
                           <div v-if="isItemOwned(getCategoryEquipment(series.id, category, 'm'), 'm')"
                             class="absolute !text-xl -top-0 -right-0 flex items-center justify-center">
                             🎁
-                          </div>
-
-                          <!-- 編集モードインジケーター -->
-                          <div v-if="isEditMode" class="absolute bottom-4 right-4 w-8 h-8 rounded-full"
-                            :class="isItemOwned(getCategoryEquipment(series.id, category, 'm'), 'm') ? 'bg-primary-gold' : 'bg-sage-green'">
                           </div>
                         </div>
                         <div v-else
@@ -747,8 +740,6 @@ const changeSort = (option: SortOption) => {
                               isItemOwned(getCategoryEquipment(series.id, category, 'w'), 'w')
                             ),
                             !isItemOwned(getCategoryEquipment(series.id, category, 'w'), 'w') ? 'hover:shadow-card' : '',
-                            isEditMode ? 'cursor-pointer scale-[1.02]' : 'cursor-default',
-                            isEditMode && !isItemOwned(getCategoryEquipment(series.id, category, 'w'), 'w') ? 'outline-2 outline-sage-green/50' : ''
                           ]" @click="toggleObtained(getCategoryEquipment(series.id, category, 'w'), 'w')">
                           <div class="mb-8 font-bold text-body text-primary-gold">{{ getCategoryDisplayName(category) }}
                           </div>
@@ -758,11 +749,6 @@ const changeSort = (option: SortOption) => {
                           <div v-if="isItemOwned(getCategoryEquipment(series.id, category, 'w'), 'w')"
                             class="absolute !text-xl -top-0 -right-0 flex items-center justify-center">
                             🎁
-                          </div>
-
-                          <!-- 編集モードインジケーター -->
-                          <div v-if="isEditMode" class="absolute bottom-4 right-4 w-8 h-8 rounded-full"
-                            :class="isItemOwned(getCategoryEquipment(series.id, category, 'w'), 'w') ? 'bg-primary-gold' : 'bg-sage-green'">
                           </div>
                         </div>
                         <div v-else
