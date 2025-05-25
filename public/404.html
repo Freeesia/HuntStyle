@@ -8,19 +8,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Rajdhani:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+      // SPAの404対策：現在のURLをホームページにリダイレクト
+      sessionStorage.redirect = location.pathname;
+    </script>
+    <meta http-equiv="refresh" content="0;URL='/'">
   </head>
   <body>
     <div id="app"></div>
-    <script>
-      // SPA用の404対策：リダイレクトされたパスを復元
-      (function(){
-        var redirect = sessionStorage.redirect;
-        delete sessionStorage.redirect;
-        if (redirect && redirect != location.pathname) {
-          history.replaceState(null, null, redirect);
-        }
-      })();
-    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

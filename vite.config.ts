@@ -13,6 +13,23 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
+      manifest: {
+        name: "HuntStyle",
+        short_name: "HuntStyle",
+        description: "Monster Hunter style sharing app",
+        theme_color: "#1a1a1a",
+        background_color: "#1a1a1a",
+        display: "standalone",
+        scope: "/",
+        start_url: "/",
+        icons: [
+          {
+            src: "/icons/icon.svg",
+            sizes: "any",
+            type: "image/svg+xml"
+          }
+        ]
+      },
       workbox: {
         runtimeCaching: [
           {
