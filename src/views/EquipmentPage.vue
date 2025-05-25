@@ -12,11 +12,8 @@ type SortDirection = 'asc' | 'desc';
 // 性別の型定義
 type Gender = 'm' | 'w';
 
-// 所持装備の型定義（装備ID毎にmとwの所持状態を保存）
-type OwnedEquipmentItem = {
-  m: boolean;
-  w: boolean;
-};
+// 所持装備の型定義（装備ID毎に所持している性別の配列を保存）
+type OwnedEquipmentGenders = Gender[];
 
 // ソートの状態
 const sortOption = ref<SortOption>('rarity');
@@ -88,8 +85,8 @@ const equipmentBySeries = ref<Record<string, ArmorItem[]>>({});
 // シリーズのリスト
 const seriesList = ref<ArmorSet[]>([]);
 
-// ユーザーの所持装備を保存するオブジェクト（装備ID毎にmとwの所持状態を保存）
-const ownedEquipmentIds = ref<Record<number, OwnedEquipmentItem>>({});
+// ユーザーの所持装備を保存するオブジェクト（装備ID毎に所持している性別の配列を保存）
+const ownedEquipmentIds = ref<Record<number, OwnedEquipmentGenders>>({});
 
 // ローディング状態
 const isLoading = ref(true);
@@ -206,9 +203,9 @@ const loadOwnedEquipment = () => {
 
       // 新しいデータ構造の場合はそのまま使用
       if (storedData && typeof storedData === 'object' && !Array.isArray(storedData)) {
-        // 装備ID毎にmとwのオブジェクトが保存されている新形式かチェック
+        // 装備ID毎に性別の配列が保存されている新形式かチェック
         const firstKey = Object.keys(storedData)[0];
-        if (firstKey && storedData[firstKey] && typeof storedData[firstKey] === 'object' && 'm' in storedData[firstKey]) {
+        if (firstKey && storedData[firstKey] && Array.isArray(storedData[firstKey])) {
           ownedEquipmentIds.value = storedData;
           return;
         }
@@ -298,11 +295,20 @@ const toggleObtained = (item: ArmorItem | undefined, gender: Gender) => {
 
   // 装備データが存在しない場合は初期化
   if (!ownedEquipmentIds.value[itemId]) {
-    ownedEquipmentIds.value[itemId] = { m: false, w: false };
+    ownedEquipmentIds.value[itemId] = [];
   }
 
   // 所持状態を切り替え
-  ownedEquipmentIds.value[itemId][gender] = !ownedEquipmentIds.value[itemId][gender];
+  const genderArray = ownedEquipmentIds.value[itemId];
+  const genderIndex = genderArray.indexOf(gender);
+  
+  if (genderIndex === -1) {
+    // 性別が配列にない場合は追加
+    genderArray.push(gender);
+  } else {
+    // 性別が配列にある場合は削除
+    genderArray.splice(genderIndex, 1);
+  }
 
   // 変更をローカルストレージに保存
   saveOwnedEquipment();
@@ -312,11 +318,8 @@ const toggleObtained = (item: ArmorItem | undefined, gender: Gender) => {
 const statsData = computed(() => {
   const totalCount = allEquipment.value.length * 2; // 男性用と女性用で2倍
 
-  const ownedCount = Object.values(ownedEquipmentIds.value).reduce((sum, item) => {
-    let count = 0;
-    if (item.m) count++;
-    if (item.w) count++;
-    return sum + count;
+  const ownedCount = Object.values(ownedEquipmentIds.value).reduce((sum, genderArray) => {
+    return sum + genderArray.length;
   }, 0);
 
   const notOwnedCount = totalCount - ownedCount;
@@ -345,7 +348,7 @@ const isItemOwned = (item: ArmorItem | undefined, gender: Gender) => {
     return false;
   }
 
-  return equipmentData[gender];
+  return equipmentData.includes(gender);
 };
 
 // シリーズの所持装備数を取得する関数
