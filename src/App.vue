@@ -34,7 +34,7 @@ provide('isLoading', isLoading);
     <Navigation />
     
     <!-- メインコンテンツ -->
-    <main class="main-content flex-1 md:pl-0 lg:pl-[240px] pt-16 pb-[80px] md:pb-16 px-16 transition-all duration-300">
+    <main class="main-content pt-16 pb-[80px] md:pb-16 px-16 transition-all duration-300">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <component :is="Component" />
