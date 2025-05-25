@@ -34,7 +34,7 @@ provide('isLoading', isLoading);
     <Navigation />
     
     <!-- メインコンテンツ -->
-    <main class="main-content pt-16 pb-[80px] md:pb-16 px-16 transition-all duration-300 lg:w-[calc(100%-theme(width.60))] lg:ml-60">
+    <main class="main-content pt-4 px-4 md:pt-8 md:px-8 lg:pt-16 lg:px-16 transition-all duration-300">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <component :is="Component" />
@@ -132,28 +132,26 @@ button {
   justify-content: center;
 }
 
-.scale-enter-active,
-.scale-leave-active {
-  transition: all 0.3s ease;
+/* レイアウト調整 - レスポンシブ対応 */
+/* モバイル: 下部ナビゲーション対応 */
+.main-content {
+  /* ナビゲーション高さ分の余白 */
+  padding-bottom: theme('spacing.20');
 }
 
-.scale-enter-from,
-.scale-leave-to {
-  transform: scale(0.9);
-  opacity: 0;
+/* タブレット以上 */
+@media (min-width: theme('screens.md')) {
+  .main-content {
+    padding-bottom: theme('spacing.16');
+  }
 }
 
-/* アクセシビリティのためのユーティリティ */
-.focus-visible:focus-visible {
-  outline: 2px solid var(--color-primary-gold);
-  outline-offset: 2px;
-}
-
-/* レイアウト調整 - サイドナビゲーション対応 */
+/* デスクトップ: サイドナビゲーション対応 */
 @media (min-width: theme('screens.lg')) {
   .main-content {
     width: calc(100% - theme('width.60'));
     margin-left: theme('width.60');
+    padding-bottom: theme('spacing.8');
   }
 }
 </style>
