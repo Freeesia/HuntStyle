@@ -522,9 +522,9 @@ const changeSort = (option: SortOption) => {
 </script>
 
 <template>
-  <div class="max-w-[1100px] mx-auto pt-[70px] lg:pt-0 px-16" :class="{ 'edit-mode': isEditMode }">
+  <div id="equipment-page" class="max-w-[1100px] mx-auto pt-[70px] lg:pt-0 px-16" :class="{ 'edit-mode': isEditMode }">
     <!-- ページヘッダー -->
-    <div class="mb-32 transition-all duration-500"
+    <div id="page-header" class="mb-32 transition-all duration-500"
       :class="{ 'opacity-100 translate-y-0': isLoaded, 'opacity-0 translate-y-16': !isLoaded }">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-16 mb-32">
         <h1 class="text-heading-lg font-display text-light-gray">所持装備管理</h1>
@@ -541,7 +541,7 @@ const changeSort = (option: SortOption) => {
       </div>
 
       <!-- 統計カード -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-32">
+      <div id="stats-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-32">
         <div
           class="p-24 rounded-card bg-charcoal border border-primary-green/20 flex flex-col items-center shadow-card relative overflow-hidden group">
           <div
@@ -580,8 +580,8 @@ const changeSort = (option: SortOption) => {
       </div>
 
       <!-- 検索とフィルターセクション -->
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-16 mb-32">
-        <div class="relative w-full md:w-auto md:flex-1">
+      <div id="search-filter-section" class="flex flex-col md:flex-row justify-between items-start md:items-center gap-16 mb-32">
+        <div id="search-box" class="relative w-full md:w-auto md:flex-1">
           <input v-model="searchQuery" type="text" placeholder="装備やシリーズ名を検索..." @focus="isSearchFocused = true"
             @blur="isSearchFocused = false"
             class="w-full pl-40 pr-16 py-12 bg-charcoal rounded-full border transition-all duration-300 text-body focus:outline-none"
@@ -603,9 +603,9 @@ const changeSort = (option: SortOption) => {
           </button>
         </div>
 
-        <div class="flex gap-8 flex-wrap w-full md:w-auto">
+        <div id="controls-section" class="flex gap-8 flex-wrap w-full md:w-auto">
           <!-- 所持装備切り替えモードボタン -->
-          <button @click="toggleEditMode"
+          <button id="edit-mode-toggle" @click="toggleEditMode"
             class="px-16 py-8 rounded-full border transition-all duration-300 flex items-center gap-4"
             :class="isEditMode ? 'bg-sage-green/20 border-sage-green text-sage-green shadow-floating' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -617,7 +617,7 @@ const changeSort = (option: SortOption) => {
           </button>
 
           <!-- ソートオプション -->
-          <div class="flex items-center gap-4 mr-8">
+          <div id="sort-controls" class="flex items-center gap-4 mr-8">
             <span class="text-light-gray text-caption">並び順:</span>
             <div class="flex gap-4">
               <button v-for="(displayName, option) in sortOptionDisplayNames" :key="option"
@@ -631,26 +631,28 @@ const changeSort = (option: SortOption) => {
           </div>
 
           <!-- フィルターオプション -->
-          <button @click="equipmentFilter = '全て'" class="px-16 py-8 rounded-full border transition-all duration-300"
-            :class="equipmentFilter === '全て' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'">全て</button>
-          <button @click="equipmentFilter = '所持'" class="px-16 py-8 rounded-full border transition-all duration-300"
-            :class="equipmentFilter === '所持' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'">所持</button>
-          <button @click="equipmentFilter = '未所持'" class="px-16 py-8 rounded-full border transition-all duration-300"
-            :class="equipmentFilter === '未所持' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'">未所持</button>
+          <div id="filter-controls" class="flex gap-4">
+            <button @click="equipmentFilter = '全て'" class="px-16 py-8 rounded-full border transition-all duration-300"
+              :class="equipmentFilter === '全て' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'">全て</button>
+            <button @click="equipmentFilter = '所持'" class="px-16 py-8 rounded-full border transition-all duration-300"
+              :class="equipmentFilter === '所持' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'">所持</button>
+            <button @click="equipmentFilter = '未所持'" class="px-16 py-8 rounded-full border transition-all duration-300"
+              :class="equipmentFilter === '未所持' ? 'bg-primary-gold/10 border-primary-gold text-primary-gold' : 'bg-charcoal border-light-gray/20 text-light-gray hover:text-primary-gold/70'">未所持</button>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- 装備リスト -->
-    <div>
+    <div id="equipment-list">
       <!-- ローディング表示 -->
-      <div v-if="isLoading" class="flex flex-col items-center justify-center py-64">
+      <div id="loading-section" v-if="isLoading" class="flex flex-col items-center justify-center py-64">
         <div class="w-16 h-16 border-4 border-primary-gold border-t-transparent rounded-full animate-spin mb-16"></div>
         <p class="text-light-gray">装備データを読み込み中...</p>
       </div>
 
       <!-- エラー表示 -->
-      <div v-else-if="loadError" class="p-32 rounded-card bg-error/10 border border-error text-center mb-32">
+      <div id="error-section" v-else-if="loadError" class="p-32 rounded-card bg-error/10 border border-error text-center mb-32">
         <p class="text-error font-medium mb-8">{{ loadError }}</p>
         <p class="text-light-gray">APIからのデータ取得に失敗しました。後でもう一度お試しください。</p>
         <button @click="fetchEquipment"
@@ -662,19 +664,19 @@ const changeSort = (option: SortOption) => {
       <!-- 装備データ表示 -->
       <div v-else>
         <!-- シリーズがない場合 -->
-        <div v-if="filteredSeriesList.length === 0"
+        <div id="no-results-section" v-if="filteredSeriesList.length === 0"
           class="p-32 rounded-card bg-charcoal border border-primary-green/20 text-center">
           <p class="text-light-gray">条件に一致する装備シリーズが見つかりません。</p>
         </div>
 
         <!-- シリーズ一覧 -->
-        <div v-else class="flex flex-col gap-16 mb-32 transition-all duration-500 delay-200"
+        <div v-else id="series-list" class="flex flex-col gap-16 mb-32 transition-all duration-500 delay-200"
           :class="{ 'opacity-100 translate-y-0': isLoaded, 'opacity-0 translate-y-16': !isLoaded }">
-          <div v-for="series in filteredSeriesList" :key="series.id"
+          <div v-for="series in filteredSeriesList" :key="series.id" :id="`series-${series.id}`"
             class="rounded-card overflow-hidden transition-all duration-300 hover:shadow-floating bg-charcoal border border-primary-green/20">
 
             <!-- シリーズヘッダー -->
-            <div
+            <div :id="`series-header-${series.id}`"
               class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 p-16 hover:bg-dark/30 transition-colors duration-300">
               <div class="flex items-center">
                 <h3 class="text-body md:text-heading-sm font-display text-light-gray transition-colors duration-300">{{
@@ -689,18 +691,18 @@ const changeSort = (option: SortOption) => {
             </div>
 
             <!-- シリーズの装備一覧 -->
-            <div class="p-8 border-t border-primary-green/10 transition-all duration-300 bg-dark/20">
+            <div :id="`series-equipment-${series.id}`" class="p-8 border-t border-primary-green/10 transition-all duration-300 bg-dark/20">
               <!-- 装備がフィルタリング条件に一致する場合のみ表示 -->
               <div v-if="getFilteredSeriesEquipment(series.id).length > 0" class="overflow-x-auto">
                 <!-- 装備テーブル -->
-                <table class="min-w-full">
+                <table id="equipment-table" class="min-w-full">
                   <tbody>
                     <!-- 男性用装備 (1行目) -->
-                    <tr>
-                      <td>
+                    <tr id="male-equipment-row">
+                      <td id="male-gender-indicator">
                         <div class="w-8 h-8 rounded-full bg-sage-green"></div>
                       </td>
-                      <td v-for="category in categories" :key="`m-${category}`" class="p-8 w-1/5">
+                      <td v-for="category in categories" :key="`m-${category}`" :id="`male-${category}-${series.id}`" class="p-8 w-1/5">
                         <div v-if="getCategoryEquipment(series.id, category, 'm')"
                           class="p-16 rounded-md text-center transition-all duration-300 relative tooltip-container"
                           :class="[
@@ -727,11 +729,11 @@ const changeSort = (option: SortOption) => {
                       </td>
                     </tr>
                     <!-- 女性用装備 (2行目) -->
-                    <tr>
-                      <td>
+                    <tr id="female-equipment-row">
+                      <td id="female-gender-indicator">
                         <div class="w-8 h-8 rounded-full bg-primary-gold"></div>
                       </td>
-                      <td v-for="category in categories" :key="`w-${category}`" class="p-8 w-1/5">
+                      <td v-for="category in categories" :key="`w-${category}`" :id="`female-${category}-${series.id}`" class="p-8 w-1/5">
                         <div v-if="getCategoryEquipment(series.id, category, 'w')"
                           class="p-16 rounded-md text-center transition-all duration-300 relative tooltip-container"
                           :class="[
