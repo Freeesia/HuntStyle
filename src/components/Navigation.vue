@@ -18,7 +18,7 @@ const toggleSearch = () => {
 
 <template>
   <!-- デスクトップナビゲーション - 左側サイドバー -->
-  <nav class="hidden lg:flex fixed left-0 top-0 h-full w-[240px] bg-charcoal flex-col z-30 border-r border-r-primary-green/20 shadow-card">
+  <nav class="hidden lg:flex fixed left-0 top-0 h-full w-60 bg-charcoal flex-col z-30 border-r border-r-primary-green/20 shadow-card">
     <!-- ロゴ部分 -->
     <div class="p-24 flex justify-center mb-16">
       <router-link to="/" class="block transition-transform hover:scale-105">

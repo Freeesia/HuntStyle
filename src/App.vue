@@ -34,7 +34,7 @@ provide('isLoading', isLoading);
     <Navigation />
     
     <!-- メインコンテンツ -->
-    <main class="main-content pt-16 pb-[80px] md:pb-16 px-16 transition-all duration-300">
+    <main class="main-content pt-16 pb-[80px] md:pb-16 px-16 transition-all duration-300 lg:w-[calc(100%-theme(width.60))] lg:ml-60">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <component :is="Component" />
@@ -147,5 +147,13 @@ button {
 .focus-visible:focus-visible {
   outline: 2px solid var(--color-primary-gold);
   outline-offset: 2px;
+}
+
+/* レイアウト調整 - サイドナビゲーション対応 */
+@media (min-width: theme('screens.lg')) {
+  .main-content {
+    width: calc(100% - theme('width.60'));
+    margin-left: theme('width.60');
+  }
 }
 </style>
