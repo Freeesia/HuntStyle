@@ -12,6 +12,9 @@ type SortDirection = 'asc' | 'desc';
 // 性別の型定義
 type Gender = 'm' | 'w';
 
+// 性別のリスト
+const genders: Gender[] = ['m', 'w'];
+
 // 所持装備の型定義（装備ID毎に所持している性別の配列を保存）
 type OwnedEquipmentGenders = Gender[];
 
@@ -697,58 +700,27 @@ const changeSort = (option: SortOption) => {
                 <!-- 装備テーブル -->
                 <table id="equipment-table" class="min-w-full">
                   <tbody>
-                    <!-- 男性用装備 (1行目) -->
-                    <tr id="male-equipment-row">
-                      <td id="male-gender-indicator">
-                        <div class="w-8 h-8 rounded-full bg-sage-green"></div>
+                    <!-- 性別ごとの装備行 -->
+                    <tr v-for="gender in genders" :key="gender" :id="`${gender}-equipment-row`" class="equipment-row">
+                      <td :id="`${gender}-gender-indicator`">
+                        <div class="w-8 h-8 rounded-full" :class="gender === 'm' ? 'bg-sage-green' : 'bg-primary-gold'"></div>
                       </td>
-                      <td v-for="category in categories" :key="`m-${category}`" :id="`male-${category}-${series.id}`" class="p-8 w-1/5">
-                        <div v-if="getCategoryEquipment(series.id, category, 'm')"
+                      <td v-for="category in categories" :key="`${gender}-${category}`" :id="`${gender}-${category}-${series.id}`" class="p-8 w-1/5">
+                        <div v-if="getCategoryEquipment(series.id, category, gender)"
                           class="p-16 rounded-md text-center transition-all duration-300 relative tooltip-container"
                           :class="[
                             getEquipmentRarityClass(
-                              getCategoryEquipment(series.id, category, 'm')?.rarity,
-                              isItemOwned(getCategoryEquipment(series.id, category, 'm'), 'm')
+                              getCategoryEquipment(series.id, category, gender)?.rarity,
+                              isItemOwned(getCategoryEquipment(series.id, category, gender), gender)
                             ),
-                            !isItemOwned(getCategoryEquipment(series.id, category, 'm'), 'm') ? 'hover:shadow-card' : '',
-                          ]" @click="toggleObtained(getCategoryEquipment(series.id, category, 'm'), 'm')">
+                            !isItemOwned(getCategoryEquipment(series.id, category, gender), gender) ? 'hover:shadow-card' : '',
+                          ]" @click="toggleObtained(getCategoryEquipment(series.id, category, gender), gender)">
                           <div class="mb-8 font-bold text-body text-primary-gold">{{ getCategoryDisplayName(category) }}
                           </div>
-                          <div class="tooltip">{{ getCategoryEquipment(series.id, category, 'm')?.name }}</div>
+                          <div class="tooltip">{{ getCategoryEquipment(series.id, category, gender)?.name }}</div>
 
                           <!-- 所持アイコン -->
-                          <div v-if="isItemOwned(getCategoryEquipment(series.id, category, 'm'), 'm')"
-                            class="absolute !text-xl -top-0 -right-0 flex items-center justify-center">
-                            🎁
-                          </div>
-                        </div>
-                        <div v-else
-                          class="p-16 rounded-md bg-charcoal/30 border border-light-gray/5 text-center text-light-gray/30 text-caption">
-                          {{ getCategoryDisplayName(category) }}
-                        </div>
-                      </td>
-                    </tr>
-                    <!-- 女性用装備 (2行目) -->
-                    <tr id="female-equipment-row">
-                      <td id="female-gender-indicator">
-                        <div class="w-8 h-8 rounded-full bg-primary-gold"></div>
-                      </td>
-                      <td v-for="category in categories" :key="`w-${category}`" :id="`female-${category}-${series.id}`" class="p-8 w-1/5">
-                        <div v-if="getCategoryEquipment(series.id, category, 'w')"
-                          class="p-16 rounded-md text-center transition-all duration-300 relative tooltip-container"
-                          :class="[
-                            getEquipmentRarityClass(
-                              getCategoryEquipment(series.id, category, 'w')?.rarity,
-                              isItemOwned(getCategoryEquipment(series.id, category, 'w'), 'w')
-                            ),
-                            !isItemOwned(getCategoryEquipment(series.id, category, 'w'), 'w') ? 'hover:shadow-card' : '',
-                          ]" @click="toggleObtained(getCategoryEquipment(series.id, category, 'w'), 'w')">
-                          <div class="mb-8 font-bold text-body text-primary-gold">{{ getCategoryDisplayName(category) }}
-                          </div>
-                          <div class="tooltip">{{ getCategoryEquipment(series.id, category, 'w')?.name }}</div>
-
-                          <!-- 所持アイコン -->
-                          <div v-if="isItemOwned(getCategoryEquipment(series.id, category, 'w'), 'w')"
+                          <div v-if="isItemOwned(getCategoryEquipment(series.id, category, gender), gender)"
                             class="absolute !text-xl -top-0 -right-0 flex items-center justify-center">
                             🎁
                           </div>
