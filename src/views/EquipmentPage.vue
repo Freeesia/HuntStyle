@@ -702,10 +702,10 @@ const changeSort = (option: SortOption) => {
                   <tbody>
                     <!-- 性別ごとの装備行 -->
                     <tr v-for="gender in genders" :key="gender" :id="`${gender}-equipment-row`" class="equipment-row">
-                      <td :id="`${gender}-gender-indicator`">
+                      <td :id="`${gender}-gender-indicator`" class="w-1/11 flex items-center justify-center p-8">
                         <div class="w-8 h-8 rounded-full" :class="gender === 'm' ? 'bg-sage-green' : 'bg-primary-gold'"></div>
                       </td>
-                      <td v-for="category in categories" :key="`${gender}-${category}`" :id="`${gender}-${category}-${series.id}`" class="p-8 w-1/5">
+                      <td v-for="category in categories" :key="`${gender}-${category}`" :id="`${gender}-${category}-${series.id}`" class="p-8 w-2/11">
                         <div v-if="getCategoryEquipment(series.id, category, gender)"
                           class="p-16 rounded-md text-center transition-all duration-300 relative tooltip-container"
                           :class="[
