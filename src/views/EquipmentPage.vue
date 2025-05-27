@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, inject } from 'vue';
-
-// カテゴリーのリスト（内部管理は英語で行う）
-const categories = ['head', 'chest', 'arms', 'waist', 'legs'] as const;
-type Category = typeof categories[number];
+import { categories, genders, type Category, type Gender } from '../model';
 
 // 最小レアリティ値（この値未満の装備は表示しない）
 const MIN_RARITY = 5;
@@ -12,11 +9,6 @@ const MIN_RARITY = 5;
 type SortOption = 'rarity' | 'name';
 type SortDirection = 'asc' | 'desc';
 
-// 性別の型定義
-type Gender = 'm' | 'w';
-
-// 性別のリスト
-const genders: Gender[] = ['m', 'w'];
 
 // 所持装備の型定義（装備ID毎に所持している性別の配列を保存）
 type OwnedEquipmentGenders = Gender[];
@@ -38,10 +30,10 @@ const sortDirectionIcons: Record<SortDirection, string> = {
 };
 
 // 装備シリーズの型定義
-interface ArmorSet {
+interface ArmorSetDef {
   id: number;
   name: string;
-  pieces: ArmorItem[];  // セットに含まれる装備一覧
+  pieces: ArmorDef[];  // セットに含まれる装備一覧
   bonus?: {
     id: number;
     skill: {
@@ -60,7 +52,7 @@ interface ArmorSet {
 }
 
 // 装備アイテムの型定義
-interface ArmorItem {
+interface ArmorDef {
   id: number;
   name: string;
   kind: Category; // APIから返されるフィールド名
@@ -83,13 +75,13 @@ const isPageLoading = inject('isLoading') as { value: boolean };
 const STORAGE_KEY_OWNED_EQUIPMENT = 'huntStyle_owned_equipment';
 
 // 装備データ
-const allEquipment = ref<ArmorItem[]>([]);
+const allEquipment = ref<ArmorDef[]>([]);
 
 // シリーズごとの装備グループ
-const equipmentBySeries = ref<Record<string, ArmorItem[]>>({});
+const equipmentBySeries = ref<Record<string, ArmorDef[]>>({});
 
 // シリーズのリスト
-const seriesList = ref<ArmorSet[]>([]);
+const seriesList = ref<ArmorSetDef[]>([]);
 
 // ユーザーの所持装備を保存するオブジェクト（装備ID毎に所持している性別の配列を保存）
 const ownedEquipmentIds = ref<Record<number, OwnedEquipmentGenders>>({});
@@ -128,20 +120,20 @@ const fetchEquipment = async () => {
       throw new Error(`装備セットデータの取得に失敗しました: ${response.statusText}`);
     }
 
-    const armorSets: ArmorSet[] = await response.json();
+    const armorSets: ArmorSetDef[] = await response.json();
 
     // シリーズのリストを保存
     seriesList.value = armorSets
       .filter(set => set.pieces && set.pieces.length > 0) // 装備が存在するセットのみを保持
       .sort((a, b) => a.id - b.id);
 
-    const allArmorItems: ArmorItem[] = [];
-    const groupedEquipment: Record<string, ArmorItem[]> = {};
+    const allArmorItems: ArmorDef[] = [];
+    const groupedEquipment: Record<string, ArmorDef[]> = {};
 
     // セットごとの装備を処理
     for (const set of seriesList.value) {
       // セット内のすべての装備を取り出す
-      const setItems: ArmorItem[] = [];
+      const setItems: ArmorDef[] = [];
 
       for (const piece of set.pieces) {
         // 装備タイプを小文字に変換して処理
@@ -308,7 +300,7 @@ const getFilteredSeriesEquipment = (seriesId: number) => {
 };
 
 // 所持状態の切り替え
-const toggleObtained = (item: ArmorItem | undefined, gender: Gender) => {
+const toggleObtained = (item: ArmorDef | undefined, gender: Gender) => {
   // アイテムがundefinedの場合は処理しない
   if (!item) return;
 
@@ -432,7 +424,7 @@ const statsData = computed(() => {
 });
 
 // アイテムが所持されているかどうかを確認する関数
-const isItemOwned = (item: ArmorItem | undefined, gender: Gender) => {
+const isItemOwned = (item: ArmorDef | undefined, gender: Gender) => {
   // アイテムがundefinedまたは必要なプロパティがない場合は所持していないとみなす
   if (!item || !item.id) {
     return false;
