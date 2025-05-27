@@ -5,6 +5,9 @@ import { ref, computed, onMounted, inject } from 'vue';
 const categories = ['head', 'chest', 'arms', 'waist', 'legs'] as const;
 type Category = typeof categories[number];
 
+// 最小レアリティ値（この値未満の装備は表示しない）
+const MIN_RARITY = 5;
+
 // ソートのオプション
 type SortOption = 'rarity' | 'name';
 type SortDirection = 'asc' | 'desc';
@@ -146,10 +149,20 @@ const fetchEquipment = async () => {
 
         // 正規化したkindがcategoriesに含まれるかチェック
         if (categories.includes(normalizedKind as Category)) {
+          // レアリティフィルタリング - レアリティが設定値未満の装備はスキップ
+          if (piece.rarity < MIN_RARITY) {
+            console.log(`低レアリティ装備をスキップしました: ${piece.id} ${piece.name} (rarity: ${piece.rarity})`);
+            continue;
+          }
+          
           // 正規化したカテゴリ値を使用
           setItems.push({
-            ...piece,
+            id: piece.id,
+            name: piece.name,
             kind: normalizedKind as Category,
+            rarity: piece.rarity,
+            defense: piece.defense,
+            slots: piece.slots,
             armorSet: {
               id: set.id,
               name: set.name
@@ -240,6 +253,11 @@ const getCategoryEquipment = (seriesId: number, category: Category, gender: Gend
 
   // 指定したカテゴリの装備のみをフィルタリング
   return seriesEquipment.find(item => {
+    // レアリティフィルタリング
+    if (item.rarity < MIN_RARITY) {
+      return false;
+    }
+    
     // 検索フィルターとカテゴリフィルターの両方を適用
     const matchesQuery = searchQuery.value === '' || item.name.toLowerCase().includes(searchQuery.value.toLowerCase());
     const matchesCategory = item.kind === category;
@@ -262,6 +280,11 @@ const getFilteredSeriesEquipment = (seriesId: number) => {
   const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
 
   return seriesEquipment.filter(item => {
+    // レアリティフィルタリング
+    if (item.rarity < MIN_RARITY) {
+      return false;
+    }
+    
     // 検索フィルター
     const matchesQuery = searchQuery.value === '' ||
       item.name.toLowerCase().includes(searchQuery.value.toLowerCase());
@@ -291,6 +314,12 @@ const toggleObtained = (item: ArmorItem | undefined, gender: Gender) => {
 
   // 編集モードでない場合は何もしない
   if (!isEditMode.value) {
+    return;
+  }
+
+  // レアリティチェック - 設定値未満のレアリティは処理しない
+  if (item.rarity < MIN_RARITY) {
+    console.log(`低レアリティ装備は管理対象外です: ${item.id} ${item.name} (rarity: ${item.rarity})`);
     return;
   }
 
@@ -327,19 +356,27 @@ const toggleSeriesObtained = (seriesId: number, gender: Gender) => {
   const seriesKey = `${seriesId}`;
   const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
   
+  // レアリティチェック - レアリティが設定値以上の装備のみ対象にする
+  const validEquipment = seriesEquipment.filter(item => item.rarity >= MIN_RARITY);
+  
+  if (validEquipment.length === 0) {
+    console.log(`このシリーズには管理対象の装備がありません: ${seriesId}`);
+    return;
+  }
+
   // シリーズ内の指定性別での所持状況を確認
   let ownedCount = 0;
-  seriesEquipment.forEach(item => {
+  validEquipment.forEach(item => {
     if (isItemOwned(item, gender)) {
       ownedCount++;
     }
   });
 
   // 半分以上所持している場合は未所持に、そうでなければ所持に設定
-  const shouldOwn = ownedCount < seriesEquipment.length / 2;
+  const shouldOwn = ownedCount < validEquipment.length / 2;
 
   // シリーズ内の全装備の所持状態を変更
-  seriesEquipment.forEach(item => {
+  validEquipment.forEach(item => {
     const itemId = item.id;
     
     // 装備データが存在しない場合は初期化
@@ -369,11 +406,16 @@ const toggleSeriesObtained = (seriesId: number, gender: Gender) => {
 
 // 統計情報を計算
 const statsData = computed(() => {
-  const totalCount = allEquipment.value.length * 2; // 男性用と女性用で2倍
+  // レアリティフィルターを適用した有効な装備のみをカウント
+  const validEquipment = allEquipment.value.filter(item => item.rarity >= MIN_RARITY);
+  const totalCount = validEquipment.length * 2; // 男性用と女性用で2倍
 
-  const ownedCount = Object.values(ownedEquipmentIds.value).reduce((sum, genderArray) => {
-    return sum + genderArray.length;
-  }, 0);
+  // 有効なレアリティの装備のみを対象に所持状況をカウント
+  let ownedCount = 0;
+  validEquipment.forEach(item => {
+    const genderArray = ownedEquipmentIds.value[item.id] || [];
+    ownedCount += genderArray.length;
+  });
 
   const notOwnedCount = totalCount - ownedCount;
 
@@ -409,7 +451,12 @@ const getSeriesOwnedCount = (seriesId: number) => {
   const seriesKey = `${seriesId}`;
   const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
 
+  // レアリティが設定値以上の装備のみをカウント対象にする
   return seriesEquipment.reduce((count, item) => {
+    if (item.rarity < MIN_RARITY) {
+      return count; // 低レアリティの装備はカウントしない
+    }
+    
     // 男性用と女性用の両方をチェック
     const maleOwned = isItemOwned(item, 'm') ? 1 : 0;
     const femaleOwned = isItemOwned(item, 'w') ? 1 : 0;
@@ -421,8 +468,12 @@ const getSeriesOwnedCount = (seriesId: number) => {
 const getSeriesItemCount = (seriesId: number) => {
   const seriesKey = `${seriesId}`;
   const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
+  
+  // レアリティが設定値以上の装備のみをカウント
+  const validEquipmentCount = seriesEquipment.filter(item => item.rarity >= MIN_RARITY).length;
+  
   // 男性用と女性用の2倍の数になる
-  return seriesEquipment.length * 2;
+  return validEquipmentCount * 2;
 };
 
 // カテゴリーの日本語表示名を取得する関数
@@ -448,15 +499,18 @@ const getSeriesAverageRarity = (seriesId: number): number => {
   const seriesKey = `${seriesId}`;
   const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
 
-  if (seriesEquipment.length === 0) {
+  // レアリティが設定値以上の装備のみを対象にする
+  const validEquipment = seriesEquipment.filter(item => item.rarity >= MIN_RARITY);
+  
+  if (validEquipment.length === 0) {
     return 0;
   }
 
-  const totalRarity = seriesEquipment.reduce((sum, item) => {
+  const totalRarity = validEquipment.reduce((sum, item) => {
     return sum + (item.rarity || 0);
   }, 0);
 
-  return totalRarity / seriesEquipment.length;
+  return totalRarity / validEquipment.length;
 };
 
 // レア度に基づく装備のスタイルクラスを取得
@@ -500,15 +554,22 @@ const getEquipmentRarityClass = (rarity: number | undefined, isOwned: boolean = 
 const filteredSeriesList = computed(() => {
   // フィルタリング処理
   const filteredSeries = seriesList.value.filter(series => {
+    const seriesKey = `${series.id}`;
+    const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
+    
+    // レアリティフィルタリング - 有効な装備（レアリティが設定値以上）が1つもないシリーズは除外
+    const validEquipment = seriesEquipment.filter(item => item.rarity >= MIN_RARITY);
+    if (validEquipment.length === 0) {
+      return false;
+    }
+    
     // 検索クエリがある場合、シリーズ名に一致するか、装備品が検索条件に一致するかをチェック
     if (searchQuery.value) {
       // シリーズ名が検索クエリを含む場合
       const seriesNameMatches = series.name.toLowerCase().includes(searchQuery.value.toLowerCase());
 
-      // 装備が検索クエリを含むかチェック
-      const seriesKey = `${series.id}`;
-      const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
-      const anyEquipmentMatches = seriesEquipment.some(item => {
+      // 装備が検索クエリを含むかチェック（レアリティ条件も適用）
+      const anyEquipmentMatches = validEquipment.some(item => {
         return item.name.toLowerCase().includes(searchQuery.value.toLowerCase());
       });
 
@@ -519,12 +580,9 @@ const filteredSeriesList = computed(() => {
 
     // 所持フィルターの条件に一致するかチェック
     if (equipmentFilter.value !== '全て') {
-      const seriesKey = `${series.id}`;
-      const seriesEquipment = equipmentBySeries.value[seriesKey] || [];
-
-      // 所持している装備をカウント
+      // 所持している装備をカウント（レアリティ条件も適用）
       let ownedCount = 0;
-      seriesEquipment.forEach(item => {
+      validEquipment.forEach(item => {
         if (isItemOwned(item, 'm')) {
           ownedCount++;
         }
@@ -533,12 +591,14 @@ const filteredSeriesList = computed(() => {
         }
       });
 
+      const totalValidCount = validEquipment.length * 2; // 男性用と女性用
+
       // フィルター条件に基づいて結果を返す
       if (equipmentFilter.value === '所持' && ownedCount === 0) {
         return false;
       }
 
-      if (equipmentFilter.value === '未所持' && ownedCount === seriesEquipment.length) {
+      if (equipmentFilter.value === '未所持' && ownedCount === totalValidCount) {
         return false;
       }
     }
