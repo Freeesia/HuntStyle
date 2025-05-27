@@ -23,7 +23,7 @@ type OwnedEquipmentGenders = Gender[];
 
 // ソートの状態
 const sortOption = ref<SortOption>('rarity');
-const sortDirection = ref<SortDirection>('desc');
+const sortDirection = ref<SortDirection>('asc');
 
 // ソートオプションの表示名マッピング
 const sortOptionDisplayNames: Record<SortOption, string> = {
