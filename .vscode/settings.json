@@ -1,10 +1,13 @@
 {
   "github.copilot.chat.codeGeneration.instructions": [
     {
-      "file": "仕様.md"
+      "file": ".github/instructions/サービス仕様.instructions.md"
     },
     {
-      "file": "技術仕様.md"
+      "file": ".github/instructions/デザイン仕様.instructions.md"
+    },
+    {
+      "file": ".github/instructions/技術仕様.instructions.md"
     }
   ],
   "files.associations": {
