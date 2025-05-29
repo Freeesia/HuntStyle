@@ -16,9 +16,9 @@ export interface Armer {
 export interface LayerSet {
     id: string;
     name: string;
-    armer: Armer[];
+    armers: Armer[];
     description: string;
-    image: string[];
+    images: string[];
     tags: string[];
     createdAt: string;
 }
