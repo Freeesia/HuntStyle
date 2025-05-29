@@ -12,7 +12,7 @@ export interface Armer {
   color: string;
 }
 
-export interface ArmerSet {
+export interface LayerSet {
     id: string;
     name: string;
     armer: Armer[];
