@@ -9,7 +9,8 @@ export interface Armer {
   id: string;
   type: Category;
   gender:Gender;
-  color: string;
+  color0: string;
+  color1: string;
 }
 
 export interface LayerSet {
