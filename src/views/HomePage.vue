@@ -141,7 +141,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="max-w-[1200px] mx-auto">
+  <div class="max-w-[1200px] mx-auto px-16 overflow-x-hidden">
     <!-- ヘッダーセクション -->
     <div class="mb-32 pt-[70px] lg:pt-0">
       <h1 class="text-heading-lg font-display mb-16 flex items-center">
@@ -158,7 +158,7 @@ onMounted(() => {
             class="w-full py-12 px-16 bg-charcoal rounded-full border border-primary-green/30 text-light-gray focus:border-primary-gold focus:outline-none focus:ring-2 focus:ring-primary-gold/30 transition-all shadow-sm" 
           />
           <button class="absolute right-16 top-1/2 transform -translate-y-1/2 text-primary-gold w-[24px] h-[24px] flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-20 h-20">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
@@ -170,7 +170,7 @@ onMounted(() => {
           <button 
             v-for="option in sortOptions" 
             :key="option"
-            class="px-16 py-8 rounded-full border transition-all duration-300"
+            class="px-16 py-8 rounded-full border transition-all duration-300 flex-shrink-0"
             :class="selectedSort === option ? 
               'bg-gradient-to-r from-primary-gold to-bright-gold text-dark font-medium border-transparent shadow-sm' : 
               'bg-charcoal text-light-gray border-primary-green/20 hover:border-primary-gold/50'"
@@ -182,9 +182,9 @@ onMounted(() => {
         
         <!-- 武器種フィルター (横スクロール) -->
         <div class="overflow-x-auto hide-scrollbar">
-          <div class="flex gap-8 py-8 min-w-max">
+          <div class="flex gap-8 py-8">
             <button 
-              class="px-16 py-6 rounded-full text-caption whitespace-nowrap transition-all duration-300"
+              class="px-16 py-6 rounded-full text-caption whitespace-nowrap transition-all duration-300 flex-shrink-0"
               :class="selectedWeapon === 'すべて' ? 'bg-primary-gold text-dark font-medium shadow-sm' : 'bg-charcoal text-light-gray hover:bg-dark'"
               @click="selectedWeapon = 'すべて'"
             >
@@ -193,7 +193,7 @@ onMounted(() => {
             <button 
               v-for="weapon in weaponTypes"
               :key="weapon"
-              class="px-16 py-6 rounded-full text-caption whitespace-nowrap transition-all duration-300"
+              class="px-16 py-6 rounded-full text-caption whitespace-nowrap transition-all duration-300 flex-shrink-0"
               :class="selectedWeapon === weapon ? 'bg-primary-gold text-dark font-medium shadow-sm' : 'bg-charcoal text-light-gray hover:bg-dark'"
               @click="selectedWeapon = weapon"
             >
@@ -216,7 +216,7 @@ onMounted(() => {
           <button 
             v-for="tag in popularTags" 
             :key="tag"
-            class="px-12 py-6 rounded-full text-caption transition-all duration-300"
+            class="px-12 py-6 rounded-full text-caption transition-all duration-300 flex-shrink-0"
             :class="selectedTags.includes(tag) ? 
               'bg-primary-gold text-dark font-medium' : 
               'bg-dark/60 text-light-gray hover:bg-primary-green/30'"
