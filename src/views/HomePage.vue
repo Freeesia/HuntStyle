@@ -141,7 +141,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="max-w-[1200px] mx-auto px-16 overflow-x-hidden">
+  <div class="max-w-full">
     <!-- ヘッダーセクション -->
     <div class="mb-32 pt-[70px] lg:pt-0">
       <h1 class="text-heading-lg font-display mb-16 flex items-center">
@@ -182,7 +182,7 @@ onMounted(() => {
         
         <!-- 武器種フィルター (横スクロール) -->
         <div class="overflow-x-auto hide-scrollbar">
-          <div class="flex gap-8 py-8">
+          <div class="flex gap-8 py-8 w-max">
             <button 
               class="px-16 py-6 rounded-full text-caption whitespace-nowrap transition-all duration-300 flex-shrink-0"
               :class="selectedWeapon === 'すべて' ? 'bg-primary-gold text-dark font-medium shadow-sm' : 'bg-charcoal text-light-gray hover:bg-dark'"

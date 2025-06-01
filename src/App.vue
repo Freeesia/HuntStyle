@@ -30,11 +30,11 @@ provide('isLoading', isLoading);
 </script>
 
 <template>
-  <div class="app min-h-screen flex flex-col bg-dark text-light-gray">
+  <div class="app min-h-screen flex flex-col bg-dark text-light-gray overflow-x-hidden">
     <Navigation />
     
     <!-- メインコンテンツ -->
-    <main class="main-content pt-4 px-4 md:pt-8 md:px-8 lg:pt-16 lg:px-16 transition-all duration-300">
+    <main class="main-content pt-4 px-4 md:pt-8 md:px-8 lg:pt-16 lg:px-16 transition-all duration-300 overflow-y-auto">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <component :is="Component" />
