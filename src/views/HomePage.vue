@@ -239,7 +239,7 @@ onMounted(() => {
     </div>
 
     <!-- 投稿グリッド表示 -->
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-16">
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16">
       <div 
         v-for="post in filteredPosts" 
         :key="post.id" 
@@ -251,7 +251,7 @@ onMounted(() => {
             <img 
               :src="post.image" 
               :alt="post.title" 
-              class="w-full aspect-video object-cover transition-transform duration-700 hover:scale-[1.05]"
+              class="w-full aspect-[2/3] object-cover transition-transform duration-700 hover:scale-[1.05]"
               loading="lazy"
             />
             <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-dark/90 to-transparent p-16 pt-32">
