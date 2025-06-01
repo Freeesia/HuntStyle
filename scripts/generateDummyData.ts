@@ -260,7 +260,7 @@ function generateImagePath(index: number): string[] {
   const imageIndex = index % 100;
   // ゼロパディングして4桁の文字列に変換（0000〜0099）
   const paddedIndex = String(imageIndex).padStart(4, '0');
-  return [`images/${paddedIndex}.png`]; // ダミーデータのパスからの相対パス
+  return [`dummy/images/${paddedIndex}.png`]; // ダミーデータのパスからの相対パス
 }
 
 // LayerSetオブジェクトを生成
@@ -291,11 +291,11 @@ async function generateDummyData(count: number): Promise<void> {
   
   // JSONファイルに保存
   fs.writeFileSync(
-    path.join(process.cwd(), 'dummy', 'layerSets.json'),
+    path.join(process.cwd(), 'public/dummy', 'layerSets.json'),
     JSON.stringify(dummyData, null, 2)
   );
   
-  console.log(`${count}個のダミーデータを生成し、dummy/layerSets.jsonに保存しました。`);
+  console.log(`${count}個のダミーデータを生成し、public/dummy/layerSets.jsonに保存しました。`);
 }
 
 // 100個のダミーデータを生成（プロンプトに従って数を変更）
