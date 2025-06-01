@@ -1,0 +1,5168 @@
+[
+  {
+    "id": "0",
+    "name": "雷鳴の防具",
+    "armers": [
+      {
+        "id": "152",
+        "type": "head",
+        "gender": "w",
+        "color0": "#4D2180",
+        "color1": "#6FE905"
+      },
+      {
+        "id": "42",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#E1BA03",
+        "color1": "#2C88EE"
+      },
+      {
+        "id": "126",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#29300A",
+        "color1": "#6CD36F"
+      },
+      {
+        "id": "416",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#F8A4DC",
+        "color1": "#43064E"
+      },
+      {
+        "id": "93",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#85B142",
+        "color1": "#0DDFFA"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、過酷な環境でも快適に使用できる実用的な防具です。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0000.png"
+    ],
+    "tags": [
+      "ガンナー用",
+      "レア",
+      "秘伝",
+      "上級者向け",
+      "攻撃特化"
+    ],
+    "createdAt": "2023-12-02T04:39:10.290Z"
+  },
+  {
+    "id": "1",
+    "name": "古代のコート",
+    "armers": [
+      {
+        "id": "334",
+        "type": "head",
+        "gender": "w",
+        "color0": "#FC0647",
+        "color1": "#935E5B"
+      },
+      {
+        "id": "544",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#929D00",
+        "color1": "#D9399E"
+      },
+      {
+        "id": "191",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#67C942",
+        "color1": "#4CB362"
+      },
+      {
+        "id": "49",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#FD5028",
+        "color1": "#560901"
+      },
+      {
+        "id": "560",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#B43B16",
+        "color1": "#A3CCA6"
+      }
+    ],
+    "description": "長い年月をかけて改良された、高いスキル発動率が特徴の上級者向け装備です。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0001.png"
+    ],
+    "tags": [
+      "水属性",
+      "モンスター",
+      "神秘",
+      "上級者向け"
+    ],
+    "createdAt": "2025-05-16T17:09:53.562Z"
+  },
+  {
+    "id": "2",
+    "name": "風切りのガーブ",
+    "armers": [
+      {
+        "id": "173",
+        "type": "head",
+        "gender": "w",
+        "color0": "#CBE964",
+        "color1": "#C3F104"
+      },
+      {
+        "id": "486",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#12D118",
+        "color1": "#64529D"
+      },
+      {
+        "id": "154",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#324A70",
+        "color1": "#BC5ABB"
+      },
+      {
+        "id": "192",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#3DB403",
+        "color1": "#717442"
+      },
+      {
+        "id": "241",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#D1CC3A",
+        "color1": "#E40743"
+      }
+    ],
+    "description": "熟練の鍛冶師が作り上げた、特殊な素材を使用することで驚異的な耐性を実現しました。 雷属性モンスターとの戦闘で真価を発揮します。",
+    "images": [
+      "images/0002.png"
+    ],
+    "tags": [
+      "防御特化",
+      "軽装"
+    ],
+    "createdAt": "2024-10-08T17:51:03.955Z"
+  },
+  {
+    "id": "3",
+    "name": "岩砕の重装",
+    "armers": [
+      {
+        "id": "317",
+        "type": "head",
+        "gender": "m",
+        "color0": "#D0E9DE",
+        "color1": "#AEE092"
+      },
+      {
+        "id": "554",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#A7DA9B",
+        "color1": "#F101D4"
+      },
+      {
+        "id": "84",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#0799AF",
+        "color1": "#6304D4"
+      },
+      {
+        "id": "102",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#D57D27",
+        "color1": "#0FFE1B"
+      },
+      {
+        "id": "555",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#25BBAF",
+        "color1": "#8D0FB1"
+      }
+    ],
+    "description": "伝説のハンターが愛用した、優れた防御力と機動性を兼ね備えた装備です。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0003.png"
+    ],
+    "tags": [
+      "火属性",
+      "剣士用",
+      "水属性",
+      "女性用",
+      "エレガント"
+    ],
+    "createdAt": "2024-11-05T16:56:53.569Z"
+  },
+  {
+    "id": "4",
+    "name": "古代のウェア",
+    "armers": [
+      {
+        "id": "543",
+        "type": "head",
+        "gender": "m",
+        "color0": "#4C0782",
+        "color1": "#DE848B"
+      },
+      {
+        "id": "404",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#C7A9D5",
+        "color1": "#9B100C"
+      },
+      {
+        "id": "461",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#680C58",
+        "color1": "#CB88AE"
+      },
+      {
+        "id": "19",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#8D53AB",
+        "color1": "#1FBF7D"
+      },
+      {
+        "id": "118",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#053F1F",
+        "color1": "#8B4B80"
+      }
+    ],
+    "description": "長い年月をかけて改良された、優れた防御力と機動性を兼ね備えた装備です。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0004.png"
+    ],
+    "tags": [
+      "モンスター",
+      "エレガント",
+      "伝説"
+    ],
+    "createdAt": "2024-05-31T14:00:19.394Z"
+  },
+  {
+    "id": "5",
+    "name": "風切りのウェア",
+    "armers": [
+      {
+        "id": "479",
+        "type": "head",
+        "gender": "m",
+        "color0": "#2CCE09",
+        "color1": "#B83F5C"
+      },
+      {
+        "id": "179",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#5A8DDE",
+        "color1": "#120815"
+      },
+      {
+        "id": "400",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#8EAD94",
+        "color1": "#57114C"
+      },
+      {
+        "id": "477",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#D3CC24",
+        "color1": "#C61F8C"
+      },
+      {
+        "id": "139",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#11E817",
+        "color1": "#038EF6"
+      }
+    ],
+    "description": "古代文明の技術を応用した、高いスキル発動率が特徴の上級者向け装備です。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0005.png"
+    ],
+    "tags": [
+      "かわいい",
+      "かっこいい",
+      "限定",
+      "攻撃特化"
+    ],
+    "createdAt": "2025-04-16T15:22:42.726Z"
+  },
+  {
+    "id": "6",
+    "name": "雷鳴の防具",
+    "armers": [
+      {
+        "id": "51",
+        "type": "head",
+        "gender": "w",
+        "color0": "#0D2077",
+        "color1": "#404539"
+      },
+      {
+        "id": "404",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#77966E",
+        "color1": "#891653"
+      },
+      {
+        "id": "420",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#B0BF3C",
+        "color1": "#F06E03"
+      },
+      {
+        "id": "342",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#520867",
+        "color1": "#356AF9"
+      },
+      {
+        "id": "381",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#2F8FF3",
+        "color1": "#D7AB80"
+      }
+    ],
+    "description": "古代文明の技術を応用した、見た目の美しさと機能性を両立させた傑作と言えます。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0006.png"
+    ],
+    "tags": [
+      "火属性",
+      "剣士用",
+      "龍属性",
+      "水属性",
+      "秘伝"
+    ],
+    "createdAt": "2025-05-19T16:30:28.902Z"
+  },
+  {
+    "id": "7",
+    "name": "猛毒のガード",
+    "armers": [
+      {
+        "id": "398",
+        "type": "head",
+        "gender": "m",
+        "color0": "#D6DB49",
+        "color1": "#670B04"
+      },
+      {
+        "id": "22",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#7656D2",
+        "color1": "#EC9AB8"
+      },
+      {
+        "id": "540",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#EAF880",
+        "color1": "#F611E5"
+      },
+      {
+        "id": "160",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#71BF1A",
+        "color1": "#5DE071"
+      },
+      {
+        "id": "505",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#0DEAF7",
+        "color1": "#C94BD4"
+      }
+    ],
+    "description": "この重ね着は、過酷な環境でも快適に使用できる実用的な防具です。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0007.png"
+    ],
+    "tags": [
+      "軽装",
+      "氷属性",
+      "シンプル"
+    ],
+    "createdAt": "2025-03-29T13:03:15.682Z"
+  },
+  {
+    "id": "8",
+    "name": "大地の鎧",
+    "armers": [
+      {
+        "id": "189",
+        "type": "head",
+        "gender": "w",
+        "color0": "#A1D9F6",
+        "color1": "#610960"
+      },
+      {
+        "id": "404",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#1DC501",
+        "color1": "#253862"
+      },
+      {
+        "id": "91",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#CD7306",
+        "color1": "#AD3509"
+      },
+      {
+        "id": "586",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#A51E0D",
+        "color1": "#0CEC9D"
+      },
+      {
+        "id": "236",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#5A2978",
+        "color1": "#1A5480"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、過酷な環境でも快適に使用できる実用的な防具です。 水中での活動をサポートします。",
+    "images": [
+      "images/0008.png"
+    ],
+    "tags": [
+      "火属性",
+      "英雄",
+      "秘伝",
+      "バランス型"
+    ],
+    "createdAt": "2024-04-24T07:34:58.798Z"
+  },
+  {
+    "id": "9",
+    "name": "風切りのウェア",
+    "armers": [
+      {
+        "id": "51",
+        "type": "head",
+        "gender": "m",
+        "color0": "#6CF2F7",
+        "color1": "#C736F1"
+      },
+      {
+        "id": "215",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#1C74B6",
+        "color1": "#B4996D"
+      },
+      {
+        "id": "405",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#1A22B7",
+        "color1": "#F4CB77"
+      },
+      {
+        "id": "132",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#D3C2DB",
+        "color1": "#F9659B"
+      },
+      {
+        "id": "402",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#6D3E79",
+        "color1": "#A56F70"
+      }
+    ],
+    "description": "古代文明の技術を応用した、高いスキル発動率が特徴の上級者向け装備です。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0009.png"
+    ],
+    "tags": [
+      "レア",
+      "攻撃特化",
+      "神秘"
+    ],
+    "createdAt": "2025-03-01T14:15:24.707Z"
+  },
+  {
+    "id": "10",
+    "name": "嵐風のプレート",
+    "armers": [
+      {
+        "id": "82",
+        "type": "head",
+        "gender": "w",
+        "color0": "#67B2C4",
+        "color1": "#0F1A35"
+      },
+      {
+        "id": "120",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#6034E6",
+        "color1": "#A80E42"
+      },
+      {
+        "id": "196",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#B0B177",
+        "color1": "#ABA281"
+      },
+      {
+        "id": "39",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#5FCF7C",
+        "color1": "#39CC5C"
+      },
+      {
+        "id": "376",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#963B96",
+        "color1": "#AD55E6"
+      }
+    ],
+    "description": "この重ね着は、見た目の美しさと機能性を両立させた傑作と言えます。 雷属性モンスターとの戦闘で真価を発揮します。",
+    "images": [
+      "images/0010.png"
+    ],
+    "tags": [
+      "秘伝",
+      "龍属性"
+    ],
+    "createdAt": "2023-12-31T21:10:27.044Z"
+  },
+  {
+    "id": "11",
+    "name": "雷神の装束",
+    "armers": [
+      {
+        "id": "41",
+        "type": "head",
+        "gender": "w",
+        "color0": "#423499",
+        "color1": "#CFE859"
+      },
+      {
+        "id": "480",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#16E7A1",
+        "color1": "#F04D61"
+      },
+      {
+        "id": "563",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#FF4AA0",
+        "color1": "#DC11A9"
+      },
+      {
+        "id": "132",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#D54829",
+        "color1": "#4D45FB"
+      },
+      {
+        "id": "151",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#D000B9",
+        "color1": "#E03A09"
+      }
+    ],
+    "description": "古代文明の技術を応用した、優れた防御力と機動性を兼ね備えた装備です。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0011.png"
+    ],
+    "tags": [
+      "上級者向け",
+      "雷属性",
+      "軽装"
+    ],
+    "createdAt": "2024-06-03T20:42:20.358Z"
+  },
+  {
+    "id": "12",
+    "name": "嵐風の鎧",
+    "armers": [
+      {
+        "id": "538",
+        "type": "head",
+        "gender": "w",
+        "color0": "#CDE78B",
+        "color1": "#B43981"
+      },
+      {
+        "id": "486",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#13329D",
+        "color1": "#8B8345"
+      },
+      {
+        "id": "534",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#605708",
+        "color1": "#8AFE34"
+      },
+      {
+        "id": "97",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#2784CD",
+        "color1": "#91854A"
+      },
+      {
+        "id": "489",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#649DE2",
+        "color1": "#1F14CC"
+      }
+    ],
+    "description": "古代文明の技術を応用した、特殊な素材を使用することで驚異的な耐性を実現しました。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0012.png"
+    ],
+    "tags": [
+      "秘伝",
+      "モンスター",
+      "男性用"
+    ],
+    "createdAt": "2023-10-21T14:15:06.743Z"
+  },
+  {
+    "id": "13",
+    "name": "雷鳴の装束",
+    "armers": [
+      {
+        "id": "377",
+        "type": "head",
+        "gender": "m",
+        "color0": "#81DFFF",
+        "color1": "#2E16F8"
+      },
+      {
+        "id": "335",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#366B90",
+        "color1": "#FADBCE"
+      },
+      {
+        "id": "239",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#30E237",
+        "color1": "#DA62D5"
+      },
+      {
+        "id": "138",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#0283F2",
+        "color1": "#F47C50"
+      },
+      {
+        "id": "156",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#A14B2E",
+        "color1": "#F47946"
+      }
+    ],
+    "description": "伝説のハンターが愛用した、独特の輝きを放つ美しい装備セットです。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0013.png"
+    ],
+    "tags": [
+      "英雄",
+      "古龍",
+      "レア",
+      "氷属性"
+    ],
+    "createdAt": "2025-05-17T04:42:31.517Z"
+  },
+  {
+    "id": "14",
+    "name": "灼熱のガーブ",
+    "armers": [
+      {
+        "id": "393",
+        "type": "head",
+        "gender": "m",
+        "color0": "#AB1144",
+        "color1": "#4407FD"
+      },
+      {
+        "id": "302",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#82A452",
+        "color1": "#D15557"
+      },
+      {
+        "id": "325",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#5E17E9",
+        "color1": "#B85CDB"
+      },
+      {
+        "id": "482",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#7D6FE7",
+        "color1": "#E14D43"
+      },
+      {
+        "id": "103",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#8A8741",
+        "color1": "#E7502D"
+      }
+    ],
+    "description": "長い年月をかけて改良された、高いスキル発動率が特徴の上級者向け装備です。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0014.png"
+    ],
+    "tags": [
+      "重装",
+      "限定",
+      "クール"
+    ],
+    "createdAt": "2023-10-08T13:26:43.941Z"
+  },
+  {
+    "id": "15",
+    "name": "黒鉄のクロス",
+    "armers": [
+      {
+        "id": "46",
+        "type": "head",
+        "gender": "w",
+        "color0": "#EE74B0",
+        "color1": "#9B351E"
+      },
+      {
+        "id": "76",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#0670A5",
+        "color1": "#D8911E"
+      },
+      {
+        "id": "395",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#941F87",
+        "color1": "#6113A6"
+      },
+      {
+        "id": "396",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#F05EAA",
+        "color1": "#CBE72F"
+      },
+      {
+        "id": "118",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#216AA7",
+        "color1": "#7E86BF"
+      }
+    ],
+    "description": "熟練の鍛冶師が作り上げた、特殊な素材を使用することで驚異的な耐性を実現しました。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0015.png"
+    ],
+    "tags": [
+      "女性用",
+      "クール",
+      "ゴージャス",
+      "イベント"
+    ],
+    "createdAt": "2025-05-06T12:48:16.909Z"
+  },
+  {
+    "id": "16",
+    "name": "大地のガーブ",
+    "armers": [
+      {
+        "id": "157",
+        "type": "head",
+        "gender": "m",
+        "color0": "#742AD5",
+        "color1": "#1DA1EF"
+      },
+      {
+        "id": "486",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#3484BD",
+        "color1": "#B68631"
+      },
+      {
+        "id": "196",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#7EF7DB",
+        "color1": "#749FD0"
+      },
+      {
+        "id": "380",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#2B62A5",
+        "color1": "#6A8E10"
+      },
+      {
+        "id": "20",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#41E97A",
+        "color1": "#5B69F4"
+      }
+    ],
+    "description": "熟練の鍛冶師が作り上げた、高いスキル発動率が特徴の上級者向け装備です。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0016.png"
+    ],
+    "tags": [
+      "攻撃特化",
+      "重装",
+      "秘伝",
+      "伝説"
+    ],
+    "createdAt": "2024-08-23T13:14:12.576Z"
+  },
+  {
+    "id": "17",
+    "name": "雷神のバインド",
+    "armers": [
+      {
+        "id": "21",
+        "type": "head",
+        "gender": "w",
+        "color0": "#BC66FD",
+        "color1": "#87ACFF"
+      },
+      {
+        "id": "27",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#BE1298",
+        "color1": "#F43C08"
+      },
+      {
+        "id": "362",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#E3B89C",
+        "color1": "#395C3E"
+      },
+      {
+        "id": "514",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#31AD94",
+        "color1": "#C75405"
+      },
+      {
+        "id": "332",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#42902E",
+        "color1": "#1D4B28"
+      }
+    ],
+    "description": "古代文明の技術を応用した、特殊な素材を使用することで驚異的な耐性を実現しました。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0017.png"
+    ],
+    "tags": [
+      "限定",
+      "モンスター",
+      "水属性",
+      "男性用"
+    ],
+    "createdAt": "2024-09-26T08:43:42.084Z"
+  },
+  {
+    "id": "18",
+    "name": "混沌の重装",
+    "armers": [
+      {
+        "id": "360",
+        "type": "head",
+        "gender": "w",
+        "color0": "#148F56",
+        "color1": "#ADC8BC"
+      },
+      {
+        "id": "83",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#D2B029",
+        "color1": "#112125"
+      },
+      {
+        "id": "146",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#F34011",
+        "color1": "#D345CC"
+      },
+      {
+        "id": "385",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#92E220",
+        "color1": "#0D407E"
+      },
+      {
+        "id": "5",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#99CF85",
+        "color1": "#5C0274"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、優れた防御力と機動性を兼ね備えた装備です。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0018.png"
+    ],
+    "tags": [
+      "攻撃特化",
+      "男性用",
+      "シンプル",
+      "水属性"
+    ],
+    "createdAt": "2024-06-12T05:04:38.107Z"
+  },
+  {
+    "id": "19",
+    "name": "神秘のクロス",
+    "armers": [
+      {
+        "id": "344",
+        "type": "head",
+        "gender": "w",
+        "color0": "#9059EB",
+        "color1": "#306D9E"
+      },
+      {
+        "id": "465",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#26CD0F",
+        "color1": "#362C11"
+      },
+      {
+        "id": "91",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#A92B65",
+        "color1": "#6E407C"
+      },
+      {
+        "id": "176",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#95B415",
+        "color1": "#1B7ED2"
+      },
+      {
+        "id": "293",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#5F9862",
+        "color1": "#20BA03"
+      }
+    ],
+    "description": "長い年月をかけて改良された、高いスキル発動率が特徴の上級者向け装備です。 雷属性モンスターとの戦闘で真価を発揮します。",
+    "images": [
+      "images/0019.png"
+    ],
+    "tags": [
+      "イベント",
+      "ガンナー用",
+      "男性用",
+      "上級者向け",
+      "限定"
+    ],
+    "createdAt": "2025-05-10T13:09:10.758Z"
+  },
+  {
+    "id": "20",
+    "name": "炎龍の装束",
+    "armers": [
+      {
+        "id": "413",
+        "type": "head",
+        "gender": "w",
+        "color0": "#26A954",
+        "color1": "#0363B4"
+      },
+      {
+        "id": "324",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#B553B0",
+        "color1": "#FE469C"
+      },
+      {
+        "id": "53",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#89E8C6",
+        "color1": "#5C4333"
+      },
+      {
+        "id": "127",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#4C90BB",
+        "color1": "#85281B"
+      },
+      {
+        "id": "30",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#FBFF68",
+        "color1": "#FF8050"
+      }
+    ],
+    "description": "古代文明の技術を応用した、特殊な素材を使用することで驚異的な耐性を実現しました。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0020.png"
+    ],
+    "tags": [
+      "女性用",
+      "氷属性",
+      "かわいい"
+    ],
+    "createdAt": "2024-10-11T12:33:43.912Z"
+  },
+  {
+    "id": "21",
+    "name": "凍結の重装",
+    "armers": [
+      {
+        "id": "129",
+        "type": "head",
+        "gender": "m",
+        "color0": "#7EE743",
+        "color1": "#EBDEB3"
+      },
+      {
+        "id": "345",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#CE3A54",
+        "color1": "#D9E15B"
+      },
+      {
+        "id": "137",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#2CA951",
+        "color1": "#A113C9"
+      },
+      {
+        "id": "132",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#1FB057",
+        "color1": "#A8B048"
+      },
+      {
+        "id": "5",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#7EB9F0",
+        "color1": "#7594D6"
+      }
+    ],
+    "description": "古代文明の技術を応用した、独特の輝きを放つ美しい装備セットです。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0021.png"
+    ],
+    "tags": [
+      "防御特化",
+      "バランス型",
+      "伝説"
+    ],
+    "createdAt": "2024-09-17T15:13:07.146Z"
+  },
+  {
+    "id": "22",
+    "name": "爆炎のコート",
+    "armers": [
+      {
+        "id": "311",
+        "type": "head",
+        "gender": "w",
+        "color0": "#C7AC7A",
+        "color1": "#7FDBB7"
+      },
+      {
+        "id": "179",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#143C80",
+        "color1": "#E2CB16"
+      },
+      {
+        "id": "484",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#18CDFE",
+        "color1": "#2DCC51"
+      },
+      {
+        "id": "39",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#E83382",
+        "color1": "#8A8C33"
+      },
+      {
+        "id": "402",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#32B781",
+        "color1": "#18038C"
+      }
+    ],
+    "description": "伝説のハンターが愛用した、高いスキル発動率が特徴の上級者向け装備です。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0022.png"
+    ],
+    "tags": [
+      "防御特化",
+      "エレガント",
+      "クール",
+      "氷属性"
+    ],
+    "createdAt": "2023-08-17T16:50:16.605Z"
+  },
+  {
+    "id": "23",
+    "name": "雷神のスーツ",
+    "armers": [
+      {
+        "id": "301",
+        "type": "head",
+        "gender": "m",
+        "color0": "#44D395",
+        "color1": "#E79602"
+      },
+      {
+        "id": "67",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#597C42",
+        "color1": "#BAB70F"
+      },
+      {
+        "id": "395",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#B4261E",
+        "color1": "#F80DBE"
+      },
+      {
+        "id": "85",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#D9205F",
+        "color1": "#93414D"
+      },
+      {
+        "id": "417",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#62467F",
+        "color1": "#32FF1E"
+      }
+    ],
+    "description": "熟練の鍛冶師が作り上げた、独特の輝きを放つ美しい装備セットです。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0023.png"
+    ],
+    "tags": [
+      "上級者向け",
+      "雷属性",
+      "英雄"
+    ],
+    "createdAt": "2024-11-29T11:29:57.828Z"
+  },
+  {
+    "id": "24",
+    "name": "古代の重装",
+    "armers": [
+      {
+        "id": "82",
+        "type": "head",
+        "gender": "w",
+        "color0": "#7A983A",
+        "color1": "#B24F05"
+      },
+      {
+        "id": "134",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#F65889",
+        "color1": "#BF7922"
+      },
+      {
+        "id": "201",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#76D5E5",
+        "color1": "#17485C"
+      },
+      {
+        "id": "457",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#311547",
+        "color1": "#F733A4"
+      },
+      {
+        "id": "417",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#2975B6",
+        "color1": "#ACB216"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、優れた防御力と機動性を兼ね備えた装備です。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0024.png"
+    ],
+    "tags": [
+      "神秘",
+      "イベント"
+    ],
+    "createdAt": "2024-06-03T23:02:10.797Z"
+  },
+  {
+    "id": "25",
+    "name": "凍結のウェア",
+    "armers": [
+      {
+        "id": "479",
+        "type": "head",
+        "gender": "m",
+        "color0": "#8CF87A",
+        "color1": "#C02AFF"
+      },
+      {
+        "id": "460",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#EC9701",
+        "color1": "#73455F"
+      },
+      {
+        "id": "563",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#23CCFD",
+        "color1": "#3EC48C"
+      },
+      {
+        "id": "39",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#D47538",
+        "color1": "#F6FD63"
+      },
+      {
+        "id": "45",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#2C2C5E",
+        "color1": "#C4EA6D"
+      }
+    ],
+    "description": "この重ね着は、特殊な素材を使用することで驚異的な耐性を実現しました。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0025.png"
+    ],
+    "tags": [
+      "攻撃特化",
+      "実用的",
+      "氷属性",
+      "シンプル"
+    ],
+    "createdAt": "2024-07-24T02:42:13.401Z"
+  },
+  {
+    "id": "26",
+    "name": "古代の重装",
+    "armers": [
+      {
+        "id": "87",
+        "type": "head",
+        "gender": "w",
+        "color0": "#DAC7F1",
+        "color1": "#DA0049"
+      },
+      {
+        "id": "90",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#187EC4",
+        "color1": "#AD95F6"
+      },
+      {
+        "id": "154",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#5F466B",
+        "color1": "#224818"
+      },
+      {
+        "id": "380",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#875AD5",
+        "color1": "#4B6FB9"
+      },
+      {
+        "id": "468",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#2F670C",
+        "color1": "#4EFFE7"
+      }
+    ],
+    "description": "熟練の鍛冶師が作り上げた、独特の輝きを放つ美しい装備セットです。 雷属性モンスターとの戦闘で真価を発揮します。",
+    "images": [
+      "images/0026.png"
+    ],
+    "tags": [
+      "古龍",
+      "限定",
+      "レア",
+      "かっこいい",
+      "モンスター"
+    ],
+    "createdAt": "2023-11-17T20:38:41.278Z"
+  },
+  {
+    "id": "27",
+    "name": "神秘のウェア",
+    "armers": [
+      {
+        "id": "344",
+        "type": "head",
+        "gender": "w",
+        "color0": "#3D74D3",
+        "color1": "#6725BE"
+      },
+      {
+        "id": "562",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#BC8FB1",
+        "color1": "#2614DB"
+      },
+      {
+        "id": "18",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#56F6BF",
+        "color1": "#05AD0F"
+      },
+      {
+        "id": "78",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#13CA9E",
+        "color1": "#427173"
+      },
+      {
+        "id": "40",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#521F9D",
+        "color1": "#F4E10D"
+      }
+    ],
+    "description": "長い年月をかけて改良された、独特の輝きを放つ美しい装備セットです。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0027.png"
+    ],
+    "tags": [
+      "レア",
+      "雷属性",
+      "剣士用"
+    ],
+    "createdAt": "2025-04-16T23:33:22.523Z"
+  },
+  {
+    "id": "28",
+    "name": "爆炎のプレート",
+    "armers": [
+      {
+        "id": "372",
+        "type": "head",
+        "gender": "m",
+        "color0": "#74EFB4",
+        "color1": "#2A91E0"
+      },
+      {
+        "id": "335",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#2BB1D5",
+        "color1": "#E2CC21"
+      },
+      {
+        "id": "356",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#881D67",
+        "color1": "#F10358"
+      },
+      {
+        "id": "309",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#0EA21A",
+        "color1": "#E56950"
+      },
+      {
+        "id": "241",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#8B0570",
+        "color1": "#0D639A"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、独特の輝きを放つ美しい装備セットです。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0028.png"
+    ],
+    "tags": [
+      "モンスター",
+      "水属性",
+      "初心者向け"
+    ],
+    "createdAt": "2023-07-23T14:31:41.782Z"
+  },
+  {
+    "id": "29",
+    "name": "雷神のバインド",
+    "armers": [
+      {
+        "id": "382",
+        "type": "head",
+        "gender": "w",
+        "color0": "#0EB077",
+        "color1": "#242336"
+      },
+      {
+        "id": "440",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#0185EF",
+        "color1": "#2E09EF"
+      },
+      {
+        "id": "558",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#524CCF",
+        "color1": "#056CE4"
+      },
+      {
+        "id": "347",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#3EC971",
+        "color1": "#060EED"
+      },
+      {
+        "id": "536",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#22EE9D",
+        "color1": "#A2BA02"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、過酷な環境でも快適に使用できる実用的な防具です。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0029.png"
+    ],
+    "tags": [
+      "上級者向け",
+      "剣士用",
+      "ゴージャス",
+      "シンプル"
+    ],
+    "createdAt": "2024-08-20T05:44:52.959Z"
+  },
+  {
+    "id": "30",
+    "name": "凍結のガード",
+    "armers": [
+      {
+        "id": "119",
+        "type": "head",
+        "gender": "m",
+        "color0": "#103BAF",
+        "color1": "#8A6292"
+      },
+      {
+        "id": "414",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#3CA045",
+        "color1": "#D5AFF7"
+      },
+      {
+        "id": "106",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#741EE8",
+        "color1": "#669066"
+      },
+      {
+        "id": "442",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#DA2E31",
+        "color1": "#B3C349"
+      },
+      {
+        "id": "463",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#15B00B",
+        "color1": "#08EDA7"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、過酷な環境でも快適に使用できる実用的な防具です。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0030.png"
+    ],
+    "tags": [
+      "神秘",
+      "バランス型",
+      "水属性",
+      "伝説"
+    ],
+    "createdAt": "2024-02-18T14:42:03.204Z"
+  },
+  {
+    "id": "31",
+    "name": "岩砕のコート",
+    "armers": [
+      {
+        "id": "339",
+        "type": "head",
+        "gender": "w",
+        "color0": "#CD1244",
+        "color1": "#41D137"
+      },
+      {
+        "id": "95",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#57C875",
+        "color1": "#09BAA5"
+      },
+      {
+        "id": "121",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#068499",
+        "color1": "#36E2C2"
+      },
+      {
+        "id": "559",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#B51B81",
+        "color1": "#80374B"
+      },
+      {
+        "id": "565",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#500959",
+        "color1": "#C5299A"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、過酷な環境でも快適に使用できる実用的な防具です。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0031.png"
+    ],
+    "tags": [
+      "エレガント",
+      "重装",
+      "水属性",
+      "かっこいい",
+      "伝説"
+    ],
+    "createdAt": "2025-03-31T10:22:32.406Z"
+  },
+  {
+    "id": "32",
+    "name": "灼熱の装束",
+    "armers": [
+      {
+        "id": "501",
+        "type": "head",
+        "gender": "w",
+        "color0": "#152BEE",
+        "color1": "#FAAC6D"
+      },
+      {
+        "id": "335",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#E092D9",
+        "color1": "#3466FC"
+      },
+      {
+        "id": "149",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#2F4712",
+        "color1": "#FDCA92"
+      },
+      {
+        "id": "326",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#2318BB",
+        "color1": "#616C52"
+      },
+      {
+        "id": "443",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#EF068E",
+        "color1": "#CA0BFC"
+      }
+    ],
+    "description": "古代文明の技術を応用した、特殊な素材を使用することで驚異的な耐性を実現しました。 雷属性モンスターとの戦闘で真価を発揮します。",
+    "images": [
+      "images/0032.png"
+    ],
+    "tags": [
+      "限定",
+      "ガンナー用",
+      "剣士用",
+      "バランス型"
+    ],
+    "createdAt": "2024-01-20T20:25:49.173Z"
+  },
+  {
+    "id": "33",
+    "name": "混沌のウェア",
+    "armers": [
+      {
+        "id": "80",
+        "type": "head",
+        "gender": "w",
+        "color0": "#49CC73",
+        "color1": "#312AA5"
+      },
+      {
+        "id": "174",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#6AA7F6",
+        "color1": "#68EA20"
+      },
+      {
+        "id": "351",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#419F8E",
+        "color1": "#33A2B6"
+      },
+      {
+        "id": "321",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#A24F35",
+        "color1": "#552155"
+      },
+      {
+        "id": "560",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#76A824",
+        "color1": "#23EB52"
+      }
+    ],
+    "description": "この重ね着は、高いスキル発動率が特徴の上級者向け装備です。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0033.png"
+    ],
+    "tags": [
+      "水属性",
+      "神秘",
+      "エレガント",
+      "氷属性"
+    ],
+    "createdAt": "2025-02-14T07:48:28.447Z"
+  },
+  {
+    "id": "34",
+    "name": "猛毒のコート",
+    "armers": [
+      {
+        "id": "114",
+        "type": "head",
+        "gender": "m",
+        "color0": "#BF93DE",
+        "color1": "#037171"
+      },
+      {
+        "id": "90",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#4ABB47",
+        "color1": "#D5930B"
+      },
+      {
+        "id": "48",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#D8ECD6",
+        "color1": "#EFD09D"
+      },
+      {
+        "id": "564",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#132432",
+        "color1": "#AC9DB1"
+      },
+      {
+        "id": "370",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#0CD32A",
+        "color1": "#9A110B"
+      }
+    ],
+    "description": "古代文明の技術を応用した、見た目の美しさと機能性を両立させた傑作と言えます。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0034.png"
+    ],
+    "tags": [
+      "上級者向け",
+      "エレガント"
+    ],
+    "createdAt": "2024-02-02T17:45:25.875Z"
+  },
+  {
+    "id": "35",
+    "name": "蒼穹の鎧",
+    "armers": [
+      {
+        "id": "104",
+        "type": "head",
+        "gender": "m",
+        "color0": "#518EAB",
+        "color1": "#2D263D"
+      },
+      {
+        "id": "134",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#6842E9",
+        "color1": "#D1D0D9"
+      },
+      {
+        "id": "420",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#9FAFC5",
+        "color1": "#6CCA1F"
+      },
+      {
+        "id": "186",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#A3B498",
+        "color1": "#6A4987"
+      },
+      {
+        "id": "74",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#839044",
+        "color1": "#C280CF"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、特殊な素材を使用することで驚異的な耐性を実現しました。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0035.png"
+    ],
+    "tags": [
+      "火属性",
+      "ゴージャス",
+      "上級者向け",
+      "女性用"
+    ],
+    "createdAt": "2023-12-17T23:27:57.997Z"
+  },
+  {
+    "id": "36",
+    "name": "爆炎のコート",
+    "armers": [
+      {
+        "id": "288",
+        "type": "head",
+        "gender": "w",
+        "color0": "#561CD0",
+        "color1": "#288875"
+      },
+      {
+        "id": "517",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#5862B6",
+        "color1": "#6E20B6"
+      },
+      {
+        "id": "106",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#D85C6D",
+        "color1": "#DED233"
+      },
+      {
+        "id": "4",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#62BF7C",
+        "color1": "#873E59"
+      },
+      {
+        "id": "453",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#EC8336",
+        "color1": "#45D029"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、高いスキル発動率が特徴の上級者向け装備です。 水中での活動をサポートします。",
+    "images": [
+      "images/0036.png"
+    ],
+    "tags": [
+      "雷属性",
+      "ゴージャス",
+      "かわいい"
+    ],
+    "createdAt": "2024-09-23T18:15:46.145Z"
+  },
+  {
+    "id": "37",
+    "name": "爆炎のプレート",
+    "armers": [
+      {
+        "id": "66",
+        "type": "head",
+        "gender": "w",
+        "color0": "#131671",
+        "color1": "#60923D"
+      },
+      {
+        "id": "567",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#176FFB",
+        "color1": "#E8CD65"
+      },
+      {
+        "id": "573",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#C41F01",
+        "color1": "#CD8207"
+      },
+      {
+        "id": "186",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#953157",
+        "color1": "#8896CE"
+      },
+      {
+        "id": "187",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#6AC3BA",
+        "color1": "#82EE23"
+      }
+    ],
+    "description": "長い年月をかけて改良された、過酷な環境でも快適に使用できる実用的な防具です。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0037.png"
+    ],
+    "tags": [
+      "女性用",
+      "軽装",
+      "ゴージャス",
+      "バランス型"
+    ],
+    "createdAt": "2025-01-21T19:20:14.757Z"
+  },
+  {
+    "id": "38",
+    "name": "嵐風のクロス",
+    "armers": [
+      {
+        "id": "388",
+        "type": "head",
+        "gender": "m",
+        "color0": "#08F5A8",
+        "color1": "#7AFFF7"
+      },
+      {
+        "id": "319",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#073F16",
+        "color1": "#EB147F"
+      },
+      {
+        "id": "91",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#25290C",
+        "color1": "#F85EDE"
+      },
+      {
+        "id": "24",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#0C4FA4",
+        "color1": "#3D88C8"
+      },
+      {
+        "id": "458",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#B6CEFF",
+        "color1": "#BEF76F"
+      }
+    ],
+    "description": "長い年月をかけて改良された、過酷な環境でも快適に使用できる実用的な防具です。 水中での活動をサポートします。",
+    "images": [
+      "images/0038.png"
+    ],
+    "tags": [
+      "防御特化",
+      "男性用",
+      "初心者向け"
+    ],
+    "createdAt": "2024-12-23T02:37:08.845Z"
+  },
+  {
+    "id": "39",
+    "name": "岩砕のローブ",
+    "armers": [
+      {
+        "id": "360",
+        "type": "head",
+        "gender": "m",
+        "color0": "#A4D758",
+        "color1": "#F2C3C0"
+      },
+      {
+        "id": "168",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#04D918",
+        "color1": "#3986BB"
+      },
+      {
+        "id": "351",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#0E86B9",
+        "color1": "#1D25AD"
+      },
+      {
+        "id": "102",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#33DA49",
+        "color1": "#3944D2"
+      },
+      {
+        "id": "359",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#E9D2F8",
+        "color1": "#AA423D"
+      }
+    ],
+    "description": "長い年月をかけて改良された、高いスキル発動率が特徴の上級者向け装備です。 雷属性モンスターとの戦闘で真価を発揮します。",
+    "images": [
+      "images/0039.png"
+    ],
+    "tags": [
+      "ゴージャス",
+      "クール",
+      "バランス型",
+      "上級者向け"
+    ],
+    "createdAt": "2023-07-21T14:53:44.339Z"
+  },
+  {
+    "id": "40",
+    "name": "大地のプレート",
+    "armers": [
+      {
+        "id": "1",
+        "type": "head",
+        "gender": "m",
+        "color0": "#8E144D",
+        "color1": "#21C72D"
+      },
+      {
+        "id": "184",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#D7523F",
+        "color1": "#28B5DD"
+      },
+      {
+        "id": "28",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#059DF1",
+        "color1": "#82B3B3"
+      },
+      {
+        "id": "421",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#0F0015",
+        "color1": "#93B32E"
+      },
+      {
+        "id": "359",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#1FCBD7",
+        "color1": "#1370C1"
+      }
+    ],
+    "description": "この重ね着は、高いスキル発動率が特徴の上級者向け装備です。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0040.png"
+    ],
+    "tags": [
+      "ガンナー用",
+      "男性用",
+      "かっこいい",
+      "シンプル",
+      "軽装"
+    ],
+    "createdAt": "2024-07-04T18:56:25.346Z"
+  },
+  {
+    "id": "41",
+    "name": "大地のスーツ",
+    "armers": [
+      {
+        "id": "449",
+        "type": "head",
+        "gender": "w",
+        "color0": "#C140AF",
+        "color1": "#9914BE"
+      },
+      {
+        "id": "42",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#A39AC0",
+        "color1": "#901C90"
+      },
+      {
+        "id": "38",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#919AF8",
+        "color1": "#574FE6"
+      },
+      {
+        "id": "207",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#1AADDD",
+        "color1": "#E4297A"
+      },
+      {
+        "id": "536",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#908301",
+        "color1": "#D13316"
+      }
+    ],
+    "description": "伝説のハンターが愛用した、優れた防御力と機動性を兼ね備えた装備です。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0041.png"
+    ],
+    "tags": [
+      "神秘",
+      "男性用"
+    ],
+    "createdAt": "2024-01-16T11:05:10.447Z"
+  },
+  {
+    "id": "42",
+    "name": "黒鉄のローブ",
+    "armers": [
+      {
+        "id": "289",
+        "type": "head",
+        "gender": "m",
+        "color0": "#4D7CDC",
+        "color1": "#2FB9D1"
+      },
+      {
+        "id": "522",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#DCA57E",
+        "color1": "#10DC13"
+      },
+      {
+        "id": "534",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#148797",
+        "color1": "#66571F"
+      },
+      {
+        "id": "127",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#A4A14D",
+        "color1": "#FB3E42"
+      },
+      {
+        "id": "407",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#025417",
+        "color1": "#873CD6"
+      }
+    ],
+    "description": "伝説のハンターが愛用した、優れた防御力と機動性を兼ね備えた装備です。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0042.png"
+    ],
+    "tags": [
+      "限定",
+      "モンスター",
+      "ガンナー用"
+    ],
+    "createdAt": "2023-08-28T03:35:43.109Z"
+  },
+  {
+    "id": "43",
+    "name": "神秘のアーマー",
+    "armers": [
+      {
+        "id": "285",
+        "type": "head",
+        "gender": "m",
+        "color0": "#00F8BF",
+        "color1": "#72BDB9"
+      },
+      {
+        "id": "100",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#276992",
+        "color1": "#82F064"
+      },
+      {
+        "id": "573",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#D18257",
+        "color1": "#888024"
+      },
+      {
+        "id": "44",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#E096C5",
+        "color1": "#0A044F"
+      },
+      {
+        "id": "348",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#A2087D",
+        "color1": "#435908"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、特殊な素材を使用することで驚異的な耐性を実現しました。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0043.png"
+    ],
+    "tags": [
+      "バランス型",
+      "氷属性",
+      "モンスター",
+      "シンプル"
+    ],
+    "createdAt": "2024-11-20T17:20:17.569Z"
+  },
+  {
+    "id": "44",
+    "name": "霧氷のバインド",
+    "armers": [
+      {
+        "id": "474",
+        "type": "head",
+        "gender": "w",
+        "color0": "#785121",
+        "color1": "#5BC69C"
+      },
+      {
+        "id": "158",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#B367C3",
+        "color1": "#1F26C3"
+      },
+      {
+        "id": "101",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#1C2A44",
+        "color1": "#AFB497"
+      },
+      {
+        "id": "457",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#3D5192",
+        "color1": "#F9198D"
+      },
+      {
+        "id": "402",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#5022AC",
+        "color1": "#81887F"
+      }
+    ],
+    "description": "この重ね着は、過酷な環境でも快適に使用できる実用的な防具です。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0044.png"
+    ],
+    "tags": [
+      "雷属性",
+      "イベント",
+      "ユニセックス",
+      "火属性"
+    ],
+    "createdAt": "2023-10-26T20:14:53.164Z"
+  },
+  {
+    "id": "45",
+    "name": "混沌のクロス",
+    "armers": [
+      {
+        "id": "26",
+        "type": "head",
+        "gender": "w",
+        "color0": "#BF650C",
+        "color1": "#7BA22A"
+      },
+      {
+        "id": "475",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#B2EA8C",
+        "color1": "#CA5213"
+      },
+      {
+        "id": "201",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#2E885E",
+        "color1": "#16AE9F"
+      },
+      {
+        "id": "385",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#1E23DB",
+        "color1": "#6CB0F3"
+      },
+      {
+        "id": "161",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#ADED87",
+        "color1": "#9CF1D3"
+      }
+    ],
+    "description": "伝説のハンターが愛用した、高いスキル発動率が特徴の上級者向け装備です。 雷属性モンスターとの戦闘で真価を発揮します。",
+    "images": [
+      "images/0045.png"
+    ],
+    "tags": [
+      "女性用",
+      "剣士用",
+      "雷属性",
+      "クール"
+    ],
+    "createdAt": "2024-08-11T20:44:31.129Z"
+  },
+  {
+    "id": "46",
+    "name": "猛毒のバインド",
+    "armers": [
+      {
+        "id": "189",
+        "type": "head",
+        "gender": "w",
+        "color0": "#E8A54A",
+        "color1": "#DE7CC8"
+      },
+      {
+        "id": "27",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#708AC3",
+        "color1": "#05AB1D"
+      },
+      {
+        "id": "395",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#8AC2F1",
+        "color1": "#25B4EA"
+      },
+      {
+        "id": "240",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#F5CC97",
+        "color1": "#87B0E0"
+      },
+      {
+        "id": "293",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#558CC1",
+        "color1": "#08D874"
+      }
+    ],
+    "description": "この重ね着は、独特の輝きを放つ美しい装備セットです。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0046.png"
+    ],
+    "tags": [
+      "女性用",
+      "かっこいい",
+      "男性用"
+    ],
+    "createdAt": "2023-12-17T18:38:42.367Z"
+  },
+  {
+    "id": "47",
+    "name": "蒼穹の鎧",
+    "armers": [
+      {
+        "id": "51",
+        "type": "head",
+        "gender": "m",
+        "color0": "#4E8517",
+        "color1": "#43F92B"
+      },
+      {
+        "id": "136",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#C99362",
+        "color1": "#F1B2B8"
+      },
+      {
+        "id": "390",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#7B4691",
+        "color1": "#1289E0"
+      },
+      {
+        "id": "92",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#85BCD0",
+        "color1": "#C545F6"
+      },
+      {
+        "id": "15",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#E233EF",
+        "color1": "#55DE8C"
+      }
+    ],
+    "description": "長い年月をかけて改良された、独特の輝きを放つ美しい装備セットです。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0047.png"
+    ],
+    "tags": [
+      "実用的",
+      "モンスター",
+      "かっこいい"
+    ],
+    "createdAt": "2024-07-01T23:10:29.382Z"
+  },
+  {
+    "id": "48",
+    "name": "混沌のバインド",
+    "armers": [
+      {
+        "id": "532",
+        "type": "head",
+        "gender": "m",
+        "color0": "#997A6F",
+        "color1": "#A63435"
+      },
+      {
+        "id": "450",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#B60187",
+        "color1": "#3C702C"
+      },
+      {
+        "id": "346",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#20DF37",
+        "color1": "#DA231E"
+      },
+      {
+        "id": "369",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#7E3565",
+        "color1": "#E56E6C"
+      },
+      {
+        "id": "198",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#E1886A",
+        "color1": "#15AC14"
+      }
+    ],
+    "description": "熟練の鍛冶師が作り上げた、高いスキル発動率が特徴の上級者向け装備です。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0048.png"
+    ],
+    "tags": [
+      "ユニセックス",
+      "かっこいい",
+      "軽装"
+    ],
+    "createdAt": "2024-02-09T12:21:26.858Z"
+  },
+  {
+    "id": "49",
+    "name": "炎龍のローブ",
+    "armers": [
+      {
+        "id": "323",
+        "type": "head",
+        "gender": "w",
+        "color0": "#3FEBE8",
+        "color1": "#FE4DE1"
+      },
+      {
+        "id": "174",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#DA7B00",
+        "color1": "#2B02BB"
+      },
+      {
+        "id": "169",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#687685",
+        "color1": "#41A27A"
+      },
+      {
+        "id": "514",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#0B37B8",
+        "color1": "#A1A5B5"
+      },
+      {
+        "id": "55",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#DF3ABD",
+        "color1": "#D9247F"
+      }
+    ],
+    "description": "伝説のハンターが愛用した、過酷な環境でも快適に使用できる実用的な防具です。 水中での活動をサポートします。",
+    "images": [
+      "images/0049.png"
+    ],
+    "tags": [
+      "古龍",
+      "軽装",
+      "かっこいい"
+    ],
+    "createdAt": "2025-03-14T00:03:20.304Z"
+  },
+  {
+    "id": "50",
+    "name": "雷鳴のコート",
+    "armers": [
+      {
+        "id": "581",
+        "type": "head",
+        "gender": "w",
+        "color0": "#AA885D",
+        "color1": "#0368BB"
+      },
+      {
+        "id": "100",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#697D85",
+        "color1": "#1CEAA1"
+      },
+      {
+        "id": "351",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#5D8697",
+        "color1": "#7131CD"
+      },
+      {
+        "id": "535",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#D3F771",
+        "color1": "#899718"
+      },
+      {
+        "id": "55",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#A56B20",
+        "color1": "#0E2370"
+      }
+    ],
+    "description": "この重ね着は、見た目の美しさと機能性を両立させた傑作と言えます。 水中での活動をサポートします。",
+    "images": [
+      "images/0050.png"
+    ],
+    "tags": [
+      "上級者向け",
+      "古龍",
+      "攻撃特化",
+      "かわいい"
+    ],
+    "createdAt": "2023-08-27T18:36:39.159Z"
+  },
+  {
+    "id": "51",
+    "name": "霧氷の装束",
+    "armers": [
+      {
+        "id": "582",
+        "type": "head",
+        "gender": "m",
+        "color0": "#721CA9",
+        "color1": "#1FD568"
+      },
+      {
+        "id": "90",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#1AC750",
+        "color1": "#6BF205"
+      },
+      {
+        "id": "508",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#CA49E6",
+        "color1": "#BAB5B5"
+      },
+      {
+        "id": "150",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#F3F6BB",
+        "color1": "#1DBFFD"
+      },
+      {
+        "id": "284",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#DCA450",
+        "color1": "#FF2BEB"
+      }
+    ],
+    "description": "熟練の鍛冶師が作り上げた、過酷な環境でも快適に使用できる実用的な防具です。 雷属性モンスターとの戦闘で真価を発揮します。",
+    "images": [
+      "images/0051.png"
+    ],
+    "tags": [
+      "シンプル",
+      "龍属性",
+      "初心者向け"
+    ],
+    "createdAt": "2023-07-28T02:13:41.049Z"
+  },
+  {
+    "id": "52",
+    "name": "蒼穹のガード",
+    "armers": [
+      {
+        "id": "16",
+        "type": "head",
+        "gender": "m",
+        "color0": "#01BA67",
+        "color1": "#BA5754"
+      },
+      {
+        "id": "389",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#FEF8A3",
+        "color1": "#112A4B"
+      },
+      {
+        "id": "154",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#D870CB",
+        "color1": "#C37C0D"
+      },
+      {
+        "id": "19",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#2892A2",
+        "color1": "#5F57C4"
+      },
+      {
+        "id": "161",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#A403F2",
+        "color1": "#A9935A"
+      }
+    ],
+    "description": "古代文明の技術を応用した、見た目の美しさと機能性を両立させた傑作と言えます。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0052.png"
+    ],
+    "tags": [
+      "神秘",
+      "剣士用",
+      "バランス型"
+    ],
+    "createdAt": "2025-02-03T21:16:51.168Z"
+  },
+  {
+    "id": "53",
+    "name": "黒鉄のメイル",
+    "armers": [
+      {
+        "id": "506",
+        "type": "head",
+        "gender": "w",
+        "color0": "#CA0214",
+        "color1": "#6FBE09"
+      },
+      {
+        "id": "120",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#9024BB",
+        "color1": "#3C90FA"
+      },
+      {
+        "id": "563",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#8AEEDC",
+        "color1": "#792F2A"
+      },
+      {
+        "id": "127",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#170368",
+        "color1": "#26DB50"
+      },
+      {
+        "id": "218",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#E369A2",
+        "color1": "#70E7FF"
+      }
+    ],
+    "description": "古代文明の技術を応用した、見た目の美しさと機能性を両立させた傑作と言えます。 雷属性モンスターとの戦闘で真価を発揮します。",
+    "images": [
+      "images/0053.png"
+    ],
+    "tags": [
+      "伝説",
+      "イベント",
+      "軽装",
+      "実用的",
+      "英雄"
+    ],
+    "createdAt": "2024-03-24T14:30:52.831Z"
+  },
+  {
+    "id": "54",
+    "name": "雷神のクロス",
+    "armers": [
+      {
+        "id": "366",
+        "type": "head",
+        "gender": "m",
+        "color0": "#DDC87A",
+        "color1": "#B3A05A"
+      },
+      {
+        "id": "460",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#C358E9",
+        "color1": "#C662E9"
+      },
+      {
+        "id": "513",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#57D82A",
+        "color1": "#B27350"
+      },
+      {
+        "id": "442",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#58F6C6",
+        "color1": "#2272DE"
+      },
+      {
+        "id": "371",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#2CBBC8",
+        "color1": "#B80BBC"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、高いスキル発動率が特徴の上級者向け装備です。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0054.png"
+    ],
+    "tags": [
+      "古龍",
+      "イベント"
+    ],
+    "createdAt": "2025-02-15T20:56:15.229Z"
+  },
+  {
+    "id": "55",
+    "name": "凍結のウェア",
+    "armers": [
+      {
+        "id": "571",
+        "type": "head",
+        "gender": "w",
+        "color0": "#55FEC4",
+        "color1": "#9E68C2"
+      },
+      {
+        "id": "324",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#8FADA3",
+        "color1": "#FC9B28"
+      },
+      {
+        "id": "384",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#8C6951",
+        "color1": "#BB3293"
+      },
+      {
+        "id": "92",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#B719F0",
+        "color1": "#3D8F91"
+      },
+      {
+        "id": "359",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#B69980",
+        "color1": "#2C1222"
+      }
+    ],
+    "description": "古代文明の技術を応用した、独特の輝きを放つ美しい装備セットです。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0055.png"
+    ],
+    "tags": [
+      "ゴージャス",
+      "女性用",
+      "水属性"
+    ],
+    "createdAt": "2024-03-11T05:12:58.343Z"
+  },
+  {
+    "id": "56",
+    "name": "雷鳴のアーマー",
+    "armers": [
+      {
+        "id": "316",
+        "type": "head",
+        "gender": "w",
+        "color0": "#CECE74",
+        "color1": "#89189C"
+      },
+      {
+        "id": "383",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#498ACA",
+        "color1": "#C53DC9"
+      },
+      {
+        "id": "487",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#FDFF71",
+        "color1": "#C9C449"
+      },
+      {
+        "id": "92",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#23E90E",
+        "color1": "#D36BD2"
+      },
+      {
+        "id": "284",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#3ABBA7",
+        "color1": "#066E7F"
+      }
+    ],
+    "description": "長い年月をかけて改良された、高いスキル発動率が特徴の上級者向け装備です。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0056.png"
+    ],
+    "tags": [
+      "クール",
+      "ゴージャス",
+      "秘伝",
+      "雷属性"
+    ],
+    "createdAt": "2023-12-23T19:54:59.826Z"
+  },
+  {
+    "id": "57",
+    "name": "雷神のローブ",
+    "armers": [
+      {
+        "id": "506",
+        "type": "head",
+        "gender": "w",
+        "color0": "#B9E99C",
+        "color1": "#AFFB82"
+      },
+      {
+        "id": "12",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#6C85C0",
+        "color1": "#92BA73"
+      },
+      {
+        "id": "126",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#DCDA47",
+        "color1": "#DB2DBF"
+      },
+      {
+        "id": "331",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#981222",
+        "color1": "#A78B2A"
+      },
+      {
+        "id": "542",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#FC67EA",
+        "color1": "#A2BB80"
+      }
+    ],
+    "description": "伝説のハンターが愛用した、優れた防御力と機動性を兼ね備えた装備です。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0057.png"
+    ],
+    "tags": [
+      "防御特化",
+      "初心者向け",
+      "氷属性"
+    ],
+    "createdAt": "2024-05-10T01:06:26.746Z"
+  },
+  {
+    "id": "58",
+    "name": "大地のクロス",
+    "armers": [
+      {
+        "id": "439",
+        "type": "head",
+        "gender": "w",
+        "color0": "#5644B9",
+        "color1": "#864149"
+      },
+      {
+        "id": "168",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#53E5BE",
+        "color1": "#067785"
+      },
+      {
+        "id": "216",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#157400",
+        "color1": "#4381AD"
+      },
+      {
+        "id": "421",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#6C63B2",
+        "color1": "#E2E4C4"
+      },
+      {
+        "id": "198",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#CD8B3A",
+        "color1": "#1309E1"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、優れた防御力と機動性を兼ね備えた装備です。 水中での活動をサポートします。",
+    "images": [
+      "images/0058.png"
+    ],
+    "tags": [
+      "男性用",
+      "古龍",
+      "雷属性"
+    ],
+    "createdAt": "2025-03-12T15:31:05.279Z"
+  },
+  {
+    "id": "59",
+    "name": "大地のガーブ",
+    "armers": [
+      {
+        "id": "237",
+        "type": "head",
+        "gender": "w",
+        "color0": "#4323B6",
+        "color1": "#825825"
+      },
+      {
+        "id": "158",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#80DC00",
+        "color1": "#B44983"
+      },
+      {
+        "id": "503",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#8335B3",
+        "color1": "#BF6DE2"
+      },
+      {
+        "id": "188",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#742976",
+        "color1": "#7C54EE"
+      },
+      {
+        "id": "463",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#1E1D4D",
+        "color1": "#73957E"
+      }
+    ],
+    "description": "長い年月をかけて改良された、見た目の美しさと機能性を両立させた傑作と言えます。 雷属性モンスターとの戦闘で真価を発揮します。",
+    "images": [
+      "images/0059.png"
+    ],
+    "tags": [
+      "水属性",
+      "古龍",
+      "剣士用",
+      "女性用"
+    ],
+    "createdAt": "2024-01-29T19:44:43.265Z"
+  },
+  {
+    "id": "60",
+    "name": "蒼穹のスーツ",
+    "armers": [
+      {
+        "id": "459",
+        "type": "head",
+        "gender": "w",
+        "color0": "#FAA1A5",
+        "color1": "#EA8A81"
+      },
+      {
+        "id": "460",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#1258BE",
+        "color1": "#E242B8"
+      },
+      {
+        "id": "405",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#4AED7F",
+        "color1": "#E6EF81"
+      },
+      {
+        "id": "24",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#8D8436",
+        "color1": "#94C52E"
+      },
+      {
+        "id": "463",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#3E9FB2",
+        "color1": "#26E39F"
+      }
+    ],
+    "description": "熟練の鍛冶師が作り上げた、独特の輝きを放つ美しい装備セットです。 雷属性モンスターとの戦闘で真価を発揮します。",
+    "images": [
+      "images/0060.png"
+    ],
+    "tags": [
+      "剣士用",
+      "雷属性",
+      "エレガント",
+      "バランス型"
+    ],
+    "createdAt": "2025-04-30T12:40:24.843Z"
+  },
+  {
+    "id": "61",
+    "name": "黒鉄のローブ",
+    "armers": [
+      {
+        "id": "99",
+        "type": "head",
+        "gender": "w",
+        "color0": "#5A3F4C",
+        "color1": "#1D8CDC"
+      },
+      {
+        "id": "295",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#F2205E",
+        "color1": "#139A67"
+      },
+      {
+        "id": "346",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#9E908B",
+        "color1": "#C0FF6A"
+      },
+      {
+        "id": "181",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#43D4C7",
+        "color1": "#71FCDF"
+      },
+      {
+        "id": "555",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#44D585",
+        "color1": "#4D3F7E"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、高いスキル発動率が特徴の上級者向け装備です。 水中での活動をサポートします。",
+    "images": [
+      "images/0061.png"
+    ],
+    "tags": [
+      "ユニセックス",
+      "イベント",
+      "シンプル"
+    ],
+    "createdAt": "2023-12-29T11:14:40.027Z"
+  },
+  {
+    "id": "62",
+    "name": "古代のプレート",
+    "armers": [
+      {
+        "id": "135",
+        "type": "head",
+        "gender": "w",
+        "color0": "#ECA3BE",
+        "color1": "#AA83C0"
+      },
+      {
+        "id": "399",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#553077",
+        "color1": "#5BF19B"
+      },
+      {
+        "id": "374",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#6C9856",
+        "color1": "#2BBA16"
+      },
+      {
+        "id": "514",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#622EEC",
+        "color1": "#47D0B0"
+      },
+      {
+        "id": "98",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#BBCE1E",
+        "color1": "#8AA2E0"
+      }
+    ],
+    "description": "古代文明の技術を応用した、過酷な環境でも快適に使用できる実用的な防具です。 水中での活動をサポートします。",
+    "images": [
+      "images/0062.png"
+    ],
+    "tags": [
+      "火属性",
+      "女性用",
+      "秘伝"
+    ],
+    "createdAt": "2024-03-18T05:05:04.071Z"
+  },
+  {
+    "id": "63",
+    "name": "氷霜のバインド",
+    "armers": [
+      {
+        "id": "474",
+        "type": "head",
+        "gender": "m",
+        "color0": "#069ED0",
+        "color1": "#C100B8"
+      },
+      {
+        "id": "190",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#387B55",
+        "color1": "#030DA5"
+      },
+      {
+        "id": "558",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#46809F",
+        "color1": "#2B6377"
+      },
+      {
+        "id": "586",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#6FF0C9",
+        "color1": "#553A76"
+      },
+      {
+        "id": "171",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#6B8289",
+        "color1": "#DAADA0"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、高いスキル発動率が特徴の上級者向け装備です。 雷属性モンスターとの戦闘で真価を発揮します。",
+    "images": [
+      "images/0063.png"
+    ],
+    "tags": [
+      "初心者向け",
+      "神秘",
+      "古龍",
+      "龍属性"
+    ],
+    "createdAt": "2024-12-28T02:06:11.319Z"
+  },
+  {
+    "id": "64",
+    "name": "霧氷のローブ",
+    "armers": [
+      {
+        "id": "418",
+        "type": "head",
+        "gender": "m",
+        "color0": "#40ED70",
+        "color1": "#C07678"
+      },
+      {
+        "id": "76",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#4BC03C",
+        "color1": "#C12277"
+      },
+      {
+        "id": "291",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#FD58FF",
+        "color1": "#872E0F"
+      },
+      {
+        "id": "391",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#9A45C7",
+        "color1": "#74FAD6"
+      },
+      {
+        "id": "536",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#A2F28F",
+        "color1": "#CD584A"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、過酷な環境でも快適に使用できる実用的な防具です。 水中での活動をサポートします。",
+    "images": [
+      "images/0064.png"
+    ],
+    "tags": [
+      "神秘",
+      "古龍",
+      "剣士用",
+      "かっこいい"
+    ],
+    "createdAt": "2024-11-10T21:44:36.731Z"
+  },
+  {
+    "id": "65",
+    "name": "雷神の重装",
+    "armers": [
+      {
+        "id": "543",
+        "type": "head",
+        "gender": "m",
+        "color0": "#CC78CC",
+        "color1": "#50B546"
+      },
+      {
+        "id": "120",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#019B09",
+        "color1": "#178C70"
+      },
+      {
+        "id": "540",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#1DCDDD",
+        "color1": "#B49A5B"
+      },
+      {
+        "id": "574",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#C3CA6E",
+        "color1": "#BD30C4"
+      },
+      {
+        "id": "392",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#F755EA",
+        "color1": "#9FF803"
+      }
+    ],
+    "description": "この重ね着は、過酷な環境でも快適に使用できる実用的な防具です。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0065.png"
+    ],
+    "tags": [
+      "クール",
+      "男性用",
+      "水属性",
+      "伝説"
+    ],
+    "createdAt": "2025-04-18T17:31:00.476Z"
+  },
+  {
+    "id": "66",
+    "name": "蒼穹のバインド",
+    "armers": [
+      {
+        "id": "377",
+        "type": "head",
+        "gender": "m",
+        "color0": "#840090",
+        "color1": "#2D7811"
+      },
+      {
+        "id": "522",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#4C1C7C",
+        "color1": "#DB0B85"
+      },
+      {
+        "id": "191",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#C1587F",
+        "color1": "#36A770"
+      },
+      {
+        "id": "102",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#8A8FCB",
+        "color1": "#3DEBE8"
+      },
+      {
+        "id": "128",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#B34CB6",
+        "color1": "#1ACB4B"
+      }
+    ],
+    "description": "古代文明の技術を応用した、優れた防御力と機動性を兼ね備えた装備です。 水中での活動をサポートします。",
+    "images": [
+      "images/0066.png"
+    ],
+    "tags": [
+      "龍属性",
+      "シンプル",
+      "攻撃特化"
+    ],
+    "createdAt": "2025-03-09T07:20:48.306Z"
+  },
+  {
+    "id": "67",
+    "name": "凍結の防具",
+    "armers": [
+      {
+        "id": "219",
+        "type": "head",
+        "gender": "w",
+        "color0": "#7FE89E",
+        "color1": "#6398A9"
+      },
+      {
+        "id": "76",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#0B06B1",
+        "color1": "#831704"
+      },
+      {
+        "id": "568",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#64A7BC",
+        "color1": "#01FC4F"
+      },
+      {
+        "id": "488",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#C0DA4A",
+        "color1": "#614DE4"
+      },
+      {
+        "id": "359",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#F73B8E",
+        "color1": "#3E5BC3"
+      }
+    ],
+    "description": "この重ね着は、過酷な環境でも快適に使用できる実用的な防具です。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0067.png"
+    ],
+    "tags": [
+      "かっこいい",
+      "ガンナー用",
+      "雷属性",
+      "男性用",
+      "軽装"
+    ],
+    "createdAt": "2024-06-22T18:01:08.569Z"
+  },
+  {
+    "id": "68",
+    "name": "古代のガーブ",
+    "armers": [
+      {
+        "id": "506",
+        "type": "head",
+        "gender": "m",
+        "color0": "#CA4A07",
+        "color1": "#2C436F"
+      },
+      {
+        "id": "399",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#900357",
+        "color1": "#75EE55"
+      },
+      {
+        "id": "185",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#51619A",
+        "color1": "#9692B9"
+      },
+      {
+        "id": "85",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#4D4BF2",
+        "color1": "#6DF94C"
+      },
+      {
+        "id": "338",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#E8D310",
+        "color1": "#288307"
+      }
+    ],
+    "description": "長い年月をかけて改良された、特殊な素材を使用することで驚異的な耐性を実現しました。 雷属性モンスターとの戦闘で真価を発揮します。",
+    "images": [
+      "images/0068.png"
+    ],
+    "tags": [
+      "防御特化",
+      "軽装",
+      "エレガント",
+      "氷属性",
+      "重装"
+    ],
+    "createdAt": "2025-05-28T04:59:22.198Z"
+  },
+  {
+    "id": "69",
+    "name": "雷神のクロス",
+    "armers": [
+      {
+        "id": "82",
+        "type": "head",
+        "gender": "w",
+        "color0": "#D2A079",
+        "color1": "#529B8E"
+      },
+      {
+        "id": "88",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#158C97",
+        "color1": "#1A28EF"
+      },
+      {
+        "id": "185",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#9BA53D",
+        "color1": "#8CE4C2"
+      },
+      {
+        "id": "447",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#B7C094",
+        "color1": "#76224A"
+      },
+      {
+        "id": "218",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#297328",
+        "color1": "#EA599B"
+      }
+    ],
+    "description": "古代文明の技術を応用した、優れた防御力と機動性を兼ね備えた装備です。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0069.png"
+    ],
+    "tags": [
+      "クール",
+      "火属性",
+      "ゴージャス"
+    ],
+    "createdAt": "2025-05-26T04:05:24.839Z"
+  },
+  {
+    "id": "70",
+    "name": "炎龍のメイル",
+    "armers": [
+      {
+        "id": "511",
+        "type": "head",
+        "gender": "m",
+        "color0": "#308FCE",
+        "color1": "#21C52A"
+      },
+      {
+        "id": "42",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#DD3888",
+        "color1": "#C3D03B"
+      },
+      {
+        "id": "68",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#C0F98A",
+        "color1": "#6DFF78"
+      },
+      {
+        "id": "401",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#555ADB",
+        "color1": "#368305"
+      },
+      {
+        "id": "79",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#EF163C",
+        "color1": "#CCFD8B"
+      }
+    ],
+    "description": "古代文明の技術を応用した、独特の輝きを放つ美しい装備セットです。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0070.png"
+    ],
+    "tags": [
+      "伝説",
+      "女性用",
+      "バランス型"
+    ],
+    "createdAt": "2024-03-31T23:00:29.788Z"
+  },
+  {
+    "id": "71",
+    "name": "嵐風の重装",
+    "armers": [
+      {
+        "id": "89",
+        "type": "head",
+        "gender": "w",
+        "color0": "#A733BB",
+        "color1": "#00073A"
+      },
+      {
+        "id": "158",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#C6626F",
+        "color1": "#8FAEA7"
+      },
+      {
+        "id": "131",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#B394BA",
+        "color1": "#180057"
+      },
+      {
+        "id": "421",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#FDAC5D",
+        "color1": "#533F6D"
+      },
+      {
+        "id": "293",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#ECD948",
+        "color1": "#2FBD88"
+      }
+    ],
+    "description": "この重ね着は、見た目の美しさと機能性を両立させた傑作と言えます。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0071.png"
+    ],
+    "tags": [
+      "かわいい",
+      "攻撃特化",
+      "剣士用"
+    ],
+    "createdAt": "2023-10-08T21:57:26.036Z"
+  },
+  {
+    "id": "72",
+    "name": "混沌のコート",
+    "armers": [
+      {
+        "id": "288",
+        "type": "head",
+        "gender": "m",
+        "color0": "#E772C6",
+        "color1": "#EBDC8A"
+      },
+      {
+        "id": "367",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#73F286",
+        "color1": "#8CB6ED"
+      },
+      {
+        "id": "395",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#9A7FD4",
+        "color1": "#1DCB33"
+      },
+      {
+        "id": "326",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#E3EBFC",
+        "color1": "#6054DA"
+      },
+      {
+        "id": "123",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#0725E5",
+        "color1": "#B009B9"
+      }
+    ],
+    "description": "この重ね着は、優れた防御力と機動性を兼ね備えた装備です。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0072.png"
+    ],
+    "tags": [
+      "龍属性",
+      "雷属性",
+      "火属性"
+    ],
+    "createdAt": "2023-10-11T04:19:40.275Z"
+  },
+  {
+    "id": "73",
+    "name": "蒼穹のアーマー",
+    "armers": [
+      {
+        "id": "366",
+        "type": "head",
+        "gender": "w",
+        "color0": "#8FD0E4",
+        "color1": "#DA753B"
+      },
+      {
+        "id": "184",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#F6A82F",
+        "color1": "#8CA616"
+      },
+      {
+        "id": "461",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#C85E4A",
+        "color1": "#4BC9B0"
+      },
+      {
+        "id": "217",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#31C8B7",
+        "color1": "#4609A8"
+      },
+      {
+        "id": "30",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#CC235C",
+        "color1": "#0B31F0"
+      }
+    ],
+    "description": "古代文明の技術を応用した、優れた防御力と機動性を兼ね備えた装備です。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0073.png"
+    ],
+    "tags": [
+      "初心者向け",
+      "ゴージャス",
+      "氷属性",
+      "かっこいい"
+    ],
+    "createdAt": "2025-03-28T01:50:25.506Z"
+  },
+  {
+    "id": "74",
+    "name": "古代のプレート",
+    "armers": [
+      {
+        "id": "66",
+        "type": "head",
+        "gender": "m",
+        "color0": "#48AF1A",
+        "color1": "#F2AA28"
+      },
+      {
+        "id": "549",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#17976A",
+        "color1": "#26653E"
+      },
+      {
+        "id": "43",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#702458",
+        "color1": "#88EC28"
+      },
+      {
+        "id": "564",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#AC58E8",
+        "color1": "#E25F51"
+      },
+      {
+        "id": "343",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#5341BB",
+        "color1": "#71D8CF"
+      }
+    ],
+    "description": "伝説のハンターが愛用した、特殊な素材を使用することで驚異的な耐性を実現しました。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0074.png"
+    ],
+    "tags": [
+      "クール",
+      "モンスター",
+      "シンプル",
+      "龍属性",
+      "防御特化"
+    ],
+    "createdAt": "2025-02-13T02:28:45.823Z"
+  },
+  {
+    "id": "75",
+    "name": "岩砕のコート",
+    "armers": [
+      {
+        "id": "306",
+        "type": "head",
+        "gender": "m",
+        "color0": "#65A0EE",
+        "color1": "#04B43F"
+      },
+      {
+        "id": "307",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#C77234",
+        "color1": "#A2FA0E"
+      },
+      {
+        "id": "303",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#8B09C0",
+        "color1": "#5CDB9E"
+      },
+      {
+        "id": "19",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#C71C30",
+        "color1": "#338D69"
+      },
+      {
+        "id": "187",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#BC9643",
+        "color1": "#4131B8"
+      }
+    ],
+    "description": "熟練の鍛冶師が作り上げた、独特の輝きを放つ美しい装備セットです。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0075.png"
+    ],
+    "tags": [
+      "シンプル",
+      "防御特化",
+      "女性用"
+    ],
+    "createdAt": "2025-02-19T14:24:20.509Z"
+  },
+  {
+    "id": "76",
+    "name": "雷神の防具",
+    "armers": [
+      {
+        "id": "21",
+        "type": "head",
+        "gender": "m",
+        "color0": "#33612E",
+        "color1": "#CDB027"
+      },
+      {
+        "id": "419",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#E587E4",
+        "color1": "#C6500B"
+      },
+      {
+        "id": "466",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#154D94",
+        "color1": "#87DE0D"
+      },
+      {
+        "id": "342",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#181CFC",
+        "color1": "#D48570"
+      },
+      {
+        "id": "171",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#4A6A21",
+        "color1": "#2CA221"
+      }
+    ],
+    "description": "古代文明の技術を応用した、高いスキル発動率が特徴の上級者向け装備です。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0076.png"
+    ],
+    "tags": [
+      "氷属性",
+      "攻撃特化",
+      "イベント",
+      "女性用",
+      "防御特化"
+    ],
+    "createdAt": "2024-11-09T13:37:29.022Z"
+  },
+  {
+    "id": "77",
+    "name": "霧氷のクロス",
+    "armers": [
+      {
+        "id": "328",
+        "type": "head",
+        "gender": "m",
+        "color0": "#CBC210",
+        "color1": "#BD805F"
+      },
+      {
+        "id": "512",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#099017",
+        "color1": "#E54B4B"
+      },
+      {
+        "id": "330",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#0C9123",
+        "color1": "#95736B"
+      },
+      {
+        "id": "229",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#660BFC",
+        "color1": "#E0943B"
+      },
+      {
+        "id": "93",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#32F20F",
+        "color1": "#B87713"
+      }
+    ],
+    "description": "伝説のハンターが愛用した、優れた防御力と機動性を兼ね備えた装備です。 雷属性モンスターとの戦闘で真価を発揮します。",
+    "images": [
+      "images/0077.png"
+    ],
+    "tags": [
+      "英雄",
+      "バランス型",
+      "攻撃特化",
+      "ゴージャス"
+    ],
+    "createdAt": "2024-05-02T11:21:59.621Z"
+  },
+  {
+    "id": "78",
+    "name": "大地のバインド",
+    "armers": [
+      {
+        "id": "75",
+        "type": "head",
+        "gender": "w",
+        "color0": "#23AAF9",
+        "color1": "#3899DC"
+      },
+      {
+        "id": "27",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#7F0056",
+        "color1": "#710AD9"
+      },
+      {
+        "id": "169",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#6706EE",
+        "color1": "#B6A257"
+      },
+      {
+        "id": "436",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#C83119",
+        "color1": "#3A8BEE"
+      },
+      {
+        "id": "359",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#E1F1AE",
+        "color1": "#565FC7"
+      }
+    ],
+    "description": "熟練の鍛冶師が作り上げた、独特の輝きを放つ美しい装備セットです。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0078.png"
+    ],
+    "tags": [
+      "イベント",
+      "雷属性",
+      "女性用",
+      "モンスター",
+      "男性用"
+    ],
+    "createdAt": "2025-02-19T14:44:41.535Z"
+  },
+  {
+    "id": "79",
+    "name": "灼熱の防具",
+    "armers": [
+      {
+        "id": "516",
+        "type": "head",
+        "gender": "m",
+        "color0": "#9410BF",
+        "color1": "#0FCF01"
+      },
+      {
+        "id": "465",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#59FDE9",
+        "color1": "#CD0F72"
+      },
+      {
+        "id": "101",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#ED3F95",
+        "color1": "#D0F92E"
+      },
+      {
+        "id": "102",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#43747C",
+        "color1": "#1A042F"
+      },
+      {
+        "id": "139",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#6DBB71",
+        "color1": "#22E47E"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、見た目の美しさと機能性を両立させた傑作と言えます。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0079.png"
+    ],
+    "tags": [
+      "モンスター",
+      "実用的",
+      "バランス型",
+      "イベント",
+      "秘伝"
+    ],
+    "createdAt": "2023-07-01T08:15:50.425Z"
+  },
+  {
+    "id": "80",
+    "name": "猛毒のガード",
+    "armers": [
+      {
+        "id": "226",
+        "type": "head",
+        "gender": "m",
+        "color0": "#FA456C",
+        "color1": "#D0769D"
+      },
+      {
+        "id": "158",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#004643",
+        "color1": "#2E0B51"
+      },
+      {
+        "id": "330",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#4C5CD8",
+        "color1": "#FF58FB"
+      },
+      {
+        "id": "207",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#36DC46",
+        "color1": "#A527BF"
+      },
+      {
+        "id": "505",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#11C2FC",
+        "color1": "#4B06FB"
+      }
+    ],
+    "description": "伝説のハンターが愛用した、独特の輝きを放つ美しい装備セットです。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0080.png"
+    ],
+    "tags": [
+      "イベント",
+      "ユニセックス",
+      "龍属性",
+      "水属性"
+    ],
+    "createdAt": "2024-05-28T01:26:10.675Z"
+  },
+  {
+    "id": "81",
+    "name": "黒鉄の鎧",
+    "armers": [
+      {
+        "id": "167",
+        "type": "head",
+        "gender": "m",
+        "color0": "#F0C404",
+        "color1": "#C2A866"
+      },
+      {
+        "id": "500",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#04F531",
+        "color1": "#6C0470"
+      },
+      {
+        "id": "185",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#92FA3E",
+        "color1": "#EF8AA6"
+      },
+      {
+        "id": "4",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#F07960",
+        "color1": "#C41294"
+      },
+      {
+        "id": "552",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#F77536",
+        "color1": "#83B14E"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、過酷な環境でも快適に使用できる実用的な防具です。 水中での活動をサポートします。",
+    "images": [
+      "images/0081.png"
+    ],
+    "tags": [
+      "氷属性",
+      "防御特化",
+      "初心者向け",
+      "伝説",
+      "シンプル"
+    ],
+    "createdAt": "2023-08-29T17:51:45.665Z"
+  },
+  {
+    "id": "82",
+    "name": "爆炎のクロス",
+    "armers": [
+      {
+        "id": "280",
+        "type": "head",
+        "gender": "m",
+        "color0": "#3E1925",
+        "color1": "#EB04AA"
+      },
+      {
+        "id": "52",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#339713",
+        "color1": "#0456DE"
+      },
+      {
+        "id": "239",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#A599B4",
+        "color1": "#874C93"
+      },
+      {
+        "id": "401",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#D8EEED",
+        "color1": "#983503"
+      },
+      {
+        "id": "570",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#A15928",
+        "color1": "#AB38F1"
+      }
+    ],
+    "description": "この重ね着は、優れた防御力と機動性を兼ね備えた装備です。 水中での活動をサポートします。",
+    "images": [
+      "images/0082.png"
+    ],
+    "tags": [
+      "実用的",
+      "軽装",
+      "秘伝"
+    ],
+    "createdAt": "2024-10-19T17:12:13.326Z"
+  },
+  {
+    "id": "83",
+    "name": "雷神の装束",
+    "armers": [
+      {
+        "id": "36",
+        "type": "head",
+        "gender": "w",
+        "color0": "#4ED470",
+        "color1": "#4F60BC"
+      },
+      {
+        "id": "345",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#6E1525",
+        "color1": "#69B1B0"
+      },
+      {
+        "id": "379",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#25F378",
+        "color1": "#DAE008"
+      },
+      {
+        "id": "467",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#A7E2C3",
+        "color1": "#241A15"
+      },
+      {
+        "id": "74",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#6772E8",
+        "color1": "#C659E8"
+      }
+    ],
+    "description": "古代文明の技術を応用した、独特の輝きを放つ美しい装備セットです。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0083.png"
+    ],
+    "tags": [
+      "英雄",
+      "ユニセックス",
+      "軽装"
+    ],
+    "createdAt": "2025-01-02T13:22:56.297Z"
+  },
+  {
+    "id": "84",
+    "name": "凍結のアーマー",
+    "armers": [
+      {
+        "id": "129",
+        "type": "head",
+        "gender": "m",
+        "color0": "#9B7C97",
+        "color1": "#9CC2ED"
+      },
+      {
+        "id": "394",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#E134C0",
+        "color1": "#35ADC7"
+      },
+      {
+        "id": "540",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#8052C6",
+        "color1": "#B4649A"
+      },
+      {
+        "id": "467",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#9BDEF1",
+        "color1": "#F7892D"
+      },
+      {
+        "id": "483",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#CD333A",
+        "color1": "#739BEE"
+      }
+    ],
+    "description": "古代文明の技術を応用した、独特の輝きを放つ美しい装備セットです。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0084.png"
+    ],
+    "tags": [
+      "火属性",
+      "男性用",
+      "エレガント"
+    ],
+    "createdAt": "2024-06-09T15:11:27.060Z"
+  },
+  {
+    "id": "85",
+    "name": "雷神のガーブ",
+    "armers": [
+      {
+        "id": "204",
+        "type": "head",
+        "gender": "m",
+        "color0": "#46CBCC",
+        "color1": "#0AA225"
+      },
+      {
+        "id": "174",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#901764",
+        "color1": "#AEEEE0"
+      },
+      {
+        "id": "384",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#398178",
+        "color1": "#22CD9B"
+      },
+      {
+        "id": "509",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#D22870",
+        "color1": "#DEDF63"
+      },
+      {
+        "id": "187",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#DC63F9",
+        "color1": "#DFD028"
+      }
+    ],
+    "description": "古代文明の技術を応用した、独特の輝きを放つ美しい装備セットです。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0085.png"
+    ],
+    "tags": [
+      "シンプル",
+      "実用的",
+      "クール",
+      "古龍"
+    ],
+    "createdAt": "2024-01-05T09:46:28.973Z"
+  },
+  {
+    "id": "86",
+    "name": "岩砕のスーツ",
+    "armers": [
+      {
+        "id": "506",
+        "type": "head",
+        "gender": "w",
+        "color0": "#93E948",
+        "color1": "#D06243"
+      },
+      {
+        "id": "120",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#AE0320",
+        "color1": "#DEDA5A"
+      },
+      {
+        "id": "126",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#C7F384",
+        "color1": "#6B0C93"
+      },
+      {
+        "id": "197",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#92EC68",
+        "color1": "#77499A"
+      },
+      {
+        "id": "305",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#C29D18",
+        "color1": "#52A33B"
+      }
+    ],
+    "description": "伝説のハンターが愛用した、特殊な素材を使用することで驚異的な耐性を実現しました。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0086.png"
+    ],
+    "tags": [
+      "重装",
+      "クール",
+      "神秘"
+    ],
+    "createdAt": "2024-01-10T14:47:57.503Z"
+  },
+  {
+    "id": "87",
+    "name": "古代のローブ",
+    "armers": [
+      {
+        "id": "21",
+        "type": "head",
+        "gender": "w",
+        "color0": "#1A90BE",
+        "color1": "#206F71"
+      },
+      {
+        "id": "562",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#5FCD3F",
+        "color1": "#F5F2C4"
+      },
+      {
+        "id": "239",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#2EA5B5",
+        "color1": "#86EB0E"
+      },
+      {
+        "id": "54",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#FB1CAA",
+        "color1": "#B0A733"
+      },
+      {
+        "id": "86",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#B18734",
+        "color1": "#E0E28D"
+      }
+    ],
+    "description": "熟練の鍛冶師が作り上げた、見た目の美しさと機能性を両立させた傑作と言えます。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0087.png"
+    ],
+    "tags": [
+      "エレガント",
+      "古龍",
+      "限定"
+    ],
+    "createdAt": "2023-06-06T06:07:47.038Z"
+  },
+  {
+    "id": "88",
+    "name": "岩砕の重装",
+    "armers": [
+      {
+        "id": "51",
+        "type": "head",
+        "gender": "w",
+        "color0": "#7740AC",
+        "color1": "#7221A2"
+      },
+      {
+        "id": "554",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#C6AFF0",
+        "color1": "#50B90F"
+      },
+      {
+        "id": "420",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#A7C74F",
+        "color1": "#A894E8"
+      },
+      {
+        "id": "29",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#A61C5C",
+        "color1": "#D2AF2E"
+      },
+      {
+        "id": "555",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#02C41E",
+        "color1": "#317714"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、過酷な環境でも快適に使用できる実用的な防具です。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0088.png"
+    ],
+    "tags": [
+      "龍属性",
+      "防御特化",
+      "雷属性",
+      "男性用"
+    ],
+    "createdAt": "2024-05-23T17:35:16.552Z"
+  },
+  {
+    "id": "89",
+    "name": "雷鳴のローブ",
+    "armers": [
+      {
+        "id": "226",
+        "type": "head",
+        "gender": "w",
+        "color0": "#747033",
+        "color1": "#6FFE0D"
+      },
+      {
+        "id": "174",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#8218D9",
+        "color1": "#29DF88"
+      },
+      {
+        "id": "28",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#B4847B",
+        "color1": "#F3FA0B"
+      },
+      {
+        "id": "462",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#F5BAD7",
+        "color1": "#4590C9"
+      },
+      {
+        "id": "208",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#9FAB90",
+        "color1": "#1DD457"
+      }
+    ],
+    "description": "熟練の鍛冶師が作り上げた、優れた防御力と機動性を兼ね備えた装備です。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0089.png"
+    ],
+    "tags": [
+      "初心者向け",
+      "軽装",
+      "古龍"
+    ],
+    "createdAt": "2024-03-16T14:59:07.974Z"
+  },
+  {
+    "id": "90",
+    "name": "星屑のクロス",
+    "armers": [
+      {
+        "id": "334",
+        "type": "head",
+        "gender": "w",
+        "color0": "#A42745",
+        "color1": "#F71B6C"
+      },
+      {
+        "id": "174",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#EC6FF7",
+        "color1": "#57CF70"
+      },
+      {
+        "id": "379",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#BF6CF2",
+        "color1": "#C18971"
+      },
+      {
+        "id": "488",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#5ECE71",
+        "color1": "#039AB5"
+      },
+      {
+        "id": "359",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#2A6161",
+        "color1": "#A7663F"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、独特の輝きを放つ美しい装備セットです。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0090.png"
+    ],
+    "tags": [
+      "龍属性",
+      "初心者向け",
+      "限定"
+    ],
+    "createdAt": "2024-04-10T22:50:59.087Z"
+  },
+  {
+    "id": "91",
+    "name": "岩砕の防具",
+    "armers": [
+      {
+        "id": "280",
+        "type": "head",
+        "gender": "m",
+        "color0": "#32CABB",
+        "color1": "#3AAFCC"
+      },
+      {
+        "id": "76",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#9ED638",
+        "color1": "#9824AF"
+      },
+      {
+        "id": "356",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#B37B9D",
+        "color1": "#5CB0A5"
+      },
+      {
+        "id": "117",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#797D1C",
+        "color1": "#856073"
+      },
+      {
+        "id": "151",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#58DA91",
+        "color1": "#6990EC"
+      }
+    ],
+    "description": "古代文明の技術を応用した、見た目の美しさと機能性を両立させた傑作と言えます。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0091.png"
+    ],
+    "tags": [
+      "伝説",
+      "古龍",
+      "かわいい",
+      "クール"
+    ],
+    "createdAt": "2024-03-31T00:32:28.951Z"
+  },
+  {
+    "id": "92",
+    "name": "爆炎のウェア",
+    "armers": [
+      {
+        "id": "71",
+        "type": "head",
+        "gender": "w",
+        "color0": "#438295",
+        "color1": "#D2F063"
+      },
+      {
+        "id": "115",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#3F586F",
+        "color1": "#201C13"
+      },
+      {
+        "id": "3",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#83C059",
+        "color1": "#B1C2A0"
+      },
+      {
+        "id": "321",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#21B76F",
+        "color1": "#5C64C3"
+      },
+      {
+        "id": "402",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#776580",
+        "color1": "#9C5AFA"
+      }
+    ],
+    "description": "古代文明の技術を応用した、過酷な環境でも快適に使用できる実用的な防具です。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0092.png"
+    ],
+    "tags": [
+      "初心者向け",
+      "かっこいい",
+      "エレガント",
+      "水属性"
+    ],
+    "createdAt": "2024-06-22T07:02:18.601Z"
+  },
+  {
+    "id": "93",
+    "name": "岩砕のアーマー",
+    "armers": [
+      {
+        "id": "582",
+        "type": "head",
+        "gender": "w",
+        "color0": "#AB09A6",
+        "color1": "#4E5374"
+      },
+      {
+        "id": "88",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#4586D1",
+        "color1": "#B6FC21"
+      },
+      {
+        "id": "308",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#A10AAD",
+        "color1": "#D653FE"
+      },
+      {
+        "id": "337",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#1605B7",
+        "color1": "#A853E9"
+      },
+      {
+        "id": "93",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#F7AE6E",
+        "color1": "#2516AF"
+      }
+    ],
+    "description": "この重ね着は、独特の輝きを放つ美しい装備セットです。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0093.png"
+    ],
+    "tags": [
+      "ガンナー用",
+      "イベント",
+      "男性用",
+      "古龍",
+      "神秘"
+    ],
+    "createdAt": "2024-04-29T00:06:20.307Z"
+  },
+  {
+    "id": "94",
+    "name": "猛毒の重装",
+    "armers": [
+      {
+        "id": "474",
+        "type": "head",
+        "gender": "m",
+        "color0": "#B37AF7",
+        "color1": "#338769"
+      },
+      {
+        "id": "567",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#88D421",
+        "color1": "#68446A"
+      },
+      {
+        "id": "28",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#AE4116",
+        "color1": "#EB77EE"
+      },
+      {
+        "id": "569",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#E6504E",
+        "color1": "#CB6B96"
+      },
+      {
+        "id": "118",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#90608E",
+        "color1": "#082944"
+      }
+    ],
+    "description": "長い年月をかけて改良された、見た目の美しさと機能性を両立させた傑作と言えます。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0094.png"
+    ],
+    "tags": [
+      "龍属性",
+      "水属性",
+      "男性用",
+      "エレガント",
+      "神秘"
+    ],
+    "createdAt": "2024-05-04T03:11:50.725Z"
+  },
+  {
+    "id": "95",
+    "name": "雷鳴のバインド",
+    "armers": [
+      {
+        "id": "581",
+        "type": "head",
+        "gender": "w",
+        "color0": "#2A765D",
+        "color1": "#A47130"
+      },
+      {
+        "id": "414",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#15BEBD",
+        "color1": "#144D87"
+      },
+      {
+        "id": "320",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#8A287A",
+        "color1": "#532CE2"
+      },
+      {
+        "id": "14",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#474535",
+        "color1": "#EB193D"
+      },
+      {
+        "id": "236",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#E8F6D7",
+        "color1": "#75EC93"
+      }
+    ],
+    "description": "この重ね着は、過酷な環境でも快適に使用できる実用的な防具です。 氷雪地帯での狩猟に最適です。",
+    "images": [
+      "images/0095.png"
+    ],
+    "tags": [
+      "シンプル",
+      "上級者向け",
+      "エレガント",
+      "男性用",
+      "火属性"
+    ],
+    "createdAt": "2025-01-19T06:03:55.147Z"
+  },
+  {
+    "id": "96",
+    "name": "神秘のクロス",
+    "armers": [
+      {
+        "id": "99",
+        "type": "head",
+        "gender": "w",
+        "color0": "#18AC8F",
+        "color1": "#4EEF9F"
+      },
+      {
+        "id": "312",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#9EA637",
+        "color1": "#324D06"
+      },
+      {
+        "id": "196",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#96EE30",
+        "color1": "#708999"
+      },
+      {
+        "id": "467",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#ABDB7C",
+        "color1": "#929340"
+      },
+      {
+        "id": "478",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#839B3B",
+        "color1": "#8FE624"
+      }
+    ],
+    "description": "新大陸で発見された素材から作られた、高いスキル発動率が特徴の上級者向け装備です。 水中での活動をサポートします。",
+    "images": [
+      "images/0096.png"
+    ],
+    "tags": [
+      "雷属性",
+      "英雄",
+      "軽装"
+    ],
+    "createdAt": "2023-11-08T20:21:11.232Z"
+  },
+  {
+    "id": "97",
+    "name": "混沌のプレート",
+    "armers": [
+      {
+        "id": "479",
+        "type": "head",
+        "gender": "w",
+        "color0": "#695A4F",
+        "color1": "#00C63F"
+      },
+      {
+        "id": "120",
+        "type": "chest",
+        "gender": "w",
+        "color0": "#39C64A",
+        "color1": "#9BFC19"
+      },
+      {
+        "id": "523",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#9EDEED",
+        "color1": "#00FB7D"
+      },
+      {
+        "id": "4",
+        "type": "waist",
+        "gender": "w",
+        "color0": "#6E72A1",
+        "color1": "#C09DAE"
+      },
+      {
+        "id": "161",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#2120C3",
+        "color1": "#4E5C29"
+      }
+    ],
+    "description": "熟練の鍛冶師が作り上げた、高いスキル発動率が特徴の上級者向け装備です。 長時間の狩猟でも疲労を軽減する効果があります。",
+    "images": [
+      "images/0097.png"
+    ],
+    "tags": [
+      "氷属性",
+      "水属性",
+      "秘伝",
+      "レア"
+    ],
+    "createdAt": "2025-01-23T09:57:02.553Z"
+  },
+  {
+    "id": "98",
+    "name": "嵐風の装束",
+    "armers": [
+      {
+        "id": "26",
+        "type": "head",
+        "gender": "m",
+        "color0": "#AF0956",
+        "color1": "#A9E96F"
+      },
+      {
+        "id": "324",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#D6D37A",
+        "color1": "#8529E4"
+      },
+      {
+        "id": "368",
+        "type": "arms",
+        "gender": "m",
+        "color0": "#8EAF2D",
+        "color1": "#E78408"
+      },
+      {
+        "id": "363",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#129B77",
+        "color1": "#9C2204"
+      },
+      {
+        "id": "187",
+        "type": "legs",
+        "gender": "m",
+        "color0": "#E2260D",
+        "color1": "#0BA46F"
+      }
+    ],
+    "description": "古代文明の技術を応用した、高いスキル発動率が特徴の上級者向け装備です。 あらゆる環境で安定したパフォーマンスを発揮します。",
+    "images": [
+      "images/0098.png"
+    ],
+    "tags": [
+      "かわいい",
+      "雷属性",
+      "女性用"
+    ],
+    "createdAt": "2023-07-03T15:57:44.325Z"
+  },
+  {
+    "id": "99",
+    "name": "灼熱のローブ",
+    "armers": [
+      {
+        "id": "543",
+        "type": "head",
+        "gender": "m",
+        "color0": "#6BC337",
+        "color1": "#947A9A"
+      },
+      {
+        "id": "136",
+        "type": "chest",
+        "gender": "m",
+        "color0": "#168BA8",
+        "color1": "#9BE952"
+      },
+      {
+        "id": "336",
+        "type": "arms",
+        "gender": "w",
+        "color0": "#637CF9",
+        "color1": "#02233F"
+      },
+      {
+        "id": "467",
+        "type": "waist",
+        "gender": "m",
+        "color0": "#2AC902",
+        "color1": "#02A1DC"
+      },
+      {
+        "id": "353",
+        "type": "legs",
+        "gender": "w",
+        "color0": "#B5D30A",
+        "color1": "#D9C052"
+      }
+    ],
+    "description": "熟練の鍛冶師が作り上げた、見た目の美しさと機能性を両立させた傑作と言えます。 火山地帯での高温にも耐えられます。",
+    "images": [
+      "images/0099.png"
+    ],
+    "tags": [
+      "伝説",
+      "雷属性",
+      "攻撃特化",
+      "龍属性"
+    ],
+    "createdAt": "2024-10-25T05:44:39.251Z"
+  }
+]
