@@ -1,82 +1,67 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { fetchLayerSets, getImagePath } from '../data/layerSets';
+
+// 投稿の型定義
+interface Post {
+  id: string;
+  title: string;
+  image: string;
+  user: string;
+  userImage: string;
+  likes: number;
+  isLiked: boolean;
+  weaponType: string;
+  tags: string[];
+  description: string;
+}
 
 // 表示切替
 const viewType = ref<'grid' | 'feed'>('grid');
 
 // アニメーションステート
 const isLoaded = ref(false);
-const activePostId = ref<number | null>(null);
+const activePostId = ref<string | null>(null);
 
-// モックデータ
-const posts = ref([
-  {
-    id: 1,
-    title: '氷の女王風コーデ',
-    image: 'https://via.placeholder.com/600x400?text=Ice+Queen',
-    user: 'ハンター1号',
-    userImage: 'https://via.placeholder.com/50x50?text=User1',
-    likes: 120,
-    isLiked: false,
-    weaponType: '大剣',
-    tags: ['氷属性', '女王', 'エレガント']
-  },
-  {
-    id: 2,
-    title: '炎のバーサーカースタイル',
-    image: 'https://via.placeholder.com/600x400?text=Fire+Style',
-    user: '装備マニア',
-    userImage: 'https://via.placeholder.com/50x50?text=User2',
-    likes: 85,
-    isLiked: true,
-    weaponType: '双剣',
-    tags: ['火属性', 'バーサーカー', '力強い']
-  },
-  {
-    id: 3,
-    title: '雷神コーデ',
-    image: 'https://via.placeholder.com/600x400?text=Thunder+God',
-    user: '重ね着ハンター',
-    userImage: 'https://via.placeholder.com/50x50?text=User3',
-    likes: 210,
-    isLiked: false,
-    weaponType: 'ハンマー',
-    tags: ['雷属性', '神々しい', 'カッコいい']
-  },
-  {
-    id: 4,
-    title: '忍者スタイル',
-    image: 'https://via.placeholder.com/600x400?text=Ninja+Style',
-    user: 'ランポスキラー',
-    userImage: 'https://via.placeholder.com/50x50?text=User4',
-    likes: 156,
-    isLiked: false,
-    weaponType: '太刀',
-    tags: ['忍者', 'シンプル', '軽装']
-  },
-  {
-    id: 5,
-    title: 'ドラゴンスレイヤー',
-    image: 'https://via.placeholder.com/600x400?text=Dragon+Slayer',
-    user: 'ハンターS',
-    userImage: 'https://via.placeholder.com/50x50?text=User5',
-    likes: 320,
-    isLiked: true,
-    weaponType: 'ランス',
-    tags: ['ドラゴン', '重装', '勇ましい']
-  },
-  {
-    id: 6,
-    title: '貴族風エレガントスタイル',
-    image: 'https://via.placeholder.com/600x400?text=Elegant+Style',
-    user: 'アイルー好き',
-    userImage: 'https://via.placeholder.com/50x50?text=User6',
-    likes: 95,
-    isLiked: false,
-    weaponType: '弓',
-    tags: ['エレガント', '貴族', 'ゴージャス']
-  },
-]);
+// 投稿データを保持するref
+const posts = ref<Post[]>([]);
+
+// データ読み込み中フラグ
+const isLoading = ref(true);
+
+// データ読み込みエラーフラグ
+const hasError = ref(false);
+
+// LayerSets（重ね着）データを取得して加工する
+onMounted(async () => {
+  try {
+    isLoading.value = true;
+    const layerSetsData = await fetchLayerSets();
+    
+    // 有効なデータのみフィルタリングして加工
+    posts.value = layerSetsData
+      .filter(set => set.name && set.images && set.images.length > 0)
+      .map(layerSet => ({
+        id: layerSet.id,
+        title: layerSet.name,
+        image: layerSet.images && layerSet.images.length > 0 ? getImagePath(layerSet.images[0]) : '',
+        user: 'ハンター',  // ダミーデータにはユーザー情報がないため仮設定
+        userImage: 'https://via.placeholder.com/50x50?text=User',
+        likes: Math.floor(Math.random() * 200) + 10, // いいね数をランダムに設定
+        isLiked: false,
+        weaponType: ['大剣', '太刀', '片手剣', '双剣', 'ハンマー', 'ランス', 'ガンランス', '操虫棍', '弓', 'ライトボウガン'][Math.floor(Math.random() * 10)], // 武器種をランダムに設定
+        tags: layerSet.tags || [],
+        description: layerSet.description
+      }));
+    
+    isLoaded.value = true;
+  } catch (error) {
+    console.error('重ね着データの取得に失敗しました:', error);
+    hasError.value = true;
+  } finally {
+    isLoading.value = false;
+  }
+});
 
 // 武器種フィルター
 const weaponTypes = ['大剣', '太刀', '片手剣', '双剣', 'ハンマー', 'ランス', 'ガンランス', '操虫棍', '弓', 'ライトボウガン'];
@@ -86,12 +71,27 @@ const selectedWeapon = ref('すべて');
 const sortOptions = ['最新', '人気', 'フォロー中'];
 const selectedSort = ref('最新');
 
-// タグオプション
-const popularTags = ['かっこいい', 'エレガント', 'モフモフ', '重装', '軽装', '氷属性', '火属性', '雷属性', '龍属性'];
+// 人気のタグを取得（データから抽出）
+const popularTags = computed(() => {
+  // すべての投稿からタグを抽出して、出現回数でソート
+  const tagCounts = posts.value.reduce((acc, post) => {
+    post.tags.forEach((tag: string) => {
+      acc[tag] = (acc[tag] || 0) + 1;
+    });
+    return acc;
+  }, {} as Record<string, number>);
+  
+  // 出現回数の多い順にソートして最大10個を返す
+  return Object.entries(tagCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10)
+    .map(([tag]) => tag);
+});
+
 const selectedTags = ref<string[]>([]);
 
 // いいねの切り替え
-const toggleLike = (postId: number) => {
+const toggleLike = (postId: string) => {
   const post = posts.value.find(p => p.id === postId);
   if (post) {
     activePostId.value = postId;
@@ -107,7 +107,20 @@ const toggleLike = (postId: number) => {
 
 // フィルタリングされた投稿
 const filteredPosts = computed(() => {
-  return posts.value.filter(post => {
+  let filtered = [...posts.value];
+  
+  // 並び替え
+  if (selectedSort.value === '最新') {
+    // 最新順（データにはcreatedAtがあるが、既にposts配列が作成時に変換されているため、ここではそのまま）
+  } else if (selectedSort.value === '人気') {
+    // いいね数順
+    filtered = filtered.sort((a, b) => b.likes - a.likes);
+  } else if (selectedSort.value === 'フォロー中') {
+    // フォロー中のユーザー（実際のフォロー機能はまだ実装されていないため、ダミー）
+    // 実際の実装では、フォロー中のユーザーIDリストと投稿のユーザーIDを照合する
+  }
+  
+  return filtered.filter(post => {
     // 武器種フィルター
     if (selectedWeapon.value !== 'すべて' && post.weaponType !== selectedWeapon.value) {
       return false;
@@ -286,6 +299,16 @@ onMounted(() => {
                   <img :src="post.userImage" :alt="post.user" class="w-24 h-24 rounded-full mr-8">
                   <span>{{ post.user }}</span>
                 </div>
+              </div>
+              <!-- タグ表示 -->
+              <div class="flex flex-wrap gap-4 mt-8 text-caption">
+                <span 
+                  v-for="tag in post.tags.slice(0, 3)" 
+                  :key="tag" 
+                  class="text-primary-gold/80"
+                >
+                  #{{ tag }}
+                </span>
               </div>
             </div>
           </div>
