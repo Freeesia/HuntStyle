@@ -16,23 +16,21 @@ interface Post {
   description: string;
 }
 
-// 表示切替
-const viewType = ref<'grid' | 'feed'>('grid');
-
-// アニメーションステート
+// UI状態の管理
 const isLoaded = ref(false);
 const activePostId = ref<string | null>(null);
-
-// 投稿データを保持するref
 const posts = ref<Post[]>([]);
-
-// データ読み込み中フラグ
 const isLoading = ref(true);
-
-// データ読み込みエラーフラグ
 const hasError = ref(false);
+const selectedWeapon = ref('すべて');
+const selectedSort = ref('最新');
+const selectedTags = ref<string[]>([]);
 
-// LayerSets（重ね着）データを取得して加工する
+// 武器種と並び替えオプション
+const weaponTypes = ['大剣', '太刀', '片手剣', '双剣', 'ハンマー', 'ランス', 'ガンランス', '操虫棍', '弓', 'ライトボウガン'];
+const sortOptions = ['最新', '人気', 'フォロー中'];
+
+// データ取得
 onMounted(async () => {
   try {
     isLoading.value = true;
@@ -63,15 +61,31 @@ onMounted(async () => {
   }
 });
 
-// 武器種フィルター
-const weaponTypes = ['大剣', '太刀', '片手剣', '双剣', 'ハンマー', 'ランス', 'ガンランス', '操虫棍', '弓', 'ライトボウガン'];
-const selectedWeapon = ref('すべて');
+// いいねの切り替え
+const toggleLike = (postId: string) => {
+  const post = posts.value.find(p => p.id === postId);
+  if (post) {
+    activePostId.value = postId;
+    post.isLiked = !post.isLiked;
+    post.likes += post.isLiked ? 1 : -1;
+    
+    // アニメーション後にリセット
+    setTimeout(() => {
+      activePostId.value = null;
+    }, 500);
+  }
+};
 
-// 並び替えオプション
-const sortOptions = ['最新', '人気', 'フォロー中'];
-const selectedSort = ref('最新');
+// タグの選択・解除
+const toggleTag = (tag: string) => {
+  if (selectedTags.value.includes(tag)) {
+    selectedTags.value = selectedTags.value.filter(t => t !== tag);
+  } else {
+    selectedTags.value.push(tag);
+  }
+};
 
-// 人気のタグを取得（データから抽出）
+// 人気のタグを計算
 const popularTags = computed(() => {
   // すべての投稿からタグを抽出して、出現回数でソート
   const tagCounts = posts.value.reduce((acc, post) => {
@@ -88,38 +102,21 @@ const popularTags = computed(() => {
     .map(([tag]) => tag);
 });
 
-const selectedTags = ref<string[]>([]);
-
-// いいねの切り替え
-const toggleLike = (postId: string) => {
-  const post = posts.value.find(p => p.id === postId);
-  if (post) {
-    activePostId.value = postId;
-    post.isLiked = !post.isLiked;
-    post.likes += post.isLiked ? 1 : -1;
-    
-    // アニメーション後にリセット
-    setTimeout(() => {
-      activePostId.value = null;
-    }, 500);
-  }
-};
-
 // フィルタリングされた投稿
 const filteredPosts = computed(() => {
   let filtered = [...posts.value];
   
   // 並び替え
   if (selectedSort.value === '最新') {
-    // 最新順（データにはcreatedAtがあるが、既にposts配列が作成時に変換されているため、ここではそのまま）
+    // 最新順（そのまま）
   } else if (selectedSort.value === '人気') {
     // いいね数順
     filtered = filtered.sort((a, b) => b.likes - a.likes);
   } else if (selectedSort.value === 'フォロー中') {
-    // フォロー中のユーザー（実際のフォロー機能はまだ実装されていないため、ダミー）
-    // 実際の実装では、フォロー中のユーザーIDリストと投稿のユーザーIDを照合する
+    // フォロー中のユーザー（実際の実装ではユーザーIDと照合）
   }
   
+  // 武器種とタグによるフィルタリング
   return filtered.filter(post => {
     // 武器種フィルター
     if (selectedWeapon.value !== 'すべて' && post.weaponType !== selectedWeapon.value) {
@@ -134,15 +131,6 @@ const filteredPosts = computed(() => {
     return true;
   });
 });
-
-// タグの選択・解除
-const toggleTag = (tag: string) => {
-  if (selectedTags.value.includes(tag)) {
-    selectedTags.value = selectedTags.value.filter(t => t !== tag);
-  } else {
-    selectedTags.value.push(tag);
-  }
-};
 
 // アニメーション制御
 onMounted(() => {
@@ -238,48 +226,28 @@ onMounted(() => {
           </button>
         </div>
       </div>
-      
-      <!-- 表示切替ボタン -->
-      <div class="flex justify-end mb-16">
-        <div class="flex bg-charcoal rounded-full p-4 shadow-sm">
-          <button 
-            class="px-12 py-6 rounded-full transition-all duration-300"
-            :class="viewType === 'grid' ? 'bg-primary-gold text-dark font-medium' : 'text-light-gray hover:text-primary-gold'"
-            @click="viewType = 'grid'"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16">
-              <rect x="3" y="3" width="7" height="7"></rect>
-              <rect x="14" y="3" width="7" height="7"></rect>
-              <rect x="14" y="14" width="7" height="7"></rect>
-              <rect x="3" y="14" width="7" height="7"></rect>
-            </svg>
-          </button>
-          <button 
-            class="px-12 py-6 rounded-full transition-all duration-300"
-            :class="viewType === 'feed' ? 'bg-primary-gold text-dark font-medium' : 'text-light-gray hover:text-primary-gold'"
-            @click="viewType = 'feed'"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16">
-              <line x1="21" y1="10" x2="3" y2="10"></line>
-              <line x1="21" y1="6" x2="3" y2="6"></line>
-              <line x1="21" y1="14" x2="3" y2="14"></line>
-              <line x1="21" y1="18" x2="3" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-      </div>
+    </div>
+
+    <!-- ローディング表示 -->
+    <div v-if="isLoading" class="flex justify-center items-center py-64">
+      <div class="w-48 h-48 border-4 border-primary-gold/30 border-t-primary-gold rounded-full animate-spin"></div>
+    </div>
+
+    <!-- エラー表示 -->
+    <div v-else-if="hasError" class="bg-red-500/10 p-24 rounded-card text-center">
+      <p class="text-red-500">データの読み込みに失敗しました。再読み込みしてください。</p>
     </div>
 
     <!-- 投稿グリッド表示 -->
-    <div v-if="viewType === 'grid'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-16">
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-16">
       <div 
         v-for="post in filteredPosts" 
         :key="post.id" 
         class="bg-charcoal rounded-card overflow-hidden shadow-card hover:shadow-floating transition-all duration-300"
         :class="{'transform scale-102': isLoaded}"
       >
-        <router-link :to="`/post/${post.id}`" class="block">
-          <div class="relative">
+        <div class="relative">
+          <router-link :to="`/post/${post.id}`" class="block">
             <img 
               :src="post.image" 
               :alt="post.title" 
@@ -311,125 +279,49 @@ onMounted(() => {
                 </span>
               </div>
             </div>
-          </div>
-        </router-link>
-      </div>
-    </div>
-
-    <!-- 投稿フィード表示 -->
-    <div v-else class="space-y-24">
-      <div 
-        v-for="post in filteredPosts" 
-        :key="post.id" 
-        class="bg-charcoal rounded-card overflow-hidden shadow-card animate-fade"
-      >
-        <!-- ヘッダー -->
-        <div class="p-16 flex items-center">
-          <img :src="post.userImage" :alt="post.user" class="w-32 h-32 rounded-full mr-12 border-2 border-primary-gold/20">
-          <div class="flex-1">
-            <div class="font-medium text-light-gray">{{ post.user }}</div>
-            <div class="text-caption text-light-gray/70">{{ post.weaponType }} 使い</div>
-          </div>
-          <button class="text-light-gray/50 hover:text-primary-gold p-8 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16">
-              <circle cx="12" cy="12" r="1"></circle>
-              <circle cx="19" cy="12" r="1"></circle>
-              <circle cx="5" cy="12" r="1"></circle>
-            </svg>
-          </button>
-        </div>
-        
-        <!-- 画像 -->
-        <div class="relative">
-          <router-link :to="`/post/${post.id}`">
-            <img 
-              :src="post.image" 
-              :alt="post.title" 
-              class="w-full aspect-video object-cover"
-              loading="lazy"
-            />
           </router-link>
           
-          <!-- オーバーレイのいいねアニメーション -->
-          <div 
-            v-if="activePostId === post.id" 
-            class="absolute inset-0 flex items-center justify-center bg-dark/20"
+          <!-- いいねボタン -->
+          <button 
+            class="absolute top-8 right-8 w-32 h-32 flex items-center justify-center bg-charcoal/70 rounded-full backdrop-blur-sm transition-all hover:bg-charcoal"
+            @click="toggleLike(post.id)"
           >
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               viewBox="0 0 24 24" 
-              fill="currentColor" 
-              class="w-64 h-64 text-primary-gold animate-bounce-sm"
+              :fill="post.isLiked ? 'currentColor' : 'none'" 
+              :stroke="post.isLiked ? 'none' : 'currentColor'" 
+              stroke-width="2" 
+              stroke-linecap="round" 
+              stroke-linejoin="round" 
+              class="w-16 h-16"
+              :class="post.isLiked ? 'text-primary-gold' : 'text-light-gray'"
             >
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
-          </div>
-        </div>
-        
-        <!-- アクション -->
-        <div class="p-16">
-          <div class="flex items-center gap-16 mb-12">
-            <button 
-              class="tap-target flex items-center justify-center text-24 transition-transform hover:scale-110 active:scale-95"
-              :class="post.isLiked ? 'text-primary-gold' : 'text-light-gray'"
-              @click="toggleLike(post.id)"
-            >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 24 24" 
-                :fill="post.isLiked ? 'currentColor' : 'none'" 
-                :stroke="post.isLiked ? 'none' : 'currentColor'" 
-                stroke-width="2" 
-                stroke-linecap="round" 
-                stroke-linejoin="round" 
-                class="w-24 h-24"
-              >
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-              </svg>
-            </button>
-            <button class="tap-target flex items-center justify-center text-24 text-light-gray transition-transform hover:scale-110 active:scale-95">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-24 h-24">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-              </svg>
-            </button>
-            <button class="tap-target flex items-center justify-center text-24 text-light-gray transition-transform hover:scale-110 active:scale-95">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-24 h-24">
-                <line x1="22" y1="2" x2="11" y2="13"></line>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-              </svg>
-            </button>
-          </div>
-          <!-- いいね数と説明 -->
-          <p class="text-primary-gold font-medium mb-4">{{ post.likes }} いいね</p>
-          <p class="mb-8">
-            <span class="font-medium">{{ post.user }}</span>
-            <span class="ml-8">{{ post.title }}</span>
-          </p>
-          <!-- タグ -->
-          <div class="flex flex-wrap gap-4 mb-8">
-            <span 
-              v-for="tag in post.tags" 
-              :key="tag" 
-              class="text-caption text-primary-gold/80 hover:text-primary-gold cursor-pointer"
-            >
-              #{{ tag }}
-            </span>
-          </div>
-          <!-- コメントフォーム -->
-          <div class="flex items-center gap-8 mt-12 border-t border-primary-green/20 pt-12">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-20 h-20 text-light-gray/70">
-              <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z"></path>
-              <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path>
-            </svg>
-            <input 
-              type="text" 
-              placeholder="コメントを追加..." 
-              class="bg-transparent text-light-gray placeholder-light-gray/50 border-none outline-none flex-1"
-            />
-            <button class="text-primary-gold font-medium opacity-60 hover:opacity-100 transition-opacity">投稿</button>
-          </div>
+          </button>
         </div>
       </div>
+    </div>
+
+    <!-- 投稿がない場合 -->
+    <div v-if="!isLoading && !hasError && filteredPosts.length === 0" class="bg-charcoal/50 p-32 rounded-card text-center">
+      <p class="text-light-gray/70">表示できる投稿がありません。フィルターを変更してみてください。</p>
+    </div>
+
+    <!-- オーバーレイのいいねアニメーション -->
+    <div 
+      v-if="activePostId !== null" 
+      class="fixed inset-0 pointer-events-none flex items-center justify-center z-50"
+    >
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        viewBox="0 0 24 24" 
+        fill="currentColor" 
+        class="w-64 h-64 text-primary-gold animate-bounce-sm"
+      >
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+      </svg>
     </div>
 
     <!-- フローティングアクションボタン (モバイル用) -->
@@ -460,31 +352,19 @@ onMounted(() => {
   transition: transform 0.5s ease;
 }
 
-/* マテリアルデザイン風の波紋エフェクト */
-.tap-target {
-  position: relative;
-  overflow: hidden;
+/* アニメーション */
+@keyframes bounce-sm {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
 }
 
-.tap-target::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 5px;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.5);
-  opacity: 0;
-  border-radius: 100%;
-  transform: scale(1, 1) translate(-50%, -50%);
-  transform-origin: 50% 50%;
-}
-
-.tap-target:active::after {
-  opacity: 1;
-  width: 100px;
-  height: 100px;
-  transform: scale(0, 0) translate(-50%, -50%);
-  transition: transform 0.5s, opacity 0.5s;
+.animate-bounce-sm {
+  animation: bounce-sm 0.5s ease-in-out;
 }
 </style>
